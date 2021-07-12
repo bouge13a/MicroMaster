@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v20.2.2                     
 ******************************************************************************
->> Linked Mon Jul 12 09:38:59 2021
+>> Linked Mon Jul 12 09:51:40 2021
 
 OUTPUT FILE NAME:   <MicroMaster.out>
 ENTRY POINT SYMBOL: "_c_int00_noinit_noargs"  address: 0000026d

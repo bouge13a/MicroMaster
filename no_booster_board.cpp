@@ -16,6 +16,7 @@
 #include "I2C_monitor.hpp"
 #include "task_manager.hpp"
 #include "I2C_sniffer.hpp"
+#include "I2C_scripter.hpp"
 
 NoBoosterPack::NoBoosterPack(void) {
 
@@ -31,6 +32,8 @@ NoBoosterPack::NoBoosterPack(void) {
 
     I2cSnifferTask* i2c_sniffer_task = new I2cSnifferTask(i2c_cmd_task);
 
+    I2cScripterTask* i2c_scripter_task = new I2cScripterTask(i2c_cmd_task);
+
     TaskManager* task_manager = new TaskManager();
 
     ErrorLogger* error_logger = ErrorLogger::get_instance();
@@ -38,6 +41,7 @@ NoBoosterPack::NoBoosterPack(void) {
     TestTask* test_task = new TestTask();
 
     console_task->add_page(i2c_sniffer_task);
+    console_task->add_page(i2c_scripter_task);
     console_task->add_page(i2c_cmd_task);
     console_task->add_page(i2c_monitor_task);
     console_task->add_page(error_logger);

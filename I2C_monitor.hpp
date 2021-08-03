@@ -18,6 +18,14 @@
 #include "console_task.hpp"
 #include "I2C_task.hpp"
 
+typedef enum {
+    HEX_FORMAT,
+    BIN_FORMAT,
+    MSB_DEC_FORMAT,
+    LSB_DEC_FORMAT,
+    NUM_OF_FORMATS,
+}msg_format_e;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -32,8 +40,12 @@ extern "C" {
         uint32_t test;
 
         I2cTask* i2c0;
-
         std::vector<I2cMsg*> i2c_monitor_msgs;
+        msg_format_e* message_format;
+        uint32_t format_index;
+
+        void print_format_row(uint32_t row);
+        void print_data(uint32_t inner_index, uint32_t index);
 
         void draw_page(void);
         void draw_data(void);

@@ -12,6 +12,14 @@
 static const uint32_t START_ROW = 7;
 
 static const uint32_t DATA_COL = 20;
+static const uint32_t FORMAT_SPACING = 15;
+
+static const char* format_types[] = {
+    "HEX",
+    "BIN",
+    "MSB DEC",
+    "LSB DEC",
+};
 
 void I2cMonitorTask::taskfunwrapper(void* parm){
     (static_cast<I2cMonitorTask*>(parm))->task((I2cMonitorTask*)parm);
@@ -31,6 +39,13 @@ I2cMonitorTask::I2cMonitorTask(I2cTask* i2c0, std::vector<I2cMsg*>& i2c_monitor_
 
     this->i2c_monitor_msgs = i2c_monitor_msgs;
     this->i2c0 = i2c0;
+    this->message_format = new msg_format_e[NUM_OF_MONITORED_MSGS];
+    this->format_index = 0;
+
+    for (uint32_t index=0; index<NUM_OF_MONITORED_MSGS; index++) {
+        this->message_format[index] = HEX_FORMAT;
+    }
+
 } // End I2cMonitorTask
 
 
@@ -51,6 +66,65 @@ void I2cMonitorTask::task(I2cMonitorTask* this_ptr) {
 
 } // End I2cMonitorTask
 
+void I2cMonitorTask::print_format_row(uint32_t row) {
+
+    for (uint32_t index=0; index<NUM_OF_FORMATS; index++) {
+        TextCtl::cursor_pos(START_ROW + i2c_monitor_msgs.size() + 1 + row, DATA_COL + FORMAT_SPACING * index);
+        if (index == this->message_format[row]) {
+            TextCtl::set_text_mode(TextCtl::mode_reverse);
+        }
+
+        if ((this->format_index == row) && (index == this->message_format[this->format_index])) {
+            TextCtl::text_color(TextCtl::blue_bgd);
+        }
+        UARTprintf("%s", format_types[index]);
+
+        if (index == this->message_format[row]) {
+            TextCtl::set_text_mode(TextCtl::mode_reverse_off);
+        }
+
+        if ((this->format_index == row) && (index == this->message_format[this->format_index])) {
+            TextCtl::text_color(TextCtl::black_bgd);
+        }
+    }
+} // End I2cMonitorTask::print_format_row
+
+void I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
+
+    uint32_t data;
+
+    switch(this->message_format[index]) {
+    case HEX_FORMAT :
+        UARTprintf("0x%x ", this->i2c_monitor_msgs[index]->rx_data[inner_index]);
+        break;
+    case BIN_FORMAT :
+        UARTprintf("0b%b ", this->i2c_monitor_msgs[index]->rx_data[inner_index]);
+        break;
+    case MSB_DEC_FORMAT :
+        if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
+            UARTprintf("Not Applicable");
+        } else {
+            data = this->i2c_monitor_msgs[index]->rx_data[0] << 4;
+            data = data | this->i2c_monitor_msgs[index]->rx_data[1];
+            UARTprintf("%d", data);
+        }
+        break;
+    case LSB_DEC_FORMAT :
+        if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
+            UARTprintf("Not Applicable");
+        } else {
+            data = this->i2c_monitor_msgs[index]->rx_data[0];
+            data = data | (this->i2c_monitor_msgs[index]->rx_data[1] << 4);
+            UARTprintf("%d", data);
+        }
+        break;
+    default :
+        assert(0);
+        break;
+    }
+
+} // End I2cMonitorTask::print_data
+
 void I2cMonitorTask::draw_page(void) {
 
     TextCtl::cursor_pos(START_ROW, 0);
@@ -59,7 +133,20 @@ void I2cMonitorTask::draw_page(void) {
         UARTprintf("Message %d:\n\r", index + 1);
     }
 
-}
+    TextCtl::cursor_pos(START_ROW + i2c_monitor_msgs.size() + 1, 0);
+
+    for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
+        UARTprintf("Message Format %d:\n\r", index + 1);
+    }
+
+    for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
+        this->print_format_row(index);
+
+    }
+
+
+} // End I2cMonitorTask::draw_page
+
 void I2cMonitorTask::draw_data(void) {
 
     TextCtl::cursor_pos(START_ROW, DATA_COL);
@@ -69,13 +156,16 @@ void I2cMonitorTask::draw_data(void) {
         if (this->i2c_monitor_msgs[index]->active) {
             TextCtl::cursor_pos(START_ROW + index, DATA_COL);
             for(uint32_t inner_index = 0; inner_index<this->i2c_monitor_msgs[index]->bytes_rxed; inner_index++) {
-                UARTprintf("0x%x ", this->i2c_monitor_msgs[index]->rx_data[inner_index]);
+                this->print_data(inner_index, index);
             }
         }
     }
 
-}
+} // End I2cMonitorTask::draw_data
+
 void I2cMonitorTask::draw_input(int character) {
+
+    uint32_t last_row;
 
     if ('r' == character) {
         this->i2c0->reset_monitor_index();
@@ -86,4 +176,36 @@ void I2cMonitorTask::draw_input(int character) {
         }
     }
 
-}
+    switch (character) {
+    case ArrowKeys::DOWN :
+        last_row = this->format_index;
+        this->format_index = (format_index + 1) % NUM_OF_MONITORED_MSGS;
+        this->print_format_row(last_row);
+        this->print_format_row(this->format_index);
+        break;
+    case ArrowKeys::UP :
+        last_row = this->format_index;
+        if (this->format_index == 0) {
+            this->format_index = NUM_OF_MONITORED_MSGS - 1;
+        } else {
+            this->format_index--;
+        }
+        this->print_format_row(last_row);
+        this->print_format_row(this->format_index);
+        break;
+    case ArrowKeys::RIGHT :
+        this->message_format[this->format_index] = (msg_format_e)((this->message_format[this->format_index] + 1) % (NUM_OF_FORMATS));
+        this->print_format_row(this->format_index);
+        break;
+    case ArrowKeys::LEFT :
+        if(this->message_format[this->format_index] == 0) {
+            this->message_format[this->format_index] = (msg_format_e)(NUM_OF_FORMATS - 1);
+        } else {
+            this->message_format[this->format_index] = (msg_format_e)(this->message_format[this->format_index] - 1);
+        }
+        this->print_format_row(this->format_index);
+        break;
+    default :
+        break;
+    }
+} // End I2cMonitorTask::draw_input

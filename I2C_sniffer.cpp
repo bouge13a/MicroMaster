@@ -45,7 +45,7 @@ void I2cSnifferTask::task(I2cSnifferTask* this_ptr) {
 
         xSemaphoreTake(this->start_semphr, portMAX_DELAY);
 
-        for (uint32_t index=0; index < 0x100; index++) {
+        for (uint32_t index=0; index <= 0x7f; index++) {
 
             //Set i2c_msg
             this->i2c_msg->address = index;

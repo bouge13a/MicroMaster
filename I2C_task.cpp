@@ -19,7 +19,6 @@
 #include "uartstdio.h"
 
 
-static const uint32_t NUM_OF_I2C_MSGS = 5;
 static const uint32_t NUM_OF_TX_BYTES = 10;
 static const uint32_t NUM_OF_RX_BYTES = 10;
 
@@ -102,7 +101,7 @@ I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
     this->byte_buffer_index = 0;
     this->i2c_cmd_msg = new I2cMsg(command_msg);
 
-    for (uint32_t index=0; index<NUM_OF_I2C_MSGS; index++) {
+    for (uint32_t index=0; index<NUM_OF_MONITORED_MSGS; index++) {
         this->i2c_monitor_msgs.push_back(new I2cMsg(normal_msg));
         this->i2c_monitor_msgs[index]->tx_data = new uint8_t[NUM_OF_TX_BYTES];
         this->i2c_monitor_msgs[index]->rx_data = new uint8_t[NUM_OF_RX_BYTES];
@@ -457,7 +456,7 @@ void I2cTask::draw_input(int character) {
 
     switch(i2c_cmd_state) {
     case GET_MONITOR_STATUS :
-        if (('y' == character) && (i2c_monitor_index < NUM_OF_I2C_MSGS)) {
+        if (('y' == character) && (i2c_monitor_index < NUM_OF_MONITORED_MSGS)) {
 
             this->i2c_cmd_state = GET_ADDRESS;
             this->i2c_monitor_msgs[this->i2c_monitor_index]->type = normal_msg;

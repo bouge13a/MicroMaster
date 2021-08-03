@@ -16,6 +16,13 @@
 #include "I2C_task.hpp"
 #include "console_task.hpp"
 
+typedef enum {
+    START_SCRIPTER,
+    GET_NIBBLE_0,
+    GET_NIBBLE_1,
+    GET_SPACE_BAR,
+}buffer_state_e;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -28,11 +35,15 @@ extern "C" {
         static void taskfunwrapper(void* parm);
         TaskHandle_t task_handle;
 
+        bool ascii_to_hex(char* character);
+        void print_message(I2cMsg* i2c_msg);
+
         I2cTask* i2c;
         I2cMsg* i2c_msg;
         uint8_t* i2c_tx_data;
 
-        char* buffer;
+        uint32_t buffer_idx;
+        buffer_state_e buffer_state;
 
         SemaphoreHandle_t send_semphr;
 

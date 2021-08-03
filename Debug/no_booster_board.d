@@ -100,6 +100,7 @@ no_booster_board.obj: ../driverlib/sysctl.h
 no_booster_board.obj: ../I2C_monitor.hpp
 no_booster_board.obj: ../task_manager.hpp
 no_booster_board.obj: ../I2C_sniffer.hpp
+no_booster_board.obj: ../I2C_scripter.hpp
 
 ../no_booster_board.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -201,3 +202,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h:
 ../I2C_monitor.hpp: 
 ../task_manager.hpp: 
 ../I2C_sniffer.hpp: 
+../I2C_scripter.hpp: 

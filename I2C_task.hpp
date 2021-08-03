@@ -61,6 +61,7 @@ typedef enum {
     PULL_UP_ERR,
 }i2c_errors_e;
 
+const uint32_t NUM_OF_MONITORED_MSGS = 5;
 
 class I2cMsg {
 public :

@@ -17,6 +17,10 @@
 #include "task_manager.hpp"
 #include "I2C_sniffer.hpp"
 #include "I2C_scripter.hpp"
+#include "GPOs.hpp"
+#include "GPIs.hpp"
+#include "ADC_task.hpp"
+#include "io_control_page.hpp"
 
 NoBoosterPack::NoBoosterPack(void) {
 
@@ -40,6 +44,17 @@ NoBoosterPack::NoBoosterPack(void) {
 
     TestTask* test_task = new TestTask();
 
+    GpoObj* gpo_obj = new GpoObj();
+
+    GpiObj* gpi_obj = new GpiObj();
+
+    AdcTask* adc_task = new AdcTask();
+
+    IoCtlPage* io_control_page = new IoCtlPage(gpo_obj,
+                                               gpi_obj,
+                                               adc_task);
+
+    console_task->add_page(io_control_page);
     console_task->add_page(i2c_sniffer_task);
     console_task->add_page(i2c_scripter_task);
     console_task->add_page(i2c_cmd_task);

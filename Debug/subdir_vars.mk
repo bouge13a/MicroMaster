@@ -6,6 +6,9 @@ SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../ADC_task.cpp \
+../GPIs.cpp \
+../GPOs.cpp \
 ../I2C_monitor.cpp \
 ../I2C_scripter.cpp \
 ../I2C_sniffer.cpp \
@@ -13,6 +16,7 @@ CPP_SRCS += \
 ../console_task.cpp \
 ../console_uart.cpp \
 ../error_logger.cpp \
+../io_control_page.cpp \
 ../main.cpp \
 ../memory_functions.cpp \
 ../no_booster_board.cpp \
@@ -35,6 +39,9 @@ C_DEPS += \
 ./tm4c123gh6pm_startup_ccs.d 
 
 OBJS += \
+./ADC_task.obj \
+./GPIs.obj \
+./GPOs.obj \
 ./I2C_monitor.obj \
 ./I2C_scripter.obj \
 ./I2C_sniffer.obj \
@@ -44,6 +51,7 @@ OBJS += \
 ./error_logger.obj \
 ./heap_2.obj \
 ./hooks.obj \
+./io_control_page.obj \
 ./main.obj \
 ./memory_functions.obj \
 ./no_booster_board.obj \
@@ -54,6 +62,9 @@ OBJS += \
 ./utils.obj 
 
 CPP_DEPS += \
+./ADC_task.d \
+./GPIs.d \
+./GPOs.d \
 ./I2C_monitor.d \
 ./I2C_scripter.d \
 ./I2C_sniffer.d \
@@ -61,6 +72,7 @@ CPP_DEPS += \
 ./console_task.d \
 ./console_uart.d \
 ./error_logger.d \
+./io_control_page.d \
 ./main.d \
 ./memory_functions.d \
 ./no_booster_board.d \
@@ -70,6 +82,9 @@ CPP_DEPS += \
 ./utils.d 
 
 OBJS__QUOTED += \
+"ADC_task.obj" \
+"GPIs.obj" \
+"GPOs.obj" \
 "I2C_monitor.obj" \
 "I2C_scripter.obj" \
 "I2C_sniffer.obj" \
@@ -79,6 +94,7 @@ OBJS__QUOTED += \
 "error_logger.obj" \
 "heap_2.obj" \
 "hooks.obj" \
+"io_control_page.obj" \
 "main.obj" \
 "memory_functions.obj" \
 "no_booster_board.obj" \
@@ -94,6 +110,9 @@ C_DEPS__QUOTED += \
 "tm4c123gh6pm_startup_ccs.d" 
 
 CPP_DEPS__QUOTED += \
+"ADC_task.d" \
+"GPIs.d" \
+"GPOs.d" \
 "I2C_monitor.d" \
 "I2C_scripter.d" \
 "I2C_sniffer.d" \
@@ -101,6 +120,7 @@ CPP_DEPS__QUOTED += \
 "console_task.d" \
 "console_uart.d" \
 "error_logger.d" \
+"io_control_page.d" \
 "main.d" \
 "memory_functions.d" \
 "no_booster_board.d" \
@@ -110,6 +130,9 @@ CPP_DEPS__QUOTED += \
 "utils.d" 
 
 CPP_SRCS__QUOTED += \
+"../ADC_task.cpp" \
+"../GPIs.cpp" \
+"../GPOs.cpp" \
 "../I2C_monitor.cpp" \
 "../I2C_scripter.cpp" \
 "../I2C_sniffer.cpp" \
@@ -117,6 +140,7 @@ CPP_SRCS__QUOTED += \
 "../console_task.cpp" \
 "../console_uart.cpp" \
 "../error_logger.cpp" \
+"../io_control_page.cpp" \
 "../main.cpp" \
 "../memory_functions.cpp" \
 "../no_booster_board.cpp" \

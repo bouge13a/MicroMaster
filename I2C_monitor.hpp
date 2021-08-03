@@ -45,7 +45,7 @@ extern "C" {
         uint32_t format_index;
 
         void print_format_row(uint32_t row);
-        void print_data(uint32_t inner_index, uint32_t index);
+        bool print_data(uint32_t inner_index, uint32_t index);
 
         void draw_page(void);
         void draw_data(void);

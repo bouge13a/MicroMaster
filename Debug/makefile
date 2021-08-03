@@ -26,6 +26,7 @@ ORDERED_OBJS += \
 "./test_task.obj" \
 "./text_controls.obj" \
 "./tm4c123gh6pm_startup_ccs.obj" \
+"./utils.obj" \
 "./FreeRTOS/croutine.obj" \
 "./FreeRTOS/event_groups.obj" \
 "./FreeRTOS/list.obj" \
@@ -220,10 +221,10 @@ MicroMasterTM4C123G.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "I2C_monitor.obj" "I2C_scripter.obj" "I2C_sniffer.obj" "I2C_task.obj" "console_task.obj" "console_uart.obj" "error_logger.obj" "heap_2.obj" "hooks.obj" "main.obj" "memory_functions.obj" "no_booster_board.obj" "task_manager.obj" "test_task.obj" "text_controls.obj" "tm4c123gh6pm_startup_ccs.obj" "FreeRTOS\croutine.obj" "FreeRTOS\event_groups.obj" "FreeRTOS\list.obj" "FreeRTOS\queue.obj" "FreeRTOS\stream_buffer.obj" "FreeRTOS\tasks.obj" "FreeRTOS\timers.obj" "FreeRTOS\portable\CCS\ARM_CM4F\port.obj" "FreeRTOS\portable\CCS\ARM_CM4F\portasm.obj" "driverlib\adc.obj" "driverlib\aes.obj" "driverlib\can.obj" "driverlib\comp.obj" "driverlib\cpu.obj" "driverlib\crc.obj" "driverlib\des.obj" "driverlib\eeprom.obj" "driverlib\emac.obj" "driverlib\epi.obj" "driverlib\epi_workaround_ccs.obj" "driverlib\flash.obj" "driverlib\fpu.obj" "driverlib\gpio.obj" "driverlib\hibernate.obj" "driverlib\i2c.obj" "driverlib\interrupt.obj" "driverlib\lcd.obj" "driverlib\mpu.obj" "driverlib\pwm.obj" "driverlib\qei.obj" 
+	-$(RM) "I2C_monitor.obj" "I2C_scripter.obj" "I2C_sniffer.obj" "I2C_task.obj" "console_task.obj" "console_uart.obj" "error_logger.obj" "heap_2.obj" "hooks.obj" "main.obj" "memory_functions.obj" "no_booster_board.obj" "task_manager.obj" "test_task.obj" "text_controls.obj" "tm4c123gh6pm_startup_ccs.obj" "utils.obj" "FreeRTOS\croutine.obj" "FreeRTOS\event_groups.obj" "FreeRTOS\list.obj" "FreeRTOS\queue.obj" "FreeRTOS\stream_buffer.obj" "FreeRTOS\tasks.obj" "FreeRTOS\timers.obj" "FreeRTOS\portable\CCS\ARM_CM4F\port.obj" "FreeRTOS\portable\CCS\ARM_CM4F\portasm.obj" "driverlib\adc.obj" "driverlib\aes.obj" "driverlib\can.obj" "driverlib\comp.obj" "driverlib\cpu.obj" "driverlib\crc.obj" "driverlib\des.obj" "driverlib\eeprom.obj" "driverlib\emac.obj" "driverlib\epi.obj" "driverlib\epi_workaround_ccs.obj" "driverlib\flash.obj" "driverlib\fpu.obj" "driverlib\gpio.obj" "driverlib\hibernate.obj" "driverlib\i2c.obj" "driverlib\interrupt.obj" "driverlib\lcd.obj" "driverlib\mpu.obj" "driverlib\pwm.obj" "driverlib\qei.obj" 
 	-$(RM) "driverlib\shamd5.obj" "driverlib\ssi.obj" "driverlib\sw_crc.obj" "driverlib\sysctl.obj" "driverlib\sysexc.obj" "driverlib\systick.obj" "driverlib\timer.obj" "driverlib\uart.obj" "driverlib\udma.obj" "driverlib\usb.obj" "driverlib\watchdog.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
 	-$(RM) "heap_2.d" "hooks.d" "tm4c123gh6pm_startup_ccs.d" "FreeRTOS\croutine.d" "FreeRTOS\event_groups.d" "FreeRTOS\list.d" "FreeRTOS\queue.d" "FreeRTOS\stream_buffer.d" "FreeRTOS\tasks.d" "FreeRTOS\timers.d" "FreeRTOS\portable\CCS\ARM_CM4F\port.d" "driverlib\adc.d" "driverlib\aes.d" "driverlib\can.d" "driverlib\comp.d" "driverlib\cpu.d" "driverlib\crc.d" "driverlib\des.d" "driverlib\eeprom.d" "driverlib\emac.d" "driverlib\epi.d" "driverlib\flash.d" "driverlib\fpu.d" "driverlib\gpio.d" "driverlib\hibernate.d" "driverlib\i2c.d" "driverlib\interrupt.d" "driverlib\lcd.d" "driverlib\mpu.d" "driverlib\pwm.d" "driverlib\qei.d" "driverlib\shamd5.d" "driverlib\ssi.d" "driverlib\sw_crc.d" "driverlib\sysctl.d" "driverlib\sysexc.d" "driverlib\systick.d" "driverlib\timer.d" "driverlib\uart.d" "driverlib\udma.d" "driverlib\usb.d" "driverlib\watchdog.d" "utils\uartstdio.d" "utils\ustdlib.d" 
-	-$(RM) "I2C_monitor.d" "I2C_scripter.d" "I2C_sniffer.d" "I2C_task.d" "console_task.d" "console_uart.d" "error_logger.d" "main.d" "memory_functions.d" "no_booster_board.d" "task_manager.d" "test_task.d" "text_controls.d" 
+	-$(RM) "I2C_monitor.d" "I2C_scripter.d" "I2C_sniffer.d" "I2C_task.d" "console_task.d" "console_uart.d" "error_logger.d" "main.d" "memory_functions.d" "no_booster_board.d" "task_manager.d" "test_task.d" "text_controls.d" "utils.d" 
 	-$(RM) "driverlib\epi_workaround_ccs.d" 
 	-$(RM) "FreeRTOS\portable\CCS\ARM_CM4F\portasm.d" 
 	-@echo 'Finished clean'

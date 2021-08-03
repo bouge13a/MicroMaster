@@ -18,7 +18,8 @@ CPP_SRCS += \
 ../no_booster_board.cpp \
 ../task_manager.cpp \
 ../test_task.cpp \
-../text_controls.cpp 
+../text_controls.cpp \
+../utils.cpp 
 
 CMD_SRCS += \
 ../tm4c123gh6pm.cmd 
@@ -49,7 +50,8 @@ OBJS += \
 ./task_manager.obj \
 ./test_task.obj \
 ./text_controls.obj \
-./tm4c123gh6pm_startup_ccs.obj 
+./tm4c123gh6pm_startup_ccs.obj \
+./utils.obj 
 
 CPP_DEPS += \
 ./I2C_monitor.d \
@@ -64,7 +66,8 @@ CPP_DEPS += \
 ./no_booster_board.d \
 ./task_manager.d \
 ./test_task.d \
-./text_controls.d 
+./text_controls.d \
+./utils.d 
 
 OBJS__QUOTED += \
 "I2C_monitor.obj" \
@@ -82,7 +85,8 @@ OBJS__QUOTED += \
 "task_manager.obj" \
 "test_task.obj" \
 "text_controls.obj" \
-"tm4c123gh6pm_startup_ccs.obj" 
+"tm4c123gh6pm_startup_ccs.obj" \
+"utils.obj" 
 
 C_DEPS__QUOTED += \
 "heap_2.d" \
@@ -102,7 +106,8 @@ CPP_DEPS__QUOTED += \
 "no_booster_board.d" \
 "task_manager.d" \
 "test_task.d" \
-"text_controls.d" 
+"text_controls.d" \
+"utils.d" 
 
 CPP_SRCS__QUOTED += \
 "../I2C_monitor.cpp" \
@@ -117,7 +122,8 @@ CPP_SRCS__QUOTED += \
 "../no_booster_board.cpp" \
 "../task_manager.cpp" \
 "../test_task.cpp" \
-"../text_controls.cpp" 
+"../text_controls.cpp" \
+"../utils.cpp" 
 
 C_SRCS__QUOTED += \
 "../heap_2.c" \

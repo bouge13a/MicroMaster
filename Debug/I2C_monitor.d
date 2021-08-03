@@ -17,6 +17,7 @@ I2C_monitor.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/
 I2C_monitor.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/stdint.h
 I2C_monitor.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_stdint.h
 I2C_monitor.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h
+I2C_monitor.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils.hpp
 I2C_monitor.obj: ../I2C_monitor.hpp
 I2C_monitor.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h
 I2C_monitor.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h
@@ -108,6 +109,7 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_stdint40.h:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/stdint.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_stdint.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils.hpp: 
 ../I2C_monitor.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h: 

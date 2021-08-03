@@ -6,6 +6,7 @@
  */
 
 #include <uartstdio.h>
+#include <utils.hpp>
 #include "I2C_monitor.hpp"
 #include "text_controls.hpp"
 
@@ -13,6 +14,8 @@ static const uint32_t START_ROW = 7;
 
 static const uint32_t DATA_COL = 20;
 static const uint32_t FORMAT_SPACING = 15;
+
+uint8_t bin_string[9];
 
 static const char* format_types[] = {
     "HEX",
@@ -89,17 +92,18 @@ void I2cMonitorTask::print_format_row(uint32_t row) {
     }
 } // End I2cMonitorTask::print_format_row
 
-void I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
+bool I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
 
     uint32_t data;
 
     switch(this->message_format[index]) {
     case HEX_FORMAT :
         UARTprintf("0x%x ", this->i2c_monitor_msgs[index]->rx_data[inner_index]);
-        break;
+        return false;
     case BIN_FORMAT :
-        UARTprintf("0b%b ", this->i2c_monitor_msgs[index]->rx_data[inner_index]);
-        break;
+        int_to_bin_string(this->i2c_monitor_msgs[index]->rx_data[inner_index], bin_string);
+        UARTprintf("0b%s ", bin_string);
+        return false;
     case MSB_DEC_FORMAT :
         if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
             UARTprintf("Not Applicable");
@@ -108,19 +112,19 @@ void I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
             data = data | this->i2c_monitor_msgs[index]->rx_data[1];
             UARTprintf("%d", data);
         }
-        break;
+        return true;
     case LSB_DEC_FORMAT :
         if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
             UARTprintf("Not Applicable");
         } else {
             data = this->i2c_monitor_msgs[index]->rx_data[0];
-            data = data | (this->i2c_monitor_msgs[index]->rx_data[1] << 4);
+            data = data | (this->i2c_monitor_msgs[index]->rx_data[1] << 8);
             UARTprintf("%d", data);
         }
-        break;
+        return true;
     default :
         assert(0);
-        break;
+        return true;
     }
 
 } // End I2cMonitorTask::print_data
@@ -155,8 +159,11 @@ void I2cMonitorTask::draw_data(void) {
 
         if (this->i2c_monitor_msgs[index]->active) {
             TextCtl::cursor_pos(START_ROW + index, DATA_COL);
+            TextCtl::clear_in_line();
             for(uint32_t inner_index = 0; inner_index<this->i2c_monitor_msgs[index]->bytes_rxed; inner_index++) {
-                this->print_data(inner_index, index);
+                if(this->print_data(inner_index, index)) {
+                    break;
+                }
             }
         }
     }

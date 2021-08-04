@@ -21,8 +21,6 @@
 
 #include "no_booster_board.hpp"
 
-
-
 int main(void) {
 
     // Enable lazy stacking for interrupt handlers.  This allows floating-point

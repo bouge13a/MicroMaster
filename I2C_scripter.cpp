@@ -56,6 +56,8 @@ void I2cScripterTask::task(I2cScripterTask* this_ptr) {
             vTaskDelay(1);
         }
 
+        this->i2c_msg->state = i2c_ready;
+
         if (this->on_screen) {
             this->print_message(this->i2c_msg);
         }

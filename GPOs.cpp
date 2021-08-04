@@ -10,10 +10,15 @@
 #include "GPOs.hpp"
 #include "pins_GPO.hpp"
 
+#include "driverlib/inc/hw_gpio.h"
+#include "driverlib/inc/hw_types.h"
+#include "driverlib/inc/hw_memmap.h"
 #include "driverlib/gpio.h"
 #include "driverlib/pin_map.h"
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
+#include "driverlib/sysctl.h"
+
 
 GpoObj::GpoObj(void) {
 
@@ -26,6 +31,13 @@ GpoObj::GpoObj(void) {
             MAP_SysCtlPeripheralEnable(this->gpo_info->gpos[idx]->peripheral);
 
             SysCtlGPIOAHBEnable(this->gpo_info->gpos[idx]->peripheral);
+
+            // Unlock port so we can change it to a GPIO input
+            // Once we have enabled (unlocked) the commit register then re-lock it
+            // to prevent further changes.  PF0 is muxed with NMI thus a special case.
+            HWREG(this->gpo_info->gpos[idx]->port + GPIO_O_LOCK) = GPIO_LOCK_KEY;
+            HWREG(this->gpo_info->gpos[idx]->port + GPIO_O_CR) |= gpo_info->gpos[idx]->pin;
+            HWREG(this->gpo_info->gpos[idx]->port + GPIO_O_LOCK) = 0;
 
             MAP_GPIODirModeSet(this->gpo_info->gpos[idx]->port,
                                this->gpo_info->gpos[idx]->pin,

@@ -27,6 +27,8 @@ GPOs.obj: ../driverlib/inc/hw_memmap.h
 GPOs.obj: ../driverlib/debug.h
 GPOs.obj: ../driverlib/gpio.h
 GPOs.obj: ../driverlib/sysctl.h
+GPOs.obj: ../driverlib/inc/hw_gpio.h
+GPOs.obj: ../driverlib/inc/hw_types.h
 GPOs.obj: ../driverlib/pin_map.h
 GPOs.obj: ../driverlib/rom.h
 GPOs.obj: ../driverlib/rom_map.h
@@ -58,6 +60,8 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h:
 ../driverlib/debug.h: 
 ../driverlib/gpio.h: 
 ../driverlib/sysctl.h: 
+../driverlib/inc/hw_gpio.h: 
+../driverlib/inc/hw_types.h: 
 ../driverlib/pin_map.h: 
 ../driverlib/rom.h: 
 ../driverlib/rom_map.h: 

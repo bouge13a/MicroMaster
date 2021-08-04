@@ -21,6 +21,9 @@
 #include "GPIs.hpp"
 #include "ADC_task.hpp"
 #include "io_control_page.hpp"
+#include "menu_page.hpp"
+#include "menu_constants.hpp"
+
 
 NoBoosterPack::NoBoosterPack(void) {
 
@@ -54,6 +57,19 @@ NoBoosterPack::NoBoosterPack(void) {
                                                gpi_obj,
                                                adc_task);
 
+    MenuOptions* menu_page = new MenuOptions();
+
+    menu_page->add_menu_row(new MenuRow(i2c_speed_num,
+                                        set_i2c_clock_speed,
+                                        i2c_speed_menu,
+                                        i2c_speed_name));
+
+    menu_page->add_menu_row(new MenuRow(i2c_speed_num,
+                                        set_i2c_clock_speed,
+                                        i2c_speed_menu,
+                                        i2c_speed_name));
+
+    console_task->add_page(menu_page);
     console_task->add_page(io_control_page);
     console_task->add_page(i2c_sniffer_task);
     console_task->add_page(i2c_scripter_task);

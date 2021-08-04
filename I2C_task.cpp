@@ -24,9 +24,9 @@ static const uint32_t NUM_OF_RX_BYTES = 10;
 
 static const uint32_t BOTH_LINES_UP = 0x3;
 
-
 static volatile bool error_flag = false;
 static volatile i2c_errors_e i2c_error_status = NONE;
+
 
 I2cMsg::I2cMsg(i2c_msg_type_t type) {
 
@@ -131,6 +131,18 @@ bool I2cTask::add_i2c_msg(I2cMsg* i2c_msg_ptr) {
 std::vector<I2cMsg*>* I2cTask::get_vector(void) {
     return &this->i2c_monitor_msgs;
 } // End get_vector
+
+void set_i2c_clock_speed(uint32_t index) {
+
+    if (0 == index) {
+        I2CMasterInitExpClk(I2C1_BASE, SysCtlClockGet(), false);
+    } else if (1 == index) {
+        I2CMasterInitExpClk(I2C1_BASE, SysCtlClockGet(), true);
+    } else {
+        assert(0);
+    }
+
+} // End I2cTask::set_clock_speed
 
 void I2cTask::taskfunwrapper(void* parm){
     (static_cast<I2cTask*>(parm))->task((I2cTask*)parm);

@@ -81,6 +81,14 @@ public :
     bool active;
 };
 
+///////////////////////////////////////////////////
+//              Menu Functions
+////////////////////////////////////////////////////
+
+void set_i2c_clock_speed(uint32_t index);
+
+/////////////////////////////////////////////////////
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -91,6 +99,7 @@ extern "C" {
         std::vector<I2cMsg*>* get_vector(void);
         bool add_i2c_msg(I2cMsg* i2c_msg);
         void reset_monitor_index(void);
+
     private :
         void task(I2cTask* this_ptr);
         static void taskfunwrapper(void* parm);

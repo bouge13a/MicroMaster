@@ -19,6 +19,7 @@ CPP_SRCS += \
 ../io_control_page.cpp \
 ../main.cpp \
 ../memory_functions.cpp \
+../menu_page.cpp \
 ../no_booster_board.cpp \
 ../task_manager.cpp \
 ../test_task.cpp \
@@ -29,12 +30,12 @@ CMD_SRCS += \
 ../tm4c123gh6pm.cmd 
 
 C_SRCS += \
-../heap_2.c \
+../heap_4.c \
 ../hooks.c \
 ../tm4c123gh6pm_startup_ccs.c 
 
 C_DEPS += \
-./heap_2.d \
+./heap_4.d \
 ./hooks.d \
 ./tm4c123gh6pm_startup_ccs.d 
 
@@ -49,11 +50,12 @@ OBJS += \
 ./console_task.obj \
 ./console_uart.obj \
 ./error_logger.obj \
-./heap_2.obj \
+./heap_4.obj \
 ./hooks.obj \
 ./io_control_page.obj \
 ./main.obj \
 ./memory_functions.obj \
+./menu_page.obj \
 ./no_booster_board.obj \
 ./task_manager.obj \
 ./test_task.obj \
@@ -75,6 +77,7 @@ CPP_DEPS += \
 ./io_control_page.d \
 ./main.d \
 ./memory_functions.d \
+./menu_page.d \
 ./no_booster_board.d \
 ./task_manager.d \
 ./test_task.d \
@@ -92,11 +95,12 @@ OBJS__QUOTED += \
 "console_task.obj" \
 "console_uart.obj" \
 "error_logger.obj" \
-"heap_2.obj" \
+"heap_4.obj" \
 "hooks.obj" \
 "io_control_page.obj" \
 "main.obj" \
 "memory_functions.obj" \
+"menu_page.obj" \
 "no_booster_board.obj" \
 "task_manager.obj" \
 "test_task.obj" \
@@ -105,7 +109,7 @@ OBJS__QUOTED += \
 "utils.obj" 
 
 C_DEPS__QUOTED += \
-"heap_2.d" \
+"heap_4.d" \
 "hooks.d" \
 "tm4c123gh6pm_startup_ccs.d" 
 
@@ -123,6 +127,7 @@ CPP_DEPS__QUOTED += \
 "io_control_page.d" \
 "main.d" \
 "memory_functions.d" \
+"menu_page.d" \
 "no_booster_board.d" \
 "task_manager.d" \
 "test_task.d" \
@@ -143,6 +148,7 @@ CPP_SRCS__QUOTED += \
 "../io_control_page.cpp" \
 "../main.cpp" \
 "../memory_functions.cpp" \
+"../menu_page.cpp" \
 "../no_booster_board.cpp" \
 "../task_manager.cpp" \
 "../test_task.cpp" \
@@ -150,7 +156,7 @@ CPP_SRCS__QUOTED += \
 "../utils.cpp" 
 
 C_SRCS__QUOTED += \
-"../heap_2.c" \
+"../heap_4.c" \
 "../hooks.c" \
 "../tm4c123gh6pm_startup_ccs.c" 
 

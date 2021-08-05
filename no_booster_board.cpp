@@ -23,6 +23,7 @@
 #include "io_control_page.hpp"
 #include "menu_page.hpp"
 #include "menu_constants.hpp"
+#include "PWM_page.hpp"
 
 
 NoBoosterPack::NoBoosterPack(void) {
@@ -58,6 +59,8 @@ NoBoosterPack::NoBoosterPack(void) {
                                                adc_task);
 
     MenuOptions* menu_page = new MenuOptions();
+
+
 
     menu_page->add_menu_row(new MenuRow(i2c_speed_num,
                                         set_i2c_clock_speed,

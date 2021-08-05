@@ -324,7 +324,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             this_ptr->i2c_state = I2C_IDLE;
             this_ptr->i2c_msg->state = i2c_ready;
 
-            if (this_ptr->on_screen) {
+            if (this_ptr->on_screen && false == this_ptr->i2c_msg->monitored) {
 
                 this_ptr->print_errors(this_ptr);
 
@@ -436,7 +436,7 @@ bool I2cTask::log_errors(I2cTask* this_ptr) {
 
 } // End log_errors
 
-static bool ascii_to_hex(uint8_t character) {
+static uint32_t ascii_to_hex(uint8_t character) {
 
     if (character >= '0' && character <='9') {
         return character - '0';
@@ -457,21 +457,13 @@ void I2cTask::draw_data(void) {
 }
 void I2cTask::draw_input(int character) {
 
-    if (character == 'r') {
-        this->i2c_cmd_state = GET_MONITOR_STATUS;
-        this->byte_counter = 0;
-        this->byte_buffer_index = 0;
-        this->byte_buffer = 0;
-        UARTprintf("\n\rMonitor register? y/n :");
-        return;
-    }
-
     switch(i2c_cmd_state) {
     case GET_MONITOR_STATUS :
         if (('y' == character) && (i2c_monitor_index < NUM_OF_MONITORED_MSGS)) {
 
             this->i2c_cmd_state = GET_ADDRESS;
             this->i2c_monitor_msgs[this->i2c_monitor_index]->type = normal_msg;
+            this->i2c_monitor_msgs[this->i2c_monitor_index]->monitored = true;
             UARTprintf("%c\n", character);
             UARTprintf("Enter Address : 0x");
             this->monitored = true;
@@ -630,5 +622,10 @@ void I2cTask::draw_help(void) {
 }
 
 void I2cTask::draw_reset(void) {
-
+    this->i2c_cmd_state = GET_MONITOR_STATUS;
+    this->byte_counter = 0;
+    this->byte_buffer_index = 0;
+    this->byte_buffer = 0;
+    UARTprintf("\n\rMonitor register? y/n :");
+    return;
 }

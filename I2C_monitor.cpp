@@ -57,7 +57,7 @@ void I2cMonitorTask::task(I2cMonitorTask* this_ptr) {
     while(1){
 
         for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
-            if (this->i2c_monitor_msgs[index]->monitored) {
+            if (this->i2c_monitor_msgs[index]->active) {
                 this->i2c0->add_i2c_msg(this->i2c_monitor_msgs[index]);
                 vTaskDelay(1);
             }
@@ -174,15 +174,6 @@ void I2cMonitorTask::draw_input(int character) {
 
     uint32_t last_row;
 
-    if ('r' == character) {
-        this->i2c0->reset_monitor_index();
-        for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
-            this->i2c_monitor_msgs[index]->active = false;
-            TextCtl::cursor_pos(START_ROW + index, DATA_COL);
-            TextCtl::clear_in_line();
-        }
-    }
-
     switch (character) {
     case ArrowKeys::DOWN :
         last_row = this->format_index;
@@ -217,11 +208,18 @@ void I2cMonitorTask::draw_input(int character) {
     }
 } // End I2cMonitorTask::draw_input
 
-void I2cMonitorTask::draw_help(void) {
+void I2cMonitorTask::draw_reset(void) {
+
+    this->i2c0->reset_monitor_index();
+    for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
+        this->i2c_monitor_msgs[index]->active = false;
+        TextCtl::cursor_pos(START_ROW + index, DATA_COL);
+        TextCtl::clear_in_line();
+    }
 
 }
 
-void I2cMonitorTask::draw_reset(void) {
+void I2cMonitorTask::draw_help(void) {
 
 }
 

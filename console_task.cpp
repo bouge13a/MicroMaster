@@ -138,15 +138,13 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
 
         } else if(this_ptr->page_index != 0 && rx_char == 'r') {
 
-
-            this_ptr->start_draw_menu(this_ptr);
-
             this_ptr->pages[page_index]->draw_reset();
 
         } else if(this_ptr->page_index != 0 && rx_char == 'h') {
 
             this_ptr->start_draw_menu(this_ptr);
             TextCtl::cursor_pos(5, 0);
+            UARTprintf("Press ESC to return to homepage\r\n\n");
             this_ptr->pages[page_index]->on_screen = false;
             this_ptr->pages[page_index]->draw_help();
 
@@ -202,7 +200,7 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
             this_ptr->pages[this_ptr->page_index]->draw_input(rx_char);
         }
 
-        if (0 == rx_char) {
+        if (0 == rx_char && this_ptr->pages[this_ptr->page_index]->on_screen) {
             this_ptr->pages[this_ptr->page_index]->draw_data();
         }
 

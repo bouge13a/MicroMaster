@@ -98,8 +98,19 @@ void PWMpage::draw_page(void) {
 
 void PWMpage::draw_data(void) {
 
+
 } // End PWMpage::draw_data
 
 void PWMpage::draw_input(int character) {
 
 } // End PWMpage::draw_input
+
+void PWMpage::draw_reset(void) {
+
+
+} // End PWMpage::draw_reset
+
+void PWMpage::draw_help(void) {
+
+
+} // End PWMpage::draw_help

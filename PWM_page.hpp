@@ -32,6 +32,8 @@ private :
     void draw_page(void);
     void draw_data(void);
     void draw_input(int character);
+    void draw_reset(void);
+    void draw_help(void);
 };
 
 

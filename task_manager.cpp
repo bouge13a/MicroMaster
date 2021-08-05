@@ -98,3 +98,11 @@ void TaskManager::draw_data(void) {
 void TaskManager::draw_input(int character) {
 
 } // End TaskManager::draw_input
+
+void TaskManager::draw_help(void) {
+
+} // End TaskManager::draw_data
+
+void TaskManager::draw_reset(void) {
+
+} // End TaskManager::draw_data

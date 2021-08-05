@@ -214,3 +214,11 @@ void I2cScripterTask::draw_input(int character) {
 
 
 } // End I2cScripterTask::draw_input
+
+void I2cScripterTask::draw_reset(void) {
+
+} // End I2cScripterTask::draw_help
+
+void I2cScripterTask::draw_help(void) {
+
+} // End I2cScripterTask::draw_help

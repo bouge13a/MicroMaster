@@ -216,3 +216,12 @@ void I2cMonitorTask::draw_input(int character) {
         break;
     }
 } // End I2cMonitorTask::draw_input
+
+void I2cMonitorTask::draw_help(void) {
+
+}
+
+void I2cMonitorTask::draw_reset(void) {
+
+}
+

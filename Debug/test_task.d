@@ -31,6 +31,8 @@ test_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include
 test_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h
 test_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h
 test_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h
+test_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
+test_task.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 test_task.obj: ../test_task.hpp
 test_task.obj: ../console_task.hpp
 test_task.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/vector
@@ -117,6 +119,8 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/mpu_wrappers.h
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
 ../test_task.hpp: 
 ../console_task.hpp: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/vector: 

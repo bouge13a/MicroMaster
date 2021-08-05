@@ -110,3 +110,11 @@ void I2cSnifferTask::draw_input(int character) {
         xSemaphoreGive(this->start_semphr);
     }
 }
+
+void I2cSnifferTask::draw_help(void) {
+
+}
+
+void I2cSnifferTask::draw_reset(void) {
+
+}

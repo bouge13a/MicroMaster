@@ -41,6 +41,8 @@ extern "C" {
         virtual void draw_page(void)           = 0;
         virtual void draw_data(void)           = 0;
         virtual void draw_input(int character) = 0;
+        virtual void draw_help(void)           = 0;
+        virtual void draw_reset(void)          = 0;
 
         const char* name;
         const uint32_t refresh_rate;
@@ -73,6 +75,8 @@ extern "C" {
         void draw_page(void);
         void draw_data(void);
         void draw_input(int character);
+        void draw_help(void);
+        void draw_reset(void);
 
     };
 

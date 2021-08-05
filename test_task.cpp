@@ -6,6 +6,7 @@
  */
 
 #include <console_uart.hpp>
+#include "uartstdio.h"
 #include "test_task.hpp"
 #include "text_controls.hpp"
 
@@ -42,10 +43,24 @@ void TestTask::task(TestTask* this_ptr) {
 
 void TestTask::draw_page(void) {
 
+    UARTprintf("THIS IS ONLY A TEST\r\n");
+    UARTprintf("THIS IS ONLY A TEST\r\n");
+    UARTprintf("THIS IS ONLY A TEST\r\n");
+
 }
 void TestTask::draw_data(void) {
 
 }
 void TestTask::draw_input(int character) {
+
+}
+
+void TestTask::draw_reset(void) {
+
+}
+
+void TestTask::draw_help(void) {
+
+    UARTprintf("THIS IS A HELP PAGE\r\n");
 
 }

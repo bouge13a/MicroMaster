@@ -104,3 +104,11 @@ void ErrorLogger::draw_data(void){
 void ErrorLogger::draw_input(int character){
 
 } // End logger_drawinput
+
+void ErrorLogger::draw_help(void){
+
+} // End logger_drawinput
+
+void ErrorLogger::draw_reset(void){
+
+} // End logger_drawinput

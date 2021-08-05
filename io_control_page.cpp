@@ -165,3 +165,11 @@ void IoCtlPage::draw_input(int character) {
     }
 
 } // End IoCtlPage::draw_input
+
+void IoCtlPage::draw_help(void) {
+
+}
+
+void IoCtlPage::draw_reset(void) {
+
+}

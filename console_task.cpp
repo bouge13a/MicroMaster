@@ -136,6 +136,21 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
 
             TextCtl::set_text_mode(TextCtl::mode_concealed);
 
+        } else if(this_ptr->page_index != 0 && rx_char == 'r') {
+
+
+            this_ptr->start_draw_menu(this_ptr);
+
+            this_ptr->pages[page_index]->draw_reset();
+
+        } else if(this_ptr->page_index != 0 && rx_char == 'h') {
+
+            this_ptr->start_draw_menu(this_ptr);
+            TextCtl::cursor_pos(5, 0);
+            this_ptr->pages[page_index]->on_screen = false;
+            this_ptr->pages[page_index]->draw_help();
+
+
         } else if ((this_ptr->page_index == 0) && (rx_char >= 'a' && (((int32_t)this_ptr->pages.size() - (int32_t)(rx_char-'a') >=0 )))) {
 
            this_ptr->pages[page_index]->on_screen = false;
@@ -213,6 +228,14 @@ void ConsoleTask::draw_data(void) {
 }
 
 void ConsoleTask::draw_input(int character) {
+
+}
+
+void ConsoleTask::draw_help(void) {
+
+}
+
+void ConsoleTask::draw_reset(void) {
 
 }
 

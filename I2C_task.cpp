@@ -625,4 +625,10 @@ void I2cTask::reset_monitor_index(void) {
 
 } // End I2cTask::reset_monitor_index
 
+void I2cTask::draw_help(void) {
 
+}
+
+void I2cTask::draw_reset(void) {
+
+}

@@ -142,3 +142,11 @@ void MenuOptions::draw_input(int character) {
     }
 
 } // End MenuOptions::draw_input
+
+void MenuOptions::draw_help(void) {
+
+} // End MenuOptions::draw_data
+
+void MenuOptions::draw_reset(void) {
+
+} // End MenuOptions::draw_data

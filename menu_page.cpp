@@ -31,9 +31,6 @@ MenuOptions::MenuOptions(void) : ConsolePage ("Configuration",
                                               portMAX_DELAY,
                                               false){
 
-
-    this->opts_row_index = 0;
-    this->opts_col_index = 0;
     this->menu_index = 0;
 
 } // End MenuOptions::MenuOptions

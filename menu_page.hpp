@@ -39,9 +39,6 @@ private :
 
     uint32_t menu_index;
 
-    uint32_t opts_row_index;
-    uint32_t opts_col_index;
-
 
     void draw_page(void);
     void draw_data(void);

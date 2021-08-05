@@ -113,7 +113,7 @@ extern "C" {
         QueueHandle_t i2c_msg_queue;
         i2c_state_e i2c_state;
         i2c_cmd_state_t i2c_cmd_state;
-        char byte_buffer[2]; // This doesn't need to be a two byte buffer
+        uint8_t byte_buffer;
         uint32_t byte_buffer_index;
         uint32_t byte_counter;
 

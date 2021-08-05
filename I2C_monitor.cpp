@@ -15,7 +15,7 @@ static const uint32_t START_ROW = 7;
 static const uint32_t DATA_COL = 20;
 static const uint32_t FORMAT_SPACING = 15;
 
-uint8_t bin_string[9];
+uint8_t bin_string[12];
 
 static const char* format_types[] = {
     "HEX",

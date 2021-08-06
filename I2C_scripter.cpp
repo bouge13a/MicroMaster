@@ -198,8 +198,9 @@ void I2cScripterTask::draw_input(int character) {
 
             UARTprintf("]\r\n");
             this->buffer_state = START_SCRIPTER;
-            this->i2c_msg->num_tx_bytes = this->buffer_idx - 1;
+            this->i2c_msg->num_tx_bytes = this->buffer_idx-1;
             this->buffer_idx = 0;
+            UARTprintf("Transmit messages in the format [xx xx xx ...] starting with address\r\n");
             xSemaphoreGive(this->send_semphr);
 
         }

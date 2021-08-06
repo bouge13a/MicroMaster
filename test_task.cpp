@@ -53,6 +53,9 @@ void TestTask::draw_data(void) {
 }
 void TestTask::draw_input(int character) {
 
+    if (character == '\r') {
+        UARTprintf("\r\nb\r\n/");
+    }
 }
 
 void TestTask::draw_reset(void) {

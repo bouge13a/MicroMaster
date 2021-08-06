@@ -58,6 +58,8 @@ NoBoosterPack::NoBoosterPack(void) {
                                                gpi_obj,
                                                adc_task);
 
+    PWMpage* pwm_page = new PWMpage();
+
     MenuOptions* menu_page = new MenuOptions();
 
 
@@ -78,6 +80,7 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(i2c_scripter_task);
     console_task->add_page(i2c_cmd_task);
     console_task->add_page(i2c_monitor_task);
+    console_task->add_page(pwm_page);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
     console_task->add_page(test_task);

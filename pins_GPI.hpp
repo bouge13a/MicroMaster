@@ -68,9 +68,9 @@ static gpio_pin_t gpi_5 = {
 static gpio_pin_t* board_gpi_pins[] = {
     &gpi_1,
     &gpi_2,
-    &gpi_3,
-    &gpi_4,
-    &gpi_5,
+//    &gpi_3,
+//    &gpi_4,
+//    &gpi_5,
 };
 
 gpis_t board_gpi_info = {

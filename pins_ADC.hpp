@@ -77,9 +77,9 @@ static adc_pin_t adc5 = {
 static adc_pin_t* board_adc_pins[] = {
     &adc1,
     &adc2,
-    &adc3,
-    &adc4,
-    &adc5,
+//    &adc3,
+//    &adc4,
+//    &adc5,
 
 };
 

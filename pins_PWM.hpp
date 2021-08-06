@@ -26,22 +26,22 @@
 static pwm_pin_t pwm1 = {
     .name            =  "PWM 1",
     .gpio_peripheral = SYSCTL_PERIPH_GPIOB,
-    .gpio_base       = GPIO_PORTB_AHB_BASE,
+    .gpio_base       = GPIO_PORTB_BASE,
     .gpio_pin        = GPIO_PIN_6,
     .pwm_peripheral  = SYSCTL_PERIPH_PWM0,
-    .pwm_base        = SYSCTL_PERIPH_GPIOB,
+    .pwm_base        = PWM0_BASE,
     .pwm_pin         = GPIO_PB6_M0PWM0,
     .pwm_generator   = PWM_GEN_0,
     .pwm_out         = PWM_OUT_0,
     .pwm_out_bit     = PWM_OUT_0_BIT,
 };
 
-static pwm_pin_t pwm_pins[] = {
+static pwm_pin_t* pwm_pins[] = {
     &pwm1,
 };
 
-gpos_t board_gpo_info = {
-    .pwm_pins     = gpos,
+pwm_pins_t board_pwm_info = {
+    .pwm_pins     = pwm_pins,
     .num_pwm_pins = sizeof(pwm_pins)/sizeof(pwm_pins[0]),
 };
 

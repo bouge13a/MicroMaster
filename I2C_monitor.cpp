@@ -131,6 +131,8 @@ bool I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
 
 void I2cMonitorTask::draw_page(void) {
 
+    TextCtl::cursor_pos(START_ROW-2,0);
+    UARTprintf("Press c to clear monitored messages");
     TextCtl::cursor_pos(START_ROW, 0);
 
     for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
@@ -174,6 +176,15 @@ void I2cMonitorTask::draw_input(int character) {
 
     uint32_t last_row;
 
+    if(character == 'c') {
+        this->i2c0->reset_monitor_index();
+        for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
+            this->i2c_monitor_msgs[index]->active = false;
+            TextCtl::cursor_pos(START_ROW + index, DATA_COL);
+            TextCtl::clear_in_line();
+        }
+    }
+
     switch (character) {
     case ArrowKeys::DOWN :
         last_row = this->format_index;
@@ -210,12 +221,7 @@ void I2cMonitorTask::draw_input(int character) {
 
 void I2cMonitorTask::draw_reset(void) {
 
-    this->i2c0->reset_monitor_index();
-    for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
-        this->i2c_monitor_msgs[index]->active = false;
-        TextCtl::cursor_pos(START_ROW + index, DATA_COL);
-        TextCtl::clear_in_line();
-    }
+
 
 }
 

@@ -108,8 +108,6 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
 
     this_ptr->start_draw_menu(this_ptr);
 
-    //this_ptr->draw_menu(this_ptr);
-
     this_ptr->pages[0]->draw_page();
 
     while(1) {

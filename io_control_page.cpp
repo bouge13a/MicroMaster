@@ -128,6 +128,7 @@ void IoCtlPage::draw_data(void) {
     for(uint32_t index=0; index<adc_struct->num_adc_pins; index++) {
 
         TextCtl::cursor_pos(START_ROW + index + 1, ADC_DATA_COL);
+        TextCtl::clear_in_line();
         UARTprintf("%d", adc_task->get_adc_val(adc_struct->adc_pins[index], adc_task));
 
     }

@@ -84,6 +84,8 @@ PWM_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/
 PWM_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h
 PWM_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h
 PWM_page.obj: ../board_pin_defs.hpp
+PWM_page.obj: ../text_controls.hpp
+PWM_page.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdlib.h
 PWM_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h
 PWM_page.obj: ../driverlib/debug.h
 PWM_page.obj: ../driverlib/gpio.h
@@ -95,6 +97,7 @@ PWM_page.obj: ../driverlib/sysctl.h
 PWM_page.obj: ../driverlib/uart.h
 PWM_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 PWM_page.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
+PWM_page.obj: ../pins_PWM.hpp
 
 ../PWM_page.cpp: 
 ../PWM_page.hpp: 
@@ -180,6 +183,8 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h: 
 ../board_pin_defs.hpp: 
+../text_controls.hpp: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdlib.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h: 
 ../driverlib/debug.h: 
 ../driverlib/gpio.h: 
@@ -191,3 +196,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h:
 ../driverlib/uart.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
+../pins_PWM.hpp: 

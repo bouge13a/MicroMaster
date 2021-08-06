@@ -11,6 +11,7 @@
 #include "uartstdio.h"
 
 static const uint32_t MAX_NUM_ERRORS = 20;
+static const uint32_t START_ROW = 6;
 static error_t errors[100];
 static uint32_t num_of_errors = 0;
 
@@ -62,14 +63,17 @@ static const uint32_t OCCUR_COL = 60;
 
 void ErrorLogger::draw_page(void){
 
-    TextCtl::cursor_pos(5, 0);
+    TextCtl::cursor_pos(START_ROW - 1, 0);
+    UARTprintf("Press c to clear errors");
+
+    TextCtl::cursor_pos(START_ROW , 0);
     TextCtl::set_text_mode(TextCtl::mode_underline);
     UARTprintf("NAME");
 
-    TextCtl::cursor_pos(5, INFO_COL);
+    TextCtl::cursor_pos(START_ROW , INFO_COL);
     UARTprintf("INFORMATION");
 
-    TextCtl::cursor_pos(5, OCCUR_COL);
+    TextCtl::cursor_pos(START_ROW , OCCUR_COL);
     UARTprintf("OCCURANCES");
     TextCtl::set_text_mode(TextCtl::mode_underline_off);
 
@@ -86,11 +90,11 @@ void ErrorLogger::draw_data(void){
 
         if (errors[idx].occurences > 0) {
 
-            TextCtl::cursor_pos(6+printed_errors, 0);
+            TextCtl::cursor_pos(START_ROW+1+printed_errors, 0);
             UARTprintf("%s", errors[idx].name);
-            TextCtl::cursor_pos(6+printed_errors,INFO_COL);
+            TextCtl::cursor_pos(START_ROW+1+printed_errors, INFO_COL);
             UARTprintf("%s", errors[idx].info);
-            TextCtl::cursor_pos(6+printed_errors,OCCUR_COL);
+            TextCtl::cursor_pos(START_ROW+1+printed_errors, OCCUR_COL);
             UARTprintf("%d", errors[idx].occurences);
             printed_errors++;
 
@@ -102,6 +106,16 @@ void ErrorLogger::draw_data(void){
 } // End logger_drawdata
 
 void ErrorLogger::draw_input(int character){
+
+    if ('c' == character) {
+        for (uint32_t idx=0; idx < num_of_errors; idx++) {
+            errors[idx].occurences = 0;
+
+        }
+
+        TextCtl::cursor_pos(START_ROW+1, 0);
+        TextCtl::clear_below_line();
+    }
 
 } // End logger_drawinput
 

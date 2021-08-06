@@ -188,6 +188,11 @@ void PWMpage::draw_input(int character) {
 
 void PWMpage::draw_reset(void) {
 
+    this->cmd_buffer_index = 0;
+    this->pwm_cmd_state = ENTER_PIN;
+    TextCtl::cursor_pos(START_ROW, 0);
+    TextCtl::clear_below_line();
+    UARTprintf("Enter pin to control: ");
 
 } // End PWMpage::draw_reset
 

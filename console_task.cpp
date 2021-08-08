@@ -120,6 +120,8 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
 
             this_ptr->pages[this_ptr->last_page_index]->on_screen = false;
 
+            this_ptr->pages[this_ptr->last_page_index]->draw_reset();
+
             this_ptr->last_page_index = this_ptr->page_index;
 
             this_ptr->page_index = (this_ptr->page_index + 1) % this_ptr->pages.size();

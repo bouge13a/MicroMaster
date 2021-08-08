@@ -22,7 +22,7 @@ typedef enum {
 typedef enum {
     ENTER_PIN,
     ENTER_DUTY_CYCLE,
-    ENTER_PERIOD,
+    ENTER_FREQUENCY,
     ENTER_STATE,
 }pwm_cmd_states_e;
 

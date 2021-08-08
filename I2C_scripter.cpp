@@ -13,6 +13,7 @@
 #include <assert.h>
 
 static const uint32_t TX_BUFFER_SIZE = 50;
+static const uint32_t START_ROW = 5;
 
 
 void I2cScripterTask::taskfunwrapper(void* parm){
@@ -60,6 +61,8 @@ void I2cScripterTask::task(I2cScripterTask* this_ptr) {
 
         if (this->on_screen) {
             this->print_message(this->i2c_msg);
+            UARTprintf("\r\nTransmit messages in the format [xx xx xx ...] starting with address\r\n");
+
         }
 
     }
@@ -114,6 +117,8 @@ bool I2cScripterTask::ascii_to_hex(char* character) {
 
 void I2cScripterTask::draw_page(void) {
 
+    TextCtl::cursor_pos(START_ROW, 0);
+    UARTprintf("Press r to reset\r\n");
     UARTprintf("Transmit messages in the format [xx xx xx ...] starting with address\r\n");
 
 } // End I2cScripterTask::draw_page
@@ -200,7 +205,6 @@ void I2cScripterTask::draw_input(int character) {
             this->buffer_state = START_SCRIPTER;
             this->i2c_msg->num_tx_bytes = this->buffer_idx-1;
             this->buffer_idx = 0;
-            UARTprintf("Transmit messages in the format [xx xx xx ...] starting with address\r\n");
             xSemaphoreGive(this->send_semphr);
 
         }
@@ -217,6 +221,14 @@ void I2cScripterTask::draw_input(int character) {
 } // End I2cScripterTask::draw_input
 
 void I2cScripterTask::draw_reset(void) {
+
+    this->buffer_idx = 0;
+    this->buffer_state = START_SCRIPTER;
+    TextCtl::cursor_pos(START_ROW, 0);
+    TextCtl::clear_below_line();
+    UARTprintf("\r\nTransmit messages in the format [xx xx xx ...] starting with address\r\n");
+
+
 
 } // End I2cScripterTask::draw_help
 

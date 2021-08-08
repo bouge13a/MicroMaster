@@ -480,93 +480,108 @@ void I2cTask::draw_input(int character) {
         break;
 
     case GET_ADDRESS :
-        if (0 == this->byte_buffer_index) {
-            this->byte_buffer = ascii_to_hex(character) << 4;
-            UARTprintf("%c", character);
-            this->byte_buffer_index++;
-        } else {
-            this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
-            this->byte_buffer_index = 0;
-            UARTprintf("%c", character);
-            UARTprintf("\n Enter number of tx bytes: ");
-            if (this->monitored) {
 
-                this->i2c_monitor_msgs[this->i2c_monitor_index]->address = this->byte_buffer;
+        if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
 
+            if (0 == this->byte_buffer_index) {
+
+                this->byte_buffer = ascii_to_hex(character) << 4;
+                UARTprintf("%c", character);
+                this->byte_buffer_index++;
             } else {
-                this->i2c_cmd_msg->address = this->byte_buffer;
+                this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+                this->byte_buffer_index = 0;
+                UARTprintf("%c", character);
+                UARTprintf("\n Enter number of tx bytes: ");
+                if (this->monitored) {
+
+                    this->i2c_monitor_msgs[this->i2c_monitor_index]->address = this->byte_buffer;
+
+                } else {
+                    this->i2c_cmd_msg->address = this->byte_buffer;
+                }
+                this->i2c_cmd_state = GET_NUM_TX_BYTES;
+                this->byte_buffer_index = 0;
             }
-            this->i2c_cmd_state = GET_NUM_TX_BYTES;
-            this->byte_buffer_index = 0;
         }
         break;
     case GET_NUM_TX_BYTES :
-        if (this->monitored) {
-            this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes = character - '0';
-        } else {
-            this->i2c_cmd_msg->num_tx_bytes = character -'0';
+
+        if ((character >= '0' && character <= '9')){
+
+            if (this->monitored) {
+                this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes = character - '0';
+            } else {
+                this->i2c_cmd_msg->num_tx_bytes = character -'0';
+            }
+            UARTprintf("%c", character);
+            UARTprintf("\nbyte 1 : 0x");
+            this->i2c_cmd_state = GET_TX_BYTES;
         }
-        UARTprintf("%c", character);
-        UARTprintf("\nbyte 1 : 0x");
-        this->i2c_cmd_state = GET_TX_BYTES;
         break;
     case GET_TX_BYTES :
 
-        if (this->monitored) {
+        if ((character = '0' && character <= '9') || (character >= 'a' && character <= 'f')){
 
-            if(this->byte_counter < this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes) {
-                if (0 == this->byte_buffer_index) {
-                    this->byte_buffer = ascii_to_hex(character) << 4;
-                    this->byte_buffer_index++;
-                    UARTprintf("%c", character);
+            if (this->monitored) {
 
-                } else {
-                    this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
-                    this->i2c_monitor_msgs[this->i2c_monitor_index]->tx_data[this->byte_counter] = this->byte_buffer;
-                    this->byte_buffer_index = 0;
-                    this->byte_counter++;
-                    UARTprintf("%c", character);
-                    if(this->byte_counter < this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes) {
-                        UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                if(this->byte_counter < this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes) {
+
+
+                    if (0 == this->byte_buffer_index) {
+
+                        this->byte_buffer = ascii_to_hex(character) << 4;
+                        this->byte_buffer_index++;
+                        UARTprintf("%c", character);
+
+                    } else {
+                        this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+                        this->i2c_monitor_msgs[this->i2c_monitor_index]->tx_data[this->byte_counter] = this->byte_buffer;
+                        this->byte_buffer_index = 0;
+                        this->byte_counter++;
+                        UARTprintf("%c", character);
+                        if(this->byte_counter < this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes) {
+                            UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                        }
+                    }
+                }
+            } else {
+
+                if(this->byte_counter < this->i2c_cmd_msg->num_tx_bytes) {
+                    if (0 == this->byte_buffer_index) {
+                        this->byte_buffer = ascii_to_hex(character) << 4;
+                        this->byte_buffer_index++;
+                        UARTprintf("%c", character);
+
+                    } else {
+                        this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+                        this->byte_buffer_index = 0;
+                        this->i2c_cmd_msg->tx_data[this->byte_counter] = this->byte_buffer;
+
+                        this->byte_counter++;
+                        UARTprintf("%c", character);
+                        if(this->byte_counter < this->i2c_cmd_msg->num_tx_bytes) {
+                            UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                        }
                     }
                 }
             }
-        } else {
 
-            if(this->byte_counter < this->i2c_cmd_msg->num_tx_bytes) {
-                if (0 == this->byte_buffer_index) {
-                    this->byte_buffer = ascii_to_hex(character) << 4;
-                    this->byte_buffer_index++;
-                    UARTprintf("%c", character);
-
-                } else {
-                    this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+            if (this->monitored) {
+                if (this->byte_counter >= this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes ) {
+                    this->byte_counter = 0;
+                    this->i2c_cmd_state = GET_NUM_RX_BYTES;
                     this->byte_buffer_index = 0;
-                    this->i2c_cmd_msg->tx_data[this->byte_counter] = this->byte_buffer;
-
-                    this->byte_counter++;
-                    UARTprintf("%c", character);
-                    if(this->byte_counter < this->i2c_cmd_msg->num_tx_bytes) {
-                        UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
-                    }
+                    UARTprintf("\nEnter number of rx bytes: ");
                 }
-            }
-        }
 
-        if (this->monitored) {
-            if (this->byte_counter >= this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes ) {
-                this->byte_counter = 0;
-                this->i2c_cmd_state = GET_NUM_RX_BYTES;
-                this->byte_buffer_index = 0;
-                UARTprintf("\nEnter number of rx bytes: ");
-            }
-
-        } else {
-            if (this->byte_counter >= this->i2c_cmd_msg->num_tx_bytes ) {
-                this->byte_counter = 0;
-                this->i2c_cmd_state = GET_NUM_RX_BYTES;
-                this->byte_buffer_index = 0;
-                UARTprintf("\nEnter number of rx bytes: ");
+            } else {
+                if (this->byte_counter >= this->i2c_cmd_msg->num_tx_bytes ) {
+                    this->byte_counter = 0;
+                    this->i2c_cmd_state = GET_NUM_RX_BYTES;
+                    this->byte_buffer_index = 0;
+                    UARTprintf("\nEnter number of rx bytes: ");
+                }
             }
         }
 
@@ -574,14 +589,17 @@ void I2cTask::draw_input(int character) {
 
     case GET_NUM_RX_BYTES :
 
-        if (this->monitored) {
-            this->i2c_monitor_msgs[this->i2c_monitor_index]->num_rx_bytes = character - '0';
-        } else {
-            this->i2c_cmd_msg->num_rx_bytes = character - '0';
+        if ((character >= '0' && character <= '9')){
+
+            if (this->monitored) {
+                this->i2c_monitor_msgs[this->i2c_monitor_index]->num_rx_bytes = character - '0';
+            } else {
+                this->i2c_cmd_msg->num_rx_bytes = character - '0';
+            }
+            UARTprintf("%c", character);
+            UARTprintf("\nPress Spacebar to send:\n\r");
+            this->i2c_cmd_state = SEND_I2C_MSG;
         }
-        UARTprintf("%c", character);
-        UARTprintf("\nPress Spacebar to send:\n\r");
-        this->i2c_cmd_state = SEND_I2C_MSG;
 
         break;
 

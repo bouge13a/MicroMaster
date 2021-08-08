@@ -130,12 +130,12 @@ void PWMpage::draw_input(int character) {
             this->cmd_buffer[this->cmd_buffer_index] = '\0';
             this->duty_cycle_buffer = atoi((const char*)this->cmd_buffer);
             this->cmd_buffer_index = 0;
-            this->pwm_cmd_state = ENTER_PERIOD;
-            UARTprintf("Enter period : ");
+            this->pwm_cmd_state = ENTER_FREQUENCY;
+            UARTprintf("Enter frequency (Hz) : ");
         }
 
         break;
-    case ENTER_PERIOD :
+    case ENTER_FREQUENCY :
 
         if ((character >= '0') && (character <= '9')) {
 
@@ -145,7 +145,7 @@ void PWMpage::draw_input(int character) {
         } else if (character == '\r') {
             UARTprintf("%c", (uint8_t)character);
             this->cmd_buffer[this->cmd_buffer_index] = '\0';
-            this->period_buffer = atoi((const char*)this->cmd_buffer);
+            this->period_buffer = SysCtlClockGet()/atoi((const char*)this->cmd_buffer);
             this->cmd_buffer_index = 0;
             this->pwm_cmd_state = ENTER_STATE;
             UARTprintf("\r\nTurn on (y/n) : ");

@@ -14,6 +14,7 @@ CPP_SRCS += \
 ../I2C_sniffer.cpp \
 ../I2C_task.cpp \
 ../PWM_page.cpp \
+../SPI_command.cpp \
 ../console_task.cpp \
 ../console_uart.cpp \
 ../error_logger.cpp \
@@ -49,6 +50,7 @@ OBJS += \
 ./I2C_sniffer.obj \
 ./I2C_task.obj \
 ./PWM_page.obj \
+./SPI_command.obj \
 ./console_task.obj \
 ./console_uart.obj \
 ./error_logger.obj \
@@ -74,6 +76,7 @@ CPP_DEPS += \
 ./I2C_sniffer.d \
 ./I2C_task.d \
 ./PWM_page.d \
+./SPI_command.d \
 ./console_task.d \
 ./console_uart.d \
 ./error_logger.d \
@@ -96,6 +99,7 @@ OBJS__QUOTED += \
 "I2C_sniffer.obj" \
 "I2C_task.obj" \
 "PWM_page.obj" \
+"SPI_command.obj" \
 "console_task.obj" \
 "console_uart.obj" \
 "error_logger.obj" \
@@ -126,6 +130,7 @@ CPP_DEPS__QUOTED += \
 "I2C_sniffer.d" \
 "I2C_task.d" \
 "PWM_page.d" \
+"SPI_command.d" \
 "console_task.d" \
 "console_uart.d" \
 "error_logger.d" \
@@ -148,6 +153,7 @@ CPP_SRCS__QUOTED += \
 "../I2C_sniffer.cpp" \
 "../I2C_task.cpp" \
 "../PWM_page.cpp" \
+"../SPI_command.cpp" \
 "../console_task.cpp" \
 "../console_uart.cpp" \
 "../error_logger.cpp" \

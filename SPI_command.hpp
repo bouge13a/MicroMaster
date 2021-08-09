@@ -1,12 +1,12 @@
 /*
- * test_class.hpp
+ * SPI_command.hpp
  *
- *  Created on: Jul 26, 2021
+ *  Created on: Aug 9, 2021
  *      Author: steph
  */
 
-#ifndef TEST_TASK_HPP_
-#define TEST_TASK_HPP_
+#ifndef SPI_COMMAND_HPP_
+#define SPI_COMMAND_HPP_
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -18,15 +18,17 @@
 extern "C" {
 #endif
 
-    class TestTask : public ConsolePage {
+    class SpiCmdTask : public ConsolePage {
     public:
-        TestTask(void);
+        SpiCmdTask(void);
     private :
-        void task(TestTask* this_ptr);
+        void task(SpiCmdTask* this_ptr);
         static void taskfunwrapper(void* parm);
+        TaskHandle_t task_handle;
         uint32_t test;
 
-
+        QueueHandle_t spi_tx_queue;
+        QueueHandle_t spi_rx_queue;
 
         void draw_page(void);
         void draw_data(void);
@@ -40,4 +42,7 @@ extern "C" {
 #endif
 
 
-#endif /* TEST_TASK_HPP_ */
+
+
+
+#endif /* SPI_COMMAND_HPP_ */

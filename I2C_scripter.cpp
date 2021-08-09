@@ -71,7 +71,7 @@ void I2cScripterTask::task(I2cScripterTask* this_ptr) {
 
 void I2cScripterTask::print_message(I2cMsg* i2c_msg) {
 
-    switch (i2c_msg->errors) {
+    switch (this->i2c_msg->errors) {
     case NONE :
         UARTprintf("Message transmitted successfully\r\n");
         break;

@@ -90,11 +90,6 @@ I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
 
     TimerEnable(TIMER1_BASE, TIMER_BOTH);
 
-    //I2CMasterEnable(config->base);
-
-    // This should be an option in the options menu
-    //I2CMasterGlitchFilterConfigSet(I2C0_BASE, I2C_MASTER_GLITCH_FILTER_8);
-
     this->i2c_msg_queue = xQueueCreate(20, sizeof(I2cMsg*));
 
     this->i2c_cmd_state = GET_MONITOR_STATUS;

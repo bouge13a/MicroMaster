@@ -120,7 +120,6 @@ extern "C" {
         volatile I2cMsg* i2c_msg;
         I2cMsg* i2c_cmd_msg;
         uint32_t i2c_monitor_index;
-        uint32_t tx_byte_index;
         bool monitored;
 
         std::vector<I2cMsg*> i2c_monitor_msgs;

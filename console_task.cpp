@@ -235,6 +235,7 @@ void ConsoleTask::draw_help(void) {
 
 void ConsoleTask::draw_reset(void) {
 
+
 }
 
 

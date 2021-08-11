@@ -24,6 +24,7 @@
 #include "menu_page.hpp"
 #include "menu_constants.hpp"
 #include "PWM_page.hpp"
+#include "SPI_command.hpp"
 
 
 NoBoosterPack::NoBoosterPack(void) {
@@ -62,6 +63,7 @@ NoBoosterPack::NoBoosterPack(void) {
 
     MenuOptions* menu_page = new MenuOptions();
 
+    SpiCmdTask* spi_command = new SpiCmdTask();
 
 
     menu_page->add_menu_row(new MenuRow(i2c_speed_num,
@@ -80,6 +82,7 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(i2c_scripter_task);
     console_task->add_page(i2c_cmd_task);
     console_task->add_page(i2c_monitor_task);
+    console_task->add_page(spi_command);
     console_task->add_page(pwm_page);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);

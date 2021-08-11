@@ -108,6 +108,7 @@ no_booster_board.obj: ../io_control_page.hpp
 no_booster_board.obj: ../menu_page.hpp
 no_booster_board.obj: ../menu_constants.hpp
 no_booster_board.obj: ../PWM_page.hpp
+no_booster_board.obj: ../SPI_command.hpp
 
 ../no_booster_board.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -217,3 +218,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h:
 ../menu_page.hpp: 
 ../menu_constants.hpp: 
 ../PWM_page.hpp: 
+../SPI_command.hpp: 

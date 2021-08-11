@@ -108,7 +108,6 @@ I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
     this->byte_counter = 0;
     this->byte_buffer_index = 0;
     this->i2c_monitor_index = 0;
-    this->tx_byte_index = 0;
 
     this->addr_ack_err = logger->create_error("I2C0", "No ack from address");
     this->data_ack_err = logger->create_error("I2C0", "No ack from data");
@@ -319,7 +318,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             this_ptr->i2c_state = I2C_IDLE;
             this_ptr->i2c_msg->state = i2c_ready;
 
-            if (this_ptr->on_screen && false == this_ptr->i2c_msg->monitored) {
+            if ((this_ptr->on_screen) && (false == this_ptr->i2c_msg->monitored)) {
 
                 this_ptr->print_errors(this_ptr);
 
@@ -454,7 +453,7 @@ void I2cTask::draw_input(int character) {
 
     switch(i2c_cmd_state) {
     case GET_MONITOR_STATUS :
-        if (('y' == character) && (i2c_monitor_index < NUM_OF_MONITORED_MSGS)) {
+        if (('y' == character) && (this->i2c_monitor_index < NUM_OF_MONITORED_MSGS)) {
 
             this->i2c_cmd_state = GET_ADDRESS;
             this->i2c_monitor_msgs[this->i2c_monitor_index]->type = normal_msg;
@@ -516,12 +515,11 @@ void I2cTask::draw_input(int character) {
         break;
     case GET_TX_BYTES :
 
-        if ((character = '0' && character <= '9') || (character >= 'a' && character <= 'f')){
+        if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
 
             if (this->monitored) {
 
                 if(this->byte_counter < this->i2c_monitor_msgs[this->i2c_monitor_index]->num_tx_bytes) {
-
 
                     if (0 == this->byte_buffer_index) {
 
@@ -640,5 +638,4 @@ void I2cTask::draw_reset(void) {
     this->byte_buffer_index = 0;
     this->byte_buffer = 0;
     UARTprintf("\n\rMonitor register? y/n :");
-    return;
 }

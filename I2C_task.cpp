@@ -334,7 +334,7 @@ void I2cTask::task(I2cTask* this_ptr) {
 
                 UARTprintf("\r\nMeasured transaction time: %d microseconds\r\n", message_time/16);
 
-                UARTprintf("\r\nMonitor register? y/n :");
+                UARTprintf("\r\nMonitor register? y/n : ");
             }
 
             this_ptr->i2c_msg->state = i2c_finished;

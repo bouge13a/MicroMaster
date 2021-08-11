@@ -79,15 +79,15 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
 
     this->spi_tx_queue = xQueueCreate(20, sizeof(SpiMsg*));
 
-    this->spi_msg = new SpiMsg(spi_command_msg);
-    this->spi_msg->tx_bytes = new uint32_t[SPI_TX_Q_NUM];
-    this->spi_msg->rx_bytes = new uint32_t[SPI_RX_Q_NUM];
-    this->spi_msg->bytes_txed = 0;
-    this->spi_msg->bytes_rxed = 0;
-    this->spi_msg->state = spi_ready;
-    this->spi_msg->active = false;
-    this->spi_msg->monitored = false;
-    this->spi_msg->errors = SPI_NO_ERRORS;
+//    this->spi_msg = new SpiMsg(spi_command_msg);
+//    this->spi_msg->tx_bytes = new uint32_t[SPI_TX_Q_NUM];
+//    this->spi_msg->rx_bytes = new uint32_t[SPI_RX_Q_NUM];
+//    this->spi_msg->bytes_txed = 0;
+//    this->spi_msg->bytes_rxed = 0;
+//    this->spi_msg->state = spi_ready;
+//    this->spi_msg->active = false;
+//    this->spi_msg->monitored = false;
+//    this->spi_msg->errors = SPI_NO_ERRORS;
 
     this->byte_buffer = 0;
     this->byte_buffer_index = 0;
@@ -96,6 +96,15 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
     this->monitored = false;
 
     this->spi_cmd_msg = new SpiMsg(spi_command_msg);
+    this->spi_cmd_msg->tx_bytes = new uint32_t[SPI_TX_Q_NUM];
+    this->spi_cmd_msg->rx_bytes = new uint32_t[SPI_RX_Q_NUM];
+    this->spi_cmd_msg->bytes_txed = 0;
+    this->spi_cmd_msg->bytes_rxed = 0;
+    this->spi_cmd_msg->state = spi_ready;
+    this->spi_cmd_msg->active = false;
+    this->spi_cmd_msg->monitored = false;
+    this->spi_cmd_msg->errors = SPI_NO_ERRORS;
+
 
     for (uint32_t index=0; index<NUM_OF_MONITORED_MSGS; index++) {
         this->spi_monitor_msgs.push_back(new SpiMsg(spi_normal_msg));
@@ -183,7 +192,7 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
             if (this_ptr->spi_msg->bytes_rxed < this_ptr->spi_msg->num_rx_bytes) {
 
                 SSIDataGetNonBlocking(SSI0_BASE,
-                                      &this->spi_msg->tx_bytes[this_ptr->spi_msg->bytes_rxed]);
+                                      &this->spi_msg->rx_bytes[this_ptr->spi_msg->bytes_rxed]);
 
                 this_ptr->spi_msg->bytes_rxed++;
 
@@ -208,7 +217,19 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
 
             if (this_ptr->on_screen == true && this_ptr->spi_msg->monitored == false ) {
 
+                this_ptr->print_errors(this_ptr);
 
+                UARTprintf("TX: ");
+                for (uint32_t index=0; index<this_ptr->spi_msg->bytes_txed; index++) {
+                    UARTprintf("0x%x ", this_ptr->spi_msg->tx_bytes[index]);
+                }
+
+                UARTprintf("RX: ");
+                for (uint32_t index=0; index<this_ptr->spi_msg->bytes_rxed; index++) {
+                    UARTprintf("0x%x ", this_ptr->spi_msg->rx_bytes[index]);
+                }
+
+                UARTprintf("\r\n\nMonitor message? y/n : ");
 
             }
 
@@ -221,6 +242,26 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
     }
 }
 
+void SpiCmdTask::print_errors(SpiCmdTask* this_ptr) {
+
+    switch(this_ptr->spi_msg->errors){
+    case SPI_NO_ERRORS :
+        UARTprintf("\r\nMessage transmitted with no errors\r\n");
+        break;
+    case SPI_TIMEOUT_ERR :
+        this_ptr->logger->set_error(this_ptr->rx_timeout_err);
+        UARTprintf("\r\nMessage RX timed out");
+        break;
+    case SPI_OVERRUN_ERR :
+        this_ptr->logger->set_error(this_ptr->rx_overrun_err);
+        UARTprintf("\r\nMessage RX overran");
+        break;
+    default :
+        assert(0);
+        break;
+    }
+
+}
 
 
 bool SpiCmdTask::log_errors(SpiCmdTask* this_ptr) {
@@ -322,6 +363,7 @@ void SpiCmdTask::draw_input(int character) {
 
                     if (0 == this->byte_buffer_index) {
 
+                        this->spi_msg->tx_bytes[0] = 0;
                         this->byte_buffer = ascii_to_hex(character) << 4;
                         this->byte_buffer_index++;
                         UARTprintf("%c", character);
@@ -343,6 +385,7 @@ void SpiCmdTask::draw_input(int character) {
                 if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
 
                     if (0 == this->byte_buffer_index) {
+                        this->spi_msg->tx_bytes[0] = 0;
                         this->byte_buffer = ascii_to_hex(character) << 4;
                         this->byte_buffer_index++;
                         UARTprintf("%c", character);

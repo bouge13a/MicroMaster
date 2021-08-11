@@ -81,6 +81,7 @@ extern "C" {
 
         bool log_errors(SpiCmdTask* this_ptr);
         uint32_t ascii_to_hex(uint8_t character);
+        void print_errors(SpiCmdTask* this_ptr);
 
         QueueHandle_t spi_tx_queue;
         SpiMsg* spi_msg;
@@ -89,7 +90,7 @@ extern "C" {
         spi_state_e state;
         spi_cmd_state_e cmd_state;
 
-        uint8_t byte_buffer;
+        uint32_t byte_buffer;
         uint32_t byte_buffer_index;
         uint32_t byte_counter;
         uint32_t spi_monitor_index;

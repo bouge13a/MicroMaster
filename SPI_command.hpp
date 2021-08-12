@@ -65,6 +65,8 @@ public:
     bool active;
 };
 
+void spi_set_mode(uint32_t mode);
+
 #ifdef __cplusplus
 extern "C" {
 #endif

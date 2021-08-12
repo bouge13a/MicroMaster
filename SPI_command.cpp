@@ -28,6 +28,51 @@ static const uint32_t NUM_OF_MONITORED_MSGS = 5;
 
 static volatile uint32_t spi0_status = 0;
 
+void spi_set_mode(uint32_t mode) {
+
+    switch(mode) {
+    case 0:
+        SSIConfigSetExpClk(SSI0_BASE,
+                           16000000,
+                           SSI_FRF_MOTO_MODE_0,
+                           SSI_MODE_MASTER,
+                           1000000,
+                           8);
+        break;
+
+    case 1:
+        SSIConfigSetExpClk(SSI0_BASE,
+                           16000000,
+                           SSI_FRF_MOTO_MODE_1,
+                           SSI_MODE_MASTER,
+                           1000000,
+                           8);
+        break;
+
+    case 2:
+        SSIConfigSetExpClk(SSI0_BASE,
+                           16000000,
+                           SSI_FRF_MOTO_MODE_2,
+                           SSI_MODE_MASTER,
+                           1000000,
+                           8);
+        break;
+
+    case 3:
+        SSIConfigSetExpClk(SSI0_BASE,
+                           16000000,
+                           SSI_FRF_MOTO_MODE_3,
+                           SSI_MODE_MASTER,
+                           1000000,
+                           8);
+        break;
+
+    default :
+        assert(0);
+        break;
+    }
+}
+
 static void spi0_int_handler(void) {
 
     spi0_status = SSIIntStatus(SSI0_BASE, false);
@@ -72,22 +117,19 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
     GPIOPinTypeSSI(GPIO_PORTA_BASE, GPIO_PIN_5 | GPIO_PIN_4 | GPIO_PIN_3 |
                    GPIO_PIN_2);
 
+    SSIConfigSetExpClk(SSI0_BASE,
+                       16000000,
+                       SSI_FRF_MOTO_MODE_0,
+                       SSI_MODE_MASTER,
+                       1000000,
+                       8);
+
     SSIEnable(SSI0_BASE);
 
     SSIIntRegister(SSI0_BASE, spi0_int_handler);
     SSIIntEnable(SSI0_BASE, SSI_RXTO | SSI_RXOR);
 
     this->spi_tx_queue = xQueueCreate(20, sizeof(SpiMsg*));
-
-//    this->spi_msg = new SpiMsg(spi_command_msg);
-//    this->spi_msg->tx_bytes = new uint32_t[SPI_TX_Q_NUM];
-//    this->spi_msg->rx_bytes = new uint32_t[SPI_RX_Q_NUM];
-//    this->spi_msg->bytes_txed = 0;
-//    this->spi_msg->bytes_rxed = 0;
-//    this->spi_msg->state = spi_ready;
-//    this->spi_msg->active = false;
-//    this->spi_msg->monitored = false;
-//    this->spi_msg->errors = SPI_NO_ERRORS;
 
     this->byte_buffer = 0;
     this->byte_buffer_index = 0;
@@ -363,7 +405,7 @@ void SpiCmdTask::draw_input(int character) {
 
                     if (0 == this->byte_buffer_index) {
 
-                        this->spi_msg->tx_bytes[0] = 0;
+                        this->spi_msg->tx_bytes[this->byte_counter] = 0;
                         this->byte_buffer = ascii_to_hex(character) << 4;
                         this->byte_buffer_index++;
                         UARTprintf("%c", character);
@@ -385,7 +427,7 @@ void SpiCmdTask::draw_input(int character) {
                 if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
 
                     if (0 == this->byte_buffer_index) {
-                        this->spi_msg->tx_bytes[0] = 0;
+                        this->spi_msg->tx_bytes[this->byte_counter] = 0;
                         this->byte_buffer = ascii_to_hex(character) << 4;
                         this->byte_buffer_index++;
                         UARTprintf("%c", character);

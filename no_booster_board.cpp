@@ -71,10 +71,10 @@ NoBoosterPack::NoBoosterPack(void) {
                                         i2c_speed_menu,
                                         i2c_speed_name));
 
-    menu_page->add_menu_row(new MenuRow(i2c_speed_num,
-                                        set_i2c_clock_speed,
-                                        i2c_speed_menu,
-                                        i2c_speed_name));
+    menu_page->add_menu_row(new MenuRow(spi_mode_num,
+                                        spi_set_mode,
+                                        spi_mode_menu,
+                                        spi_mode_name));
 
     console_task->add_page(menu_page);
     console_task->add_page(io_control_page);

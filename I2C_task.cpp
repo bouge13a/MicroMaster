@@ -315,9 +315,6 @@ void I2cTask::task(I2cTask* this_ptr) {
 
             log_errors(this_ptr);
 
-            this_ptr->i2c_state = I2C_IDLE;
-            this_ptr->i2c_msg->state = i2c_ready;
-
             if ((this_ptr->on_screen) && (false == this_ptr->i2c_msg->monitored)) {
 
                 this_ptr->print_errors(this_ptr);
@@ -339,6 +336,7 @@ void I2cTask::task(I2cTask* this_ptr) {
 
             this_ptr->i2c_msg->state = i2c_finished;
 
+            this_ptr->i2c_state = I2C_IDLE;
 
             break;
 
@@ -600,11 +598,14 @@ void I2cTask::draw_input(int character) {
         if (this->monitored) {
             if (' ' == character) {
                 UARTprintf("\nTab to next page to see monitored register\n");
+                UARTprintf("\r\nMonitor register? y/n : ");
                 this->i2c_monitor_msgs[this->i2c_monitor_index]->active = true;
                 this->i2c_cmd_state = GET_MONITOR_STATUS;
                 this->add_i2c_msg(this->i2c_monitor_msgs[this->i2c_monitor_index]);
                 this->i2c_monitor_index++;
                 this->monitored = false;
+
+
             }
         } else {
             if (' ' == character) {

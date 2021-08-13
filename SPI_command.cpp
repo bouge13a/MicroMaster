@@ -660,7 +660,7 @@ void SpiCmdTask::draw_reset(void) {
     this->byte_counter = 0;
     this->byte_buffer_index = 0;
     this->byte_buffer = 0;
-    UARTprintf("\n\rMonitor register? y/n :");
+    UARTprintf("\n\rMonitor message? y/n :");
 }
 
 void SpiCmdTask::draw_help(void) {

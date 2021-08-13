@@ -24,51 +24,62 @@ static const uint32_t SPI_RX_Q_NUM = 20;
 static const uint32_t NUM_OF_TX_BYTES = 10;
 static const uint32_t NUM_OF_RX_BYTES = 10;
 
+static const uint32_t CMD_BUFFER_SIZE = 9;
+
 static const uint32_t NUM_OF_MONITORED_MSGS = 5;
 
 static volatile uint32_t spi0_status = 0;
 
-void spi_set_mode(uint32_t mode) {
+static uint32_t spi_speed = 1000000;
+static uint32_t spi_data_width = 8;
+static uint32_t spi_mode = SSI_FRF_MOTO_MODE_0;
 
-    switch(mode) {
-    case 0:
+void spi_set_mode(uint32_t index) {
+
+    switch(index) {
+    case 0 :
         SSIConfigSetExpClk(SSI0_BASE,
                            16000000,
                            SSI_FRF_MOTO_MODE_0,
                            SSI_MODE_MASTER,
-                           1000000,
-                           8);
-        break;
+                           spi_speed,
+                           spi_data_width);
 
-    case 1:
+        spi_mode = SSI_FRF_MOTO_MODE_0;
+
+        break;
+    case 1 :
         SSIConfigSetExpClk(SSI0_BASE,
                            16000000,
                            SSI_FRF_MOTO_MODE_1,
                            SSI_MODE_MASTER,
-                           1000000,
-                           8);
-        break;
+                           spi_speed,
+                           spi_data_width);
 
-    case 2:
+        spi_mode = SSI_FRF_MOTO_MODE_1;
+
+        break;
+    case 2 :
         SSIConfigSetExpClk(SSI0_BASE,
                            16000000,
                            SSI_FRF_MOTO_MODE_2,
                            SSI_MODE_MASTER,
-                           1000000,
-                           8);
-        break;
+                           spi_speed,
+                           spi_data_width);
 
-    case 3:
+        spi_mode = SSI_FRF_MOTO_MODE_2;
+
+        break;
+    case 3 :
         SSIConfigSetExpClk(SSI0_BASE,
                            16000000,
                            SSI_FRF_MOTO_MODE_3,
                            SSI_MODE_MASTER,
-                           1000000,
-                           8);
-        break;
+                           spi_speed,
+                           spi_data_width);
 
-    default :
-        assert(0);
+        spi_mode = SSI_FRF_MOTO_MODE_3;
+
         break;
     }
 }
@@ -137,6 +148,8 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
     this->spi_monitor_index = 0;
     this->monitored = false;
 
+    this->cmd_buffer = new uint8_t[CMD_BUFFER_SIZE];
+
     this->spi_cmd_msg = new SpiMsg(spi_command_msg);
     this->spi_cmd_msg->tx_bytes = new uint32_t[SPI_TX_Q_NUM];
     this->spi_cmd_msg->rx_bytes = new uint32_t[SPI_RX_Q_NUM];
@@ -181,6 +194,13 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
             xQueueReceive(spi_tx_queue, &this_ptr->spi_msg, portMAX_DELAY);
 
             assert(this_ptr->spi_msg);
+
+            SSIConfigSetExpClk(SSI0_BASE,
+                               16000000,
+                               spi_mode,
+                               SSI_MODE_MASTER,
+                               this_ptr->spi_msg->speed,
+                               this_ptr->spi_msg->data_width);
 
             this_ptr->spi_msg->bytes_txed = 0;
             this_ptr->spi_msg->bytes_rxed = 0;
@@ -363,7 +383,7 @@ void SpiCmdTask::draw_input(int character) {
 
         if (('y' == character) && (this->spi_monitor_index < NUM_OF_MONITORED_MSGS)) {
 
-            this->cmd_state = SPI_GET_NUM_TX_BYTES;
+            this->cmd_state = SPI_GET_SPEED;
             this->spi_monitor_msgs[this->spi_monitor_index]->monitored = true;
             UARTprintf("%c\n", character);
             UARTprintf("Enter number of TX bytes : ");
@@ -371,15 +391,62 @@ void SpiCmdTask::draw_input(int character) {
 
         } else if ('n' == character){
 
-            this->cmd_state = SPI_GET_NUM_TX_BYTES;
+            this->cmd_state = SPI_GET_SPEED;
             this->spi_cmd_msg->monitored = false;
             UARTprintf("%c\n", character);
-            UARTprintf("Enter number of TX bytes : ");
+            UARTprintf("Enter SPI speed (Hz) : ");
             this->monitored = false;
 
         }
 
         break;
+
+    case SPI_GET_SPEED :
+
+        if ((character >= '0') && (character <= '9')) {
+
+            this->cmd_buffer[this->byte_buffer_index] = (uint8_t)character;
+            this->byte_buffer_index++;
+            UARTprintf("%c", (uint8_t)character);
+        } else if (character == '\r') {
+            UARTprintf("%c", (uint8_t)character);
+            this->cmd_buffer[this->byte_buffer_index] = '\0';
+            this->spi_cmd_msg->speed = atoi((const char*)this->cmd_buffer);
+            this->byte_buffer_index = 0;
+            this->cmd_state = SPI_GET_DATA_WIDTH;
+            UARTprintf("\r\nEnter size of packet (1 or 2) : ");
+
+        }
+
+        break;
+
+    case SPI_GET_DATA_WIDTH :
+
+        if ('1' == (character)) {
+            if (this->monitored) {
+                this->spi_monitor_msgs[this->spi_monitor_index]->data_width = 8;
+            } else {
+                this->spi_cmd_msg->data_width = 8;
+            }
+
+            this->cmd_state = SPI_GET_NUM_TX_BYTES;
+            UARTprintf("%c", character);
+            UARTprintf("\r\nEnter number of TX bytes : ");
+        } else if ('2' == character) {
+
+            if (this->monitored) {
+                this->spi_monitor_msgs[this->spi_monitor_index]->data_width = 16;
+            } else {
+                this->spi_cmd_msg->data_width = 16;
+            }
+
+            this->cmd_state = SPI_GET_NUM_TX_BYTES;
+            UARTprintf("%c", character);
+            UARTprintf("\r\nEnter number of TX bytes : ");
+        }
+
+        break;
+
     case SPI_GET_NUM_TX_BYTES :
 
         if ((character >= '0' && character <= '9')){
@@ -396,62 +463,136 @@ void SpiCmdTask::draw_input(int character) {
 
         }
         break;
+
     case SPI_TX_BYTES :
 
         if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
 
-            if (this->monitored) {
-                if(this->byte_counter < this->spi_monitor_msgs[this->spi_monitor_index]->num_tx_bytes) {
+            if (8 == this->spi_cmd_msg->data_width) {
 
-                    if (0 == this->byte_buffer_index) {
+                if (this->monitored) {
 
-                        this->spi_msg->tx_bytes[this->byte_counter] = 0;
-                        this->byte_buffer = ascii_to_hex(character) << 4;
-                        this->byte_buffer_index++;
-                        UARTprintf("%c", character);
+                    if(this->byte_counter < this->spi_monitor_msgs[this->spi_monitor_index]->num_tx_bytes) {
 
-                    } else {
+                        if (0 == this->byte_buffer_index) {
 
-                        this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
-                        this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] = this->byte_buffer;
-                        this->byte_buffer_index = 0;
-                        this->byte_counter++;
-                        UARTprintf("%c", character);
-                        if(this->byte_counter < this->spi_monitor_msgs[this->spi_monitor_index]->num_tx_bytes) {
-                            UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                            this->spi_msg->tx_bytes[this->byte_counter] = 0;
+                            this->byte_buffer = ascii_to_hex(character) << 4;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else {
+
+                            this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+                            this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] = this->byte_buffer;
+                            this->byte_buffer_index = 0;
+                            this->byte_counter++;
+                            UARTprintf("%c", character);
+                            if(this->byte_counter < this->spi_monitor_msgs[this->spi_monitor_index]->num_tx_bytes) {
+                                UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                            }
+                        }
+                    }
+                } else {
+
+                    if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
+
+                        if (0 == this->byte_buffer_index) {
+                            this->spi_cmd_msg->tx_bytes[this->byte_counter] = 0;
+                            this->byte_buffer = ascii_to_hex(character) << 4;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else {
+                            this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+                            this->byte_buffer_index = 0;
+                            this->spi_cmd_msg->tx_bytes[this->byte_counter] = this->byte_buffer;
+
+                            this->byte_counter++;
+                            UARTprintf("%c", character);
+                            if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
+                                UARTprintf("\r\nbyte %d : 0x", this->byte_counter + 1);
+                            }
                         }
                     }
                 }
-            } else {
+            } else if (16 == this->spi_msg->data_width) {
 
-                if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
+                if (this->monitored) {
 
-                    if (0 == this->byte_buffer_index) {
-                        this->spi_msg->tx_bytes[this->byte_counter] = 0;
-                        this->byte_buffer = ascii_to_hex(character) << 4;
-                        this->byte_buffer_index++;
-                        UARTprintf("%c", character);
+                    if(this->byte_counter < this->spi_monitor_msgs[this->spi_monitor_index]->num_tx_bytes) {
 
-                    } else {
-                        this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
-                        this->byte_buffer_index = 0;
-                        this->spi_cmd_msg->tx_bytes[this->byte_counter] = this->byte_buffer;
+                        if (0 == this->byte_buffer_index) {
 
-                        this->byte_counter++;
-                        UARTprintf("%c", character);
-                        if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
-                            UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                            this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] = ascii_to_hex(character) << 12;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else if (1 == this->byte_buffer_index) {
+
+                            this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] = this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] | ascii_to_hex(character) << 8;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else if (2 == this->byte_buffer_index) {
+
+                            this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] = this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] | ascii_to_hex(character) << 4;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else if (3 == this->byte_buffer_index) {
+
+                            this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] = this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] | ascii_to_hex(character);
+                            this->byte_buffer_index++;
+                            this->byte_counter++;
+                            UARTprintf("%c", character);
+                            if(this->byte_counter < this->spi_monitor_msgs[this->spi_monitor_index]->num_tx_bytes) {
+                                UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                            }
+
+                        }
+                    }
+                } else {
+
+                    if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
+
+                        if (0 == this->byte_buffer_index) {
+
+                            this->spi_cmd_msg->tx_bytes[this->byte_counter] = ascii_to_hex(character) << 12;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else if (1 == this->byte_buffer_index) {
+
+                            this->spi_cmd_msg->tx_bytes[this->byte_counter] = this->spi_msg->tx_bytes[this->byte_counter] | ascii_to_hex(character) << 8;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else if (2 == this->byte_buffer_index) {
+
+                            this->spi_cmd_msg->tx_bytes[this->byte_counter] = this->spi_msg->tx_bytes[this->byte_counter] | ascii_to_hex(character) << 4;
+                            this->byte_buffer_index++;
+                            UARTprintf("%c", character);
+
+                        } else if (3 == this->byte_buffer_index) {
+
+                            this->spi_cmd_msg->tx_bytes[this->byte_counter] = this->spi_msg->tx_bytes[this->byte_counter] | ascii_to_hex(character);
+                            this->byte_buffer_index++;
+                            this->byte_counter++;
+                            UARTprintf("%c", character);
+                            if(this->byte_counter < this->spi_cmd_msg->num_tx_bytes) {
+                                UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                            }
                         }
                     }
                 }
             }
 
-
             if (this->monitored) {
                 if (this->byte_counter >= this->spi_monitor_msgs[this->spi_monitor_index]->num_tx_bytes ) {
                     this->byte_counter = 0;
-                    this->cmd_state = SPI_GET_NUM_RX_BYTES;
                     this->byte_buffer_index = 0;
+                    this->cmd_state = SPI_GET_NUM_RX_BYTES;
                     UARTprintf("\nEnter number of RX bytes: ");
                 }
 
@@ -467,6 +608,7 @@ void SpiCmdTask::draw_input(int character) {
         }
 
         break;
+
     case SPI_GET_NUM_RX_BYTES :
 
         if ((character >= '0' && character <= '9')){
@@ -482,6 +624,7 @@ void SpiCmdTask::draw_input(int character) {
         }
 
         break;
+
     case SPI_SEND_MSG :
 
         if (this->monitored) {
@@ -503,6 +646,7 @@ void SpiCmdTask::draw_input(int character) {
         }
 
         break;
+
     default :
         assert(0);
         break;

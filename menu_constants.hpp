@@ -27,4 +27,5 @@ const char* spi_mode_name = "SPI Mode";
 
 const uint32_t spi_mode_num = 4;
 
+
 #endif /* MENU_CONSTANTS_HPP_ */

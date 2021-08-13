@@ -43,6 +43,8 @@ typedef enum {
 
 typedef enum {
     SPI_GET_MONITOR_STATUS,
+    SPI_GET_SPEED,
+    SPI_GET_DATA_WIDTH,
     SPI_GET_NUM_TX_BYTES,
     SPI_TX_BYTES,
     SPI_GET_NUM_RX_BYTES,
@@ -63,6 +65,8 @@ public:
     spi_msg_type_e msg_type;
     bool monitored;
     bool active;
+    uint32_t speed;
+    uint32_t data_width;
 };
 
 void spi_set_mode(uint32_t mode);
@@ -97,6 +101,8 @@ extern "C" {
         uint32_t byte_counter;
         uint32_t spi_monitor_index;
         bool monitored;
+
+        uint8_t* cmd_buffer;
 
         SpiMsg* spi_cmd_msg;
         std::vector<SpiMsg*> spi_monitor_msgs;

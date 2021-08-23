@@ -16,6 +16,8 @@ CPP_SRCS += \
 ../PWM_page.cpp \
 ../SPI_command.cpp \
 ../SPI_monitor.cpp \
+../UART_command.cpp \
+../UART_streamer.cpp \
 ../console_task.cpp \
 ../console_uart.cpp \
 ../error_logger.cpp \
@@ -53,6 +55,8 @@ OBJS += \
 ./PWM_page.obj \
 ./SPI_command.obj \
 ./SPI_monitor.obj \
+./UART_command.obj \
+./UART_streamer.obj \
 ./console_task.obj \
 ./console_uart.obj \
 ./error_logger.obj \
@@ -80,6 +84,8 @@ CPP_DEPS += \
 ./PWM_page.d \
 ./SPI_command.d \
 ./SPI_monitor.d \
+./UART_command.d \
+./UART_streamer.d \
 ./console_task.d \
 ./console_uart.d \
 ./error_logger.d \
@@ -104,6 +110,8 @@ OBJS__QUOTED += \
 "PWM_page.obj" \
 "SPI_command.obj" \
 "SPI_monitor.obj" \
+"UART_command.obj" \
+"UART_streamer.obj" \
 "console_task.obj" \
 "console_uart.obj" \
 "error_logger.obj" \
@@ -136,6 +144,8 @@ CPP_DEPS__QUOTED += \
 "PWM_page.d" \
 "SPI_command.d" \
 "SPI_monitor.d" \
+"UART_command.d" \
+"UART_streamer.d" \
 "console_task.d" \
 "console_uart.d" \
 "error_logger.d" \
@@ -160,6 +170,8 @@ CPP_SRCS__QUOTED += \
 "../PWM_page.cpp" \
 "../SPI_command.cpp" \
 "../SPI_monitor.cpp" \
+"../UART_command.cpp" \
+"../UART_streamer.cpp" \
 "../console_task.cpp" \
 "../console_uart.cpp" \
 "../error_logger.cpp" \

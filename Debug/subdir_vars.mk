@@ -15,6 +15,7 @@ CPP_SRCS += \
 ../I2C_task.cpp \
 ../PWM_page.cpp \
 ../SPI_command.cpp \
+../SPI_monitor.cpp \
 ../console_task.cpp \
 ../console_uart.cpp \
 ../error_logger.cpp \
@@ -51,6 +52,7 @@ OBJS += \
 ./I2C_task.obj \
 ./PWM_page.obj \
 ./SPI_command.obj \
+./SPI_monitor.obj \
 ./console_task.obj \
 ./console_uart.obj \
 ./error_logger.obj \
@@ -77,6 +79,7 @@ CPP_DEPS += \
 ./I2C_task.d \
 ./PWM_page.d \
 ./SPI_command.d \
+./SPI_monitor.d \
 ./console_task.d \
 ./console_uart.d \
 ./error_logger.d \
@@ -100,6 +103,7 @@ OBJS__QUOTED += \
 "I2C_task.obj" \
 "PWM_page.obj" \
 "SPI_command.obj" \
+"SPI_monitor.obj" \
 "console_task.obj" \
 "console_uart.obj" \
 "error_logger.obj" \
@@ -131,6 +135,7 @@ CPP_DEPS__QUOTED += \
 "I2C_task.d" \
 "PWM_page.d" \
 "SPI_command.d" \
+"SPI_monitor.d" \
 "console_task.d" \
 "console_uart.d" \
 "error_logger.d" \
@@ -154,6 +159,7 @@ CPP_SRCS__QUOTED += \
 "../I2C_task.cpp" \
 "../PWM_page.cpp" \
 "../SPI_command.cpp" \
+"../SPI_monitor.cpp" \
 "../console_task.cpp" \
 "../console_uart.cpp" \
 "../error_logger.cpp" \

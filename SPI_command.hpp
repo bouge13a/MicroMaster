@@ -69,6 +69,9 @@ public:
     uint32_t data_width;
 };
 
+const uint32_t NUM_OF_SPI_MONITORED_MSGS = 5;
+
+
 void spi_set_mode(uint32_t mode);
 
 #ifdef __cplusplus

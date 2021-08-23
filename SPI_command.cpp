@@ -26,8 +26,6 @@ static const uint32_t NUM_OF_RX_BYTES = 10;
 
 static const uint32_t CMD_BUFFER_SIZE = 9;
 
-static const uint32_t NUM_OF_MONITORED_MSGS = 5;
-
 static volatile uint32_t spi0_status = 0;
 
 static uint32_t spi_speed = 1000000;
@@ -135,10 +133,10 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
                        1000000,
                        8);
 
-    SSIEnable(SSI0_BASE);
-
     SSIIntRegister(SSI0_BASE, spi0_int_handler);
     SSIIntEnable(SSI0_BASE, SSI_RXTO | SSI_RXOR);
+
+    SSIEnable(SSI0_BASE);
 
     this->spi_tx_queue = xQueueCreate(20, sizeof(SpiMsg*));
 
@@ -161,7 +159,7 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
     this->spi_cmd_msg->errors = SPI_NO_ERRORS;
 
 
-    for (uint32_t index=0; index<NUM_OF_MONITORED_MSGS; index++) {
+    for (uint32_t index=0; index<NUM_OF_SPI_MONITORED_MSGS; index++) {
         this->spi_monitor_msgs.push_back(new SpiMsg(spi_normal_msg));
         this->spi_monitor_msgs[index]->tx_bytes = new uint32_t[NUM_OF_TX_BYTES];
         this->spi_monitor_msgs[index]->rx_bytes = new uint32_t[NUM_OF_RX_BYTES];
@@ -195,12 +193,16 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
 
             assert(this_ptr->spi_msg);
 
+            SSIDisable(SSI0_BASE);
+
             SSIConfigSetExpClk(SSI0_BASE,
                                16000000,
                                spi_mode,
                                SSI_MODE_MASTER,
                                this_ptr->spi_msg->speed,
                                this_ptr->spi_msg->data_width);
+
+            SSIEnable(SSI0_BASE);
 
             this_ptr->spi_msg->bytes_txed = 0;
             this_ptr->spi_msg->bytes_rxed = 0;
@@ -213,19 +215,10 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
 
         case SPI_SEND :
 
-            while(SSIBusy(SSI0_BASE)) {
-                break;
-            }
-
-            if(log_errors(this_ptr)){
-                this_ptr->state = SPI_FINISH;
-                break;
-            }
-
             if (this_ptr->spi_msg->bytes_txed < this_ptr->spi_msg->num_tx_bytes) {
 
-                SSIDataPutNonBlocking(SSI0_BASE,
-                                      this->spi_msg->tx_bytes[this_ptr->spi_msg->bytes_txed]);
+                SSIDataPut(SSI0_BASE,
+                           this_ptr->spi_msg->tx_bytes[this_ptr->spi_msg->bytes_txed]);
 
                 this_ptr->spi_msg->bytes_txed++;
 
@@ -254,7 +247,7 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
             if (this_ptr->spi_msg->bytes_rxed < this_ptr->spi_msg->num_rx_bytes) {
 
                 SSIDataGetNonBlocking(SSI0_BASE,
-                                      &this->spi_msg->rx_bytes[this_ptr->spi_msg->bytes_rxed]);
+                                      &this_ptr->spi_msg->rx_bytes[this_ptr->spi_msg->bytes_rxed]);
 
                 this_ptr->spi_msg->bytes_rxed++;
 
@@ -381,7 +374,7 @@ void SpiCmdTask::draw_input(int character) {
     switch(this->cmd_state) {
     case SPI_GET_MONITOR_STATUS :
 
-        if (('y' == character) && (this->spi_monitor_index < NUM_OF_MONITORED_MSGS)) {
+        if (('y' == character) && (this->spi_monitor_index < NUM_OF_SPI_MONITORED_MSGS)) {
 
             this->cmd_state = SPI_GET_SPEED;
             this->spi_monitor_msgs[this->spi_monitor_index]->monitored = true;

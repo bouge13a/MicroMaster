@@ -56,9 +56,9 @@ void I2cMonitorTask::task(I2cMonitorTask* this_ptr) {
 
     while(1){
 
-        for (uint32_t index=0; index<this->i2c_monitor_msgs.size(); index++) {
-            if (this->i2c_monitor_msgs[index]->active) {
-                this->i2c0->add_i2c_msg(this->i2c_monitor_msgs[index]);
+        for (uint32_t index=0; index<this_ptr->i2c_monitor_msgs.size(); index++) {
+            if (this_ptr->i2c_monitor_msgs[index]->active) {
+                this_ptr->i2c0->add_i2c_msg(this_ptr->i2c_monitor_msgs[index]);
                 vTaskDelay(1);
             }
         }
@@ -105,7 +105,9 @@ bool I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
         UARTprintf("0b%s ", bin_string);
         return false;
     case MSB_DEC_FORMAT :
-        if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
+        if (this->i2c_monitor_msgs[index]->num_rx_bytes == 1) {
+            UARTprintf("%d", this->i2c_monitor_msgs[index]->rx_data[0]);
+        } else if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
             UARTprintf("Not Applicable");
         } else {
             data = this->i2c_monitor_msgs[index]->rx_data[0] << 4;
@@ -114,7 +116,9 @@ bool I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
         }
         return true;
     case LSB_DEC_FORMAT :
-        if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
+        if (this->i2c_monitor_msgs[index]->num_rx_bytes == 1) {
+            UARTprintf("%d", this->i2c_monitor_msgs[index]->rx_data[0]);
+        } else if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
             UARTprintf("Not Applicable");
         } else {
             data = this->i2c_monitor_msgs[index]->rx_data[0];

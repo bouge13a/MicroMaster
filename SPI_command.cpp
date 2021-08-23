@@ -94,6 +94,17 @@ SpiMsg::SpiMsg(spi_msg_type_e msg_type) {
     this->msg_type = msg_type;
 }
 
+void SpiCmdTask::reset_monitor_index(void) {
+
+    this->spi_monitor_index = 0;
+
+} // End I2cTask::reset_monitor_index
+
+std::vector<SpiMsg*>* SpiCmdTask::get_vector(void) {
+    return &this->spi_monitor_msgs;
+} // End get_vector
+
+
 void SpiCmdTask::taskfunwrapper(void* parm){
     (static_cast<SpiCmdTask*>(parm))->task((SpiCmdTask*)parm);
 } // End SpiCmdTask::taskfunwrapper
@@ -379,7 +390,7 @@ void SpiCmdTask::draw_input(int character) {
             this->cmd_state = SPI_GET_SPEED;
             this->spi_monitor_msgs[this->spi_monitor_index]->monitored = true;
             UARTprintf("%c\n", character);
-            UARTprintf("Enter number of TX bytes : ");
+            UARTprintf("Enter SPI speed (Hz) : ");
             this->monitored = true;
 
         } else if ('n' == character){
@@ -404,10 +415,15 @@ void SpiCmdTask::draw_input(int character) {
         } else if (character == '\r') {
             UARTprintf("%c", (uint8_t)character);
             this->cmd_buffer[this->byte_buffer_index] = '\0';
-            this->spi_cmd_msg->speed = atoi((const char*)this->cmd_buffer);
+            if(this->monitored) {
+                this->spi_monitor_msgs[this->spi_monitor_index]->speed = atoi((const char*)this->cmd_buffer);
+            } else {
+                this->spi_cmd_msg->speed = atoi((const char*)this->cmd_buffer);
+            }
+
             this->byte_buffer_index = 0;
             this->cmd_state = SPI_GET_DATA_WIDTH;
-            UARTprintf("\r\nEnter size of packet (1 or 2) : ");
+            UARTprintf("\r\nEnter size of packet (1 or 2 bytes) : ");
 
         }
 
@@ -461,7 +477,7 @@ void SpiCmdTask::draw_input(int character) {
 
         if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
 
-            if (8 == this->spi_cmd_msg->data_width) {
+            if ((!this->monitored && (8 == this->spi_cmd_msg->data_width)) || (this->monitored && (8 == this->spi_monitor_msgs[this->spi_monitor_index]->data_width))) {
 
                 if (this->monitored) {
 
@@ -469,7 +485,7 @@ void SpiCmdTask::draw_input(int character) {
 
                         if (0 == this->byte_buffer_index) {
 
-                            this->spi_msg->tx_bytes[this->byte_counter] = 0;
+                            this->spi_monitor_msgs[this->spi_monitor_index]->tx_bytes[this->byte_counter] = 0;
                             this->byte_buffer = ascii_to_hex(character) << 4;
                             this->byte_buffer_index++;
                             UARTprintf("%c", character);
@@ -509,7 +525,7 @@ void SpiCmdTask::draw_input(int character) {
                         }
                     }
                 }
-            } else if (16 == this->spi_msg->data_width) {
+            } else {
 
                 if (this->monitored) {
 
@@ -623,6 +639,7 @@ void SpiCmdTask::draw_input(int character) {
         if (this->monitored) {
             if (' ' == character) {
                 UARTprintf("\nTab to next page to see monitored register\n");
+                UARTprintf("\r\nMonitor message? y/n : ");
                 this->spi_monitor_msgs[this->spi_monitor_index]->active = true;
                 this->cmd_state = SPI_GET_MONITOR_STATUS;
                 this->add_spi_msg(this->spi_monitor_msgs[this->spi_monitor_index]);

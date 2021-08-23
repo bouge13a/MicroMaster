@@ -164,9 +164,11 @@ void SpiMonitorTask::draw_data(void) {
         if (this->spi_monitor_msgs[index]->active) {
             TextCtl::cursor_pos(START_ROW + index, DATA_COL);
             TextCtl::clear_in_line();
-            for(uint32_t inner_index = 0; inner_index<this->spi_monitor_msgs[index]->bytes_rxed; inner_index++) {
-                if(this->print_data(inner_index, index)) {
-                    break;
+            if (0 == this->spi_monitor_msgs[index]->num_rx_bytes) {
+                UARTprintf("No RX data");
+            } else {
+                for(uint32_t inner_index = 0; inner_index<this->spi_monitor_msgs[index]->bytes_rxed; inner_index++) {
+                    this->print_data(inner_index, index);
                 }
             }
         }
@@ -222,8 +224,6 @@ void SpiMonitorTask::draw_input(int character) {
 } // End I2cMonitorTask::draw_input
 
 void SpiMonitorTask::draw_reset(void) {
-
-
 
 }
 

@@ -26,6 +26,8 @@ static const uint32_t NUM_OF_RX_BYTES = 10;
 
 static const uint32_t CMD_BUFFER_SIZE = 9;
 
+static const uint32_t MAX_FREQUENCY = 8000000;
+
 static volatile uint32_t spi0_status = 0;
 
 static uint32_t spi_speed = 1000000;
@@ -226,6 +228,10 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
 
         case SPI_SEND :
 
+            while(SSIBusy(SSI0_BASE)) {
+                break;
+            }
+
             if (this_ptr->spi_msg->bytes_txed < this_ptr->spi_msg->num_tx_bytes) {
 
                 SSIDataPut(SSI0_BASE,
@@ -306,7 +312,7 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
             break;
         }
     }
-}
+} // End
 
 void SpiCmdTask::print_errors(SpiCmdTask* this_ptr) {
 
@@ -327,7 +333,7 @@ void SpiCmdTask::print_errors(SpiCmdTask* this_ptr) {
         break;
     }
 
-}
+} // End SpiCmdTask::print_errors
 
 
 bool SpiCmdTask::log_errors(SpiCmdTask* this_ptr) {
@@ -355,7 +361,7 @@ bool SpiCmdTask::log_errors(SpiCmdTask* this_ptr) {
 
         return false;
     }
-}
+} // End SpiCmdTask::log_errors
 
 uint32_t SpiCmdTask::ascii_to_hex(uint8_t character) {
 
@@ -368,7 +374,7 @@ uint32_t SpiCmdTask::ascii_to_hex(uint8_t character) {
     }
 
     return 0;
-}
+} // End SpiCmdTask::ascii_to_hex
 
 void SpiCmdTask::draw_page(void) {
 
@@ -415,6 +421,14 @@ void SpiCmdTask::draw_input(int character) {
         } else if (character == '\r') {
             UARTprintf("%c", (uint8_t)character);
             this->cmd_buffer[this->byte_buffer_index] = '\0';
+
+            if(atoi((const char*)this->cmd_buffer) > MAX_FREQUENCY) {
+                this->byte_buffer_index = 0;
+                UARTprintf("\r\nError: freqency must be less than 8MHz\r\n");
+                UARTprintf("Enter SPI speed (Hz) : ");
+                break;
+            }
+
             if(this->monitored) {
                 this->spi_monitor_msgs[this->spi_monitor_index]->speed = atoi((const char*)this->cmd_buffer);
             } else {

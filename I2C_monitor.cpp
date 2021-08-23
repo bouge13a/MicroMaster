@@ -166,9 +166,11 @@ void I2cMonitorTask::draw_data(void) {
         if (this->i2c_monitor_msgs[index]->active) {
             TextCtl::cursor_pos(START_ROW + index, DATA_COL);
             TextCtl::clear_in_line();
-            for(uint32_t inner_index = 0; inner_index<this->i2c_monitor_msgs[index]->bytes_rxed; inner_index++) {
-                if(this->print_data(inner_index, index)) {
-                    break;
+            if (0 == this->i2c_monitor_msgs[index]->num_rx_bytes) {
+                UARTprintf("No RX data");
+            } else {
+                for(uint32_t inner_index = 0; inner_index<this->i2c_monitor_msgs[index]->bytes_rxed; inner_index++) {
+                    print_data(inner_index, index);
                 }
             }
         }

@@ -83,6 +83,7 @@ UART_streamer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/includ
 UART_streamer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_macros
 UART_streamer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h
 UART_streamer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h
+UART_streamer.obj: ../text_controls.hpp
 UART_streamer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom.h
 UART_streamer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom_map.h
 UART_streamer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h
@@ -178,6 +179,7 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_ma
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_macros: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h: 
+../text_controls.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom_map.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h: 

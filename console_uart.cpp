@@ -68,7 +68,7 @@ UartTask::UartTask(QueueHandle_t uart_rx_queue) {
     MAP_GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
 
     // Use the internal 16MHz oscillator as the UART clock source.
-    MAP_UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
+    UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
 
     // Initialize the UART for console I/O.
     UARTStdioConfig(0, 115200, 16000000);

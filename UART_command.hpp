@@ -20,7 +20,6 @@ typedef enum {
     UART_GET_FORMAT,
     UART_GET_STRING,
     UART_GET_HEX,
-    UART_GET_DEC,
 }uart_cmd_state_e;
 
 void uart_set_parity(uint32_t index);

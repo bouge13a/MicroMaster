@@ -92,6 +92,19 @@ UartCmd::UartCmd(void)  : ConsolePage("UART Command",
 
 } // End UartCmdTask::UartCmdTask
 
+static uint32_t ascii_to_hex(uint8_t character) {
+
+    if (character >= '0' && character <='9') {
+        return character - '0';
+    }
+
+    if ((character >= 'a' && character <= 'f') || (character >= 'A' && character <= 'F')) {
+        return character - 'a' + 10;
+    }
+
+    return 0;
+}
+
 
 void UartCmd::draw_page(void) {
 
@@ -124,9 +137,17 @@ void UartCmd::draw_input(int character) {
             }
 
             uart_speed = atoi((const char*)this->char_string);
+
+            UARTDisable(UART1_BASE);
+            UARTConfigSetExpClk(UART1_BASE,
+                                MAP_SysCtlClockGet(),
+                                uart_speed,
+                                (UART_CONFIG_WLEN_8 | uart_stop_bits | uart_parity));
+            UARTEnable(UART1_BASE);
+
             this->char_string_index = 0;
             this->cmd_state = UART_GET_FORMAT;
-            UARTprintf("\r\nEnter format (t for text, h for hex, d for decimal) : ");
+            UARTprintf("\r\nEnter format (t for text, h for hex) : ");
         }
 
         break;
@@ -135,13 +156,10 @@ void UartCmd::draw_input(int character) {
 
         if ('t' == character) {
             this->cmd_state = UART_GET_STRING;
-            UARTprintf("\r\nEnter string : ");
+            UARTprintf("t\r\nEnter string : ");
         } else if ('h' == character) {
             this->cmd_state = UART_GET_HEX;
-            UARTprintf("\r\nEnter hex : 0x");
-        } else if ('d' == character) {
-            this->cmd_state = UART_GET_DEC;
-            UARTprintf("\r\nEnter decimal : ");
+            UARTprintf("h\r\nEnter hex : 0x");
         }
 
         break;
@@ -177,9 +195,37 @@ void UartCmd::draw_input(int character) {
         break;
 
     case UART_GET_HEX :
+        if((character >= '0' && character <='9') || (character >='a' && character <= 'f')) {
+
+            this->char_string[this->char_string_index] = (char)character;
+            this->char_string_index++;
+            UARTprintf("%c", (char)character);
+
+            if (this->char_string_index > SIZE_OF_CHAR_STRING) {
+                this->char_string_index = 0;
+                UARTprintf("\r\nError: too many characters");
+                UARTprintf("\r\nEnter string : ");
+                break;
+            }
+
+        } else if (character == '\r') {
+
+            if (this->char_string_index % 2 == 1) {
+                this->char_string[this->char_string_index+1] = '\0';
+            }
+
+            for (uint32_t index=0; index<this->char_string_index; index += 2) {
+                UARTCharPut(UART1_BASE, ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );
+            }
+
+            this->cmd_state = UART_GET_SPEED;
+            this->char_string_index = 0;
+            UARTprintf("\r\nMessage transmitted");
+            UARTprintf("\r\nEnter speed (300 - 115200 Hz) : ");
+
+        }
         break;
-    case UART_GET_DEC :
-        break;
+
     default :
         assert(0);
         break;

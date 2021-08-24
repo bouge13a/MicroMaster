@@ -23,7 +23,7 @@ void I2cScripterTask::taskfunwrapper(void* parm){
 
 I2cScripterTask::I2cScripterTask(I2cTask* i2c) : ConsolePage("I2C Scripter",
                                                             portMAX_DELAY,
-                                                            true) {
+                                                            false) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I2C script",         /* Text name for the task. */

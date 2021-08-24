@@ -111,6 +111,7 @@ no_booster_board.obj: ../PWM_page.hpp
 no_booster_board.obj: ../SPI_command.hpp
 no_booster_board.obj: ../SPI_monitor.hpp
 no_booster_board.obj: ../UART_streamer.hpp
+no_booster_board.obj: ../UART_command.hpp
 
 ../no_booster_board.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -223,3 +224,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h:
 ../SPI_command.hpp: 
 ../SPI_monitor.hpp: 
 ../UART_streamer.hpp: 
+../UART_command.hpp: 

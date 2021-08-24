@@ -21,7 +21,7 @@ void I2cSnifferTask::taskfunwrapper(void* parm){
 
 I2cSnifferTask::I2cSnifferTask(I2cTask* i2c) : ConsolePage("I2C Sniffer",
                                                            portMAX_DELAY,
-                                                           true) {
+                                                           false) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I2C Sniff",                                     /* Text name for the task. */

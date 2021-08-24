@@ -48,7 +48,7 @@ I2cMsg::I2cMsg(i2c_msg_type_t type) {
 
 I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
                                                      portMAX_DELAY,
-                                                     true) {
+                                                     false) {
 
    this->logger = ErrorLogger::get_instance();
 

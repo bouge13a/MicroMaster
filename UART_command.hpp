@@ -15,24 +15,34 @@
 
 #include "console_task.hpp"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+typedef enum {
+    UART_GET_SPEED,
+    UART_GET_FORMAT,
+    UART_GET_STRING,
+    UART_GET_HEX,
+    UART_GET_DEC,
+}uart_cmd_state_e;
 
-    class UartCmd : public ConsolePage {
-    public:
-        UartCmd(void);
-    private :
-        void draw_page(void);
-        void draw_data(void);
-        void draw_input(int character);
-        void draw_help(void);
-        void draw_reset(void);
-    };
+void uart_set_parity(uint32_t index);
+void uart_set_stop_bits(uint32_t index);
 
-#ifdef __cplusplus
-}
-#endif
+class UartCmd : public ConsolePage {
+public:
+    UartCmd(void);
+private :
+
+    char* char_string;
+    uint32_t char_string_index;
+    uart_cmd_state_e cmd_state;
+
+    void draw_page(void);
+    void draw_data(void);
+    void draw_input(int character);
+    void draw_help(void);
+    void draw_reset(void);
+};
+
+
 
 
 

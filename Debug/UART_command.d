@@ -83,6 +83,18 @@ UART_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include
 UART_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_macros
 UART_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h
 UART_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
+UART_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
+UART_command.obj: ../text_controls.hpp
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom_map.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/gpio.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/uart.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/pin_map.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/interrupt.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h
+UART_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h
 
 ../UART_command.cpp: 
 ../UART_command.hpp: 
@@ -167,3 +179,15 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_ma
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_macros: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
+../text_controls.hpp: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom_map.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/gpio.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/uart.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/pin_map.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/interrupt.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h: 

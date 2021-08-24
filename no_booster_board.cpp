@@ -27,6 +27,7 @@
 #include "SPI_command.hpp"
 #include "SPI_monitor.hpp"
 #include "UART_streamer.hpp"
+#include "UART_command.hpp"
 
 
 NoBoosterPack::NoBoosterPack(void) {
@@ -71,6 +72,8 @@ NoBoosterPack::NoBoosterPack(void) {
 
     UartStreamer* uart_streamer = new UartStreamer();
 
+    UartCmd* uart_cmd = new UartCmd();
+
     menu_page->add_menu_row(new MenuRow(i2c_speed_num,
                                         set_i2c_clock_speed,
                                         i2c_speed_menu,
@@ -81,6 +84,17 @@ NoBoosterPack::NoBoosterPack(void) {
                                         spi_mode_menu,
                                         spi_mode_name));
 
+    menu_page->add_menu_row(new MenuRow(uart_parity_num,
+                                        uart_set_parity,
+                                        uart_parity_menu,
+                                        uart_parity_name));
+
+    menu_page->add_menu_row(new MenuRow(uart_stop_bit_num,
+                                        uart_set_stop_bits,
+                                        uart_stop_bit_menu,
+                                        uart_stop_bit_name));
+
+
     console_task->add_page(menu_page);
     console_task->add_page(io_control_page);
     console_task->add_page(i2c_sniffer_task);
@@ -89,6 +103,7 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(i2c_monitor_task);
     console_task->add_page(spi_command);
     console_task->add_page(spi_monitor);
+    console_task->add_page(uart_cmd);
     console_task->add_page(uart_streamer);
     console_task->add_page(pwm_page);
     console_task->add_page(error_logger);

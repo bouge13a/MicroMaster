@@ -136,11 +136,11 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
 
             TextCtl::set_text_mode(TextCtl::mode_concealed);
 
-        } else if(this_ptr->page_index != 0 && rx_char == 'r') {
+        } else if(this_ptr->page_index != 0 && rx_char == 'r' && !this_ptr->pages[page_index]->write_to_page) {
 
             this_ptr->pages[page_index]->draw_reset();
 
-        } else if(this_ptr->page_index != 0 && rx_char == 'h') {
+        } else if(this_ptr->page_index != 0 && rx_char == 'h' && !this_ptr->pages[page_index]->write_to_page) {
 
             this_ptr->start_draw_menu(this_ptr);
             TextCtl::cursor_pos(5, 0);

@@ -38,50 +38,30 @@ void spi_set_mode(uint32_t index) {
 
     switch(index) {
     case 0 :
-        SSIConfigSetExpClk(SSI0_BASE,
-                           16000000,
-                           SSI_FRF_MOTO_MODE_0,
-                           SSI_MODE_MASTER,
-                           spi_speed,
-                           spi_data_width);
-
         spi_mode = SSI_FRF_MOTO_MODE_0;
-
         break;
     case 1 :
-        SSIConfigSetExpClk(SSI0_BASE,
-                           16000000,
-                           SSI_FRF_MOTO_MODE_1,
-                           SSI_MODE_MASTER,
-                           spi_speed,
-                           spi_data_width);
-
         spi_mode = SSI_FRF_MOTO_MODE_1;
-
         break;
     case 2 :
-        SSIConfigSetExpClk(SSI0_BASE,
-                           16000000,
-                           SSI_FRF_MOTO_MODE_2,
-                           SSI_MODE_MASTER,
-                           spi_speed,
-                           spi_data_width);
-
         spi_mode = SSI_FRF_MOTO_MODE_2;
-
         break;
     case 3 :
-        SSIConfigSetExpClk(SSI0_BASE,
-                           16000000,
-                           SSI_FRF_MOTO_MODE_3,
-                           SSI_MODE_MASTER,
-                           spi_speed,
-                           spi_data_width);
-
         spi_mode = SSI_FRF_MOTO_MODE_3;
-
+        break;
+    default :
+        assert(0);
         break;
     }
+
+    SSIDisable(SSI0_BASE);
+    SSIConfigSetExpClk(SSI0_BASE,
+                       16000000,
+                       spi_mode,
+                       SSI_MODE_MASTER,
+                       spi_speed,
+                       spi_data_width);
+    SSIEnable(SSI0_BASE);
 }
 
 static void spi0_int_handler(void) {

@@ -18,9 +18,19 @@
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 
-static gpio_pin_t green_led = {
-    .name       = "green debug",
-    .pin        = GPIO_PIN_3,
+
+//static gpio_pin_t red_led = {
+//    .name       = "red debug",
+//    .pin        = GPIO_PIN_0,
+//    .peripheral = SYSCTL_PERIPH_GPIOF,
+//    .port       = GPIO_PORTF_AHB_BASE,
+//    .direction  = GPIO_DIR_MODE_OUT,
+//    .displayed  = true,
+//};
+
+static gpio_pin_t red_led = {
+    .name       = "red debug",
+    .pin        = GPIO_PIN_1,
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
@@ -36,14 +46,15 @@ static gpio_pin_t blue_led = {
     .displayed  = true,
 };
 
-static gpio_pin_t red_led = {
-    .name       = "red debug",
-    .pin        = GPIO_PIN_1,
+static gpio_pin_t green_led = {
+    .name       = "green debug",
+    .pin        = GPIO_PIN_3,
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
     .displayed  = true,
 };
+
 
 static gpio_pin_t* gpos[] = {
     &green_led,

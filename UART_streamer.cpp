@@ -73,16 +73,16 @@ UartStreamer::UartStreamer(void)  : ConsolePage("UART Streamer",
 
     // Enable the peripherals used by UART
     MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_UART1);
-    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+    MAP_SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOC);
 
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_UART1));
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOB));
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOC));
 
     // Set GPIO B0 and B1 as UART pins.
-    MAP_GPIOPinConfigure(GPIO_PB0_U1RX);
-    MAP_GPIOPinConfigure(GPIO_PB1_U1TX);
+    MAP_GPIOPinConfigure(GPIO_PC4_U1RX);
+    MAP_GPIOPinConfigure(GPIO_PC5_U1TX);
 
-    MAP_GPIOPinTypeUART(GPIO_PORTB_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+    MAP_GPIOPinTypeUART(GPIO_PORTC_BASE, GPIO_PIN_4 | GPIO_PIN_5);
 
     // Use the internal 16MHz oscillator as the UART clock source.
     MAP_UARTClockSourceSet(UART1_BASE, UART_CLOCK_SYSTEM);

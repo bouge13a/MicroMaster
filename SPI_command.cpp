@@ -421,6 +421,8 @@ void SpiCmdTask::draw_input(int character) {
                 this->spi_cmd_msg->speed = atoi((const char*)this->cmd_buffer);
             }
 
+            spi_speed = atoi((const char*)this->cmd_buffer);
+
             this->byte_buffer_index = 0;
             this->cmd_state = SPI_GET_DATA_WIDTH;
             UARTprintf("\r\nEnter size of packet (1 or 2 bytes) : ");

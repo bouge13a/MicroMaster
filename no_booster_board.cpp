@@ -74,6 +74,21 @@ NoBoosterPack::NoBoosterPack(void) {
 
     UartCmd* uart_cmd = new UartCmd();
 
+    menu_page->add_menu_row(new MenuRow(power_on_num,
+                                        set_power_supplies,
+                                        power_on_menu,
+                                        power_on_name));
+
+    menu_page->add_menu_row(new MenuRow(power_select_num,
+                                        sel_power_supply,
+                                        power_select_menu,
+                                        power_select_name));
+
+    menu_page->add_menu_row(new MenuRow(pullup_en_num,
+                                        set_pullup_en,
+                                        pullup_en_menu,
+                                        pullup_en_name));
+
     menu_page->add_menu_row(new MenuRow(i2c_speed_num,
                                         set_i2c_clock_speed,
                                         i2c_speed_menu,
@@ -98,6 +113,7 @@ NoBoosterPack::NoBoosterPack(void) {
                                         set_uart_stream_mode,
                                         uart_mode_menu,
                                         uart_mode_name));
+
 
 
     console_task->add_page(menu_page);

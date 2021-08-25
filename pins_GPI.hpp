@@ -19,6 +19,15 @@
 #include "driverlib/sysctl.h"
 
 
+static gpio_pin_t gpi_0 = {
+    .name       = "GPI 0",
+    .pin        = GPIO_PIN_0,
+    .peripheral = SYSCTL_PERIPH_GPIOD,
+    .port       = GPIO_PORTD_AHB_BASE,
+    .direction  = GPIO_DIR_MODE_IN,
+    .displayed  = true,
+};
+
 static gpio_pin_t gpi_1 = {
     .name       = "GPI 1",
     .pin        = GPIO_PIN_4,
@@ -39,38 +48,18 @@ static gpio_pin_t gpi_2 = {
 
 static gpio_pin_t gpi_3 = {
     .name       = "GPI 3",
-    .pin        = GPIO_PIN_6,
-    .peripheral = SYSCTL_PERIPH_GPIOC,
-    .port       = GPIO_PORTC_AHB_BASE,
-    .direction  = GPIO_DIR_MODE_IN,
-    .displayed  = true,
-};
-
-static gpio_pin_t gpi_4 = {
-    .name       = "GPI 4",
-    .pin        = GPIO_PIN_7,
-    .peripheral = SYSCTL_PERIPH_GPIOC,
-    .port       = GPIO_PORTC_AHB_BASE,
-    .direction  = GPIO_DIR_MODE_IN,
-    .displayed  = true,
-};
-
-static gpio_pin_t gpi_5 = {
-    .name       = "GPI 5",
-    .pin        = GPIO_PIN_6,
+    .pin        = GPIO_PIN_1,
     .peripheral = SYSCTL_PERIPH_GPIOD,
     .port       = GPIO_PORTD_AHB_BASE,
     .direction  = GPIO_DIR_MODE_IN,
     .displayed  = true,
 };
 
-
 static gpio_pin_t* board_gpi_pins[] = {
+    &gpi_0,
     &gpi_1,
     &gpi_2,
-//    &gpi_3,
-//    &gpi_4,
-//    &gpi_5,
+    &gpi_3,
 };
 
 gpis_t board_gpi_info = {

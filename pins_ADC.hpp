@@ -19,8 +19,8 @@
 
 #include "board_pin_defs.hpp"
 
-static adc_pin_t adc1 = {
-    .name            = "ADC 1",
+static adc_pin_t adc_0 = {
+    .name            = "ADC 0",
     .gpio_peripheral = SYSCTL_PERIPH_GPIOE,
     .gpio_base       = GPIO_PORTE_AHB_BASE,
     .gpio_pin        = GPIO_PIN_3,
@@ -30,8 +30,8 @@ static adc_pin_t adc1 = {
     .adc_base        = ADC0_BASE,
 };
 
-static adc_pin_t adc2 = {
-    .name            = "ADC 2",
+static adc_pin_t adc_1 = {
+    .name            = "ADC 1",
     .gpio_peripheral = SYSCTL_PERIPH_GPIOE,
     .gpio_base       = GPIO_PORTE_AHB_BASE,
     .gpio_pin        = GPIO_PIN_2,
@@ -41,8 +41,8 @@ static adc_pin_t adc2 = {
     .adc_base        = ADC0_BASE,
 };
 
-static adc_pin_t adc3 = {
-    .name            = "ADC 3",
+static adc_pin_t adc_2 = {
+    .name            = "ADC 2",
     .gpio_peripheral = SYSCTL_PERIPH_GPIOE,
     .gpio_base       = GPIO_PORTE_AHB_BASE,
     .gpio_pin        = GPIO_PIN_1,
@@ -52,8 +52,8 @@ static adc_pin_t adc3 = {
     .adc_base        = ADC0_BASE,
 };
 
-static adc_pin_t adc4 = {
-    .name            = "ADC 4",
+static adc_pin_t adc_3 = {
+    .name            = "ADC 3",
     .gpio_peripheral = SYSCTL_PERIPH_GPIOE,
     .gpio_base       = GPIO_PORTE_AHB_BASE,
     .gpio_pin        = GPIO_PIN_0,
@@ -63,22 +63,12 @@ static adc_pin_t adc4 = {
     .adc_base        = ADC0_BASE,
 };
 
-static adc_pin_t adc5 = {
-    .name            = "ADC 5",
-    .gpio_peripheral = SYSCTL_PERIPH_GPIOD,
-    .gpio_base       = GPIO_PORTD_AHB_BASE,
-    .gpio_pin        = GPIO_PIN_3,
-    .sequencer       = 0,
-    .channel         = 4,
-    .step            = 4,
-    .adc_base        = ADC0_BASE,
-};
 
 static adc_pin_t* board_adc_pins[] = {
-    &adc1,
-    &adc2,
-//    &adc3,
-//    &adc4,
+    &adc_0,
+    &adc_1,
+    &adc_2,
+    &adc_3,
 //    &adc5,
 
 };

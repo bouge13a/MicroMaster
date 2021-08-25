@@ -23,8 +23,8 @@
 #include "driverlib/uart.h"
 #include "uartstdio.h"
 
-static pwm_pin_t pwm1 = {
-    .name            =  "PWM 1",
+static pwm_pin_t pwm_0 = {
+    .name            =  "PWM 0",
     .gpio_peripheral = SYSCTL_PERIPH_GPIOB,
     .gpio_base       = GPIO_PORTB_BASE,
     .gpio_pin        = GPIO_PIN_6,
@@ -36,8 +36,23 @@ static pwm_pin_t pwm1 = {
     .pwm_out_bit     = PWM_OUT_0_BIT,
 };
 
+static pwm_pin_t pwm_1 = {
+    .name            =  "PWM 1",
+    .gpio_peripheral = SYSCTL_PERIPH_GPIOB,
+    .gpio_base       = GPIO_PORTB_BASE,
+    .gpio_pin        = GPIO_PIN_4,
+    .pwm_peripheral  = SYSCTL_PERIPH_PWM0,
+    .pwm_base        = PWM0_BASE,
+    .pwm_pin         = GPIO_PB4_M0PWM2,
+    .pwm_generator   = PWM_GEN_1,
+    .pwm_out         = PWM_OUT_0,
+    .pwm_out_bit     = PWM_OUT_0_BIT,
+};
+
+
 static pwm_pin_t* pwm_pins[] = {
-    &pwm1,
+    &pwm_0,
+    &pwm_1,
 };
 
 pwm_pins_t board_pwm_info = {

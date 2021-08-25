@@ -11,6 +11,10 @@
 #include <stdint.h>
 #include "board_pin_defs.hpp"
 
+void set_power_supplies(uint32_t index);
+void sel_power_supply(uint32_t index);
+void set_pullup_en(uint32_t index);
+
 class GpoObj {
 public:
     GpoObj(void);

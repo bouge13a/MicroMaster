@@ -291,6 +291,8 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
         default :
             break;
         }
+
+        vTaskDelay(0);
     }
 } // End
 

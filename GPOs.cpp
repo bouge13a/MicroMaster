@@ -20,9 +20,82 @@
 #include "driverlib/sysctl.h"
 
 
+GpoObj* gpo_obj = NULL;
+
+gpio_pin_t* power_on_pin = NULL;
+gpio_pin_t* psel_1v8_pin = NULL;
+gpio_pin_t* psel_3v3_pin = NULL;
+gpio_pin_t* psel_5v_pin = NULL;
+gpio_pin_t* pullup_en_pin = NULL;
+
+void set_power_supplies(uint32_t index) {
+
+    switch(index) {
+    case 0 :
+        gpo_obj->set(power_on_pin, 0);
+        break;
+    case 1 :
+        gpo_obj->set(power_on_pin, 1);
+        break;
+    default :
+        assert(0);
+        break;
+    }
+
+} // End set_power_supplies
+
+void sel_power_supply(uint32_t index) {
+
+    switch(index) {
+    case 0 :
+        gpo_obj->set(psel_1v8_pin, 0);
+        gpo_obj->set(psel_3v3_pin, 1);
+        gpo_obj->set(psel_5v_pin, 0);
+        break;
+    case 1:
+        gpo_obj->set(psel_1v8_pin, 0);
+        gpo_obj->set(psel_3v3_pin, 0);
+        gpo_obj->set(psel_5v_pin, 1);
+        break;
+    case 2:
+        gpo_obj->set(psel_1v8_pin, 1);
+        gpo_obj->set(psel_3v3_pin, 0);
+        gpo_obj->set(psel_5v_pin, 0);
+        break;
+    default :
+        assert(0);
+        break;
+    }
+
+} // End sel_power_supply
+
+void set_pullup_en(uint32_t index) {
+
+    switch(index) {
+    case 0 :
+        gpo_obj->set(pullup_en_pin, 1);
+        break;
+    case 1 :
+        gpo_obj->set(pullup_en_pin, 0);
+        break;
+    default :
+        assert(0);
+        break;
+    }
+
+} // End set_pullup_en
+
 GpoObj::GpoObj(void) {
 
     this->gpo_info = &board_gpo_info;
+
+    gpo_obj = this;
+
+    power_on_pin = this->get_config("PWR ON");
+    psel_1v8_pin = this->get_config("PSEL 1V8");
+    psel_3v3_pin = this->get_config("PSEL 3V3");
+    psel_5v_pin  = this->get_config("PSEL 5V");
+    pullup_en_pin  = this->get_config("Pullup En");
 
     if (0 != this->gpo_info->num_gpos) {
 
@@ -50,6 +123,11 @@ GpoObj::GpoObj(void) {
         }
 
     }
+
+    gpo_obj->set(psel_1v8_pin, 0);
+    gpo_obj->set(psel_3v3_pin, 1);
+    gpo_obj->set(psel_5v_pin, 0);
+    gpo_obj->set(pullup_en_pin, 1);
 
 } // End GpoObj::GpoObj
 

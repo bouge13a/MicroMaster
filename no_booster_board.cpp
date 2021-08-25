@@ -94,6 +94,11 @@ NoBoosterPack::NoBoosterPack(void) {
                                         uart_stop_bit_menu,
                                         uart_stop_bit_name));
 
+    menu_page->add_menu_row(new MenuRow(uart_mode_num,
+                                        set_uart_stream_mode,
+                                        uart_mode_menu,
+                                        uart_mode_name));
+
 
     console_task->add_page(menu_page);
     console_task->add_page(io_control_page);

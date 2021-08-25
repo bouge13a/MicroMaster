@@ -21,7 +21,7 @@ TestTask::TestTask(void) : ConsolePage("Test page",
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Test",                                     /* Text name for the task. */
-                200,                  /* Stack size in words, not bytes. */
+                100,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */
                 NULL);

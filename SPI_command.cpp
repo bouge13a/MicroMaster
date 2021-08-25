@@ -407,6 +407,10 @@ void SpiCmdTask::draw_input(int character) {
             UARTprintf("Enter SPI speed (Hz) : ");
             this->monitored = false;
 
+        } else if ('y'== character && this->spi_monitor_index >= NUM_OF_SPI_MONITORED_MSGS) {
+            UARTprintf("%c\r\n", character);
+            UARTprintf("Error: too many monitored messages\r\n");
+            UARTprintf("Monitor message? y/n : ");
         }
 
         break;

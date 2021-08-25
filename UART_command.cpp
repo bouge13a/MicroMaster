@@ -108,6 +108,7 @@ static uint32_t ascii_to_hex(uint8_t character) {
 
 void UartCmd::draw_page(void) {
 
+    UARTprintf("The help feature is disabled for this page\r\n");
     UARTprintf("Enter speed (300 - 115200 Hz) : ");
 
 }
@@ -131,8 +132,8 @@ void UartCmd::draw_input(int character) {
 
             if(atoi((const char*)this->char_string) > MAX_FREQUENCY || atoi((const char*)this->char_string) < MIN_FREQUENCY) {
                 this->char_string_index = 0;
-                UARTprintf("\r\nError: Frequency out of range\r\n");
-                UARTprintf("Enter speed (300 - 115200 Hz) : ");
+                UARTprintf("\r\nError: Speed out of range\r\n");
+                UARTprintf("Enter speed (300 - 115200 bps) : ");
                 break;
             }
 
@@ -234,6 +235,9 @@ void UartCmd::draw_input(int character) {
 
 void UartCmd::draw_reset(void) {
 
+    this->char_string_index = 0;
+    this->cmd_state = UART_GET_SPEED;
+    UARTprintf("\r\nEnter speed (300 - 115200 Hz) : ");
 }
 
 void UartCmd::draw_help(void) {

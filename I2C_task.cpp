@@ -467,6 +467,10 @@ void I2cTask::draw_input(int character) {
             UARTprintf("Enter Address : 0x");
             this->monitored = false;
 
+        } else if ('y'== character && this->i2c_monitor_index >= NUM_OF_MONITORED_MSGS) {
+            UARTprintf("%c\r\n", character);
+            UARTprintf("Error: too many monitored messages\r\n");
+            UARTprintf("Monitor register? y/n : ");
         }
 
         break;

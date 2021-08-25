@@ -119,21 +119,13 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
         if (9 == rx_char) {
 
             this_ptr->pages[this_ptr->last_page_index]->on_screen = false;
-
             this_ptr->pages[this_ptr->last_page_index]->draw_reset();
-
             this_ptr->last_page_index = this_ptr->page_index;
-
             this_ptr->page_index = (this_ptr->page_index + 1) % this_ptr->pages.size();
-
             this_ptr->pages[this_ptr->page_index]->on_screen = true;
-
             this_ptr->start_draw_menu(this_ptr);
-
             this_ptr->last_page_index = this_ptr->page_index;
-
             this_ptr->pages[this_ptr->page_index]->draw_page();
-
             TextCtl::set_text_mode(TextCtl::mode_concealed);
 
         } else if(this_ptr->page_index != 0 && rx_char == 'r' && !this_ptr->pages[page_index]->write_to_page) {

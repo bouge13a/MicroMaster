@@ -41,6 +41,11 @@ const char* uart_stop_bit_name = "UART Stop Bit";
 const uint32_t uart_stop_bit_num = 2;
 
 
+const char* uart_mode_menu[] = {"Text",
+                                "Byte"};
+const char* uart_mode_name = "UART Stream";
+const uint32_t uart_mode_num = 2;
+
 
 
 #endif /* MENU_CONSTANTS_HPP_ */

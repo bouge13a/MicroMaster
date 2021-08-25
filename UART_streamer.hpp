@@ -15,7 +15,12 @@
 
 #include "console_task.hpp"
 
+typedef enum {
+    UART_TEXT_MODE,
+    UART_BYTE_MODE,
+}uart_stream_mode_e;
 
+void set_uart_stream_mode(uint32_t index);
 
 #ifdef __cplusplus
 extern "C" {

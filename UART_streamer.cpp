@@ -7,6 +7,7 @@
 
 #include "UART_streamer.hpp"
 #include "text_controls.hpp"
+#include <assert.h>
 
 #include "rom.h"
 #include "rom_map.h"
@@ -20,6 +21,24 @@
 #include "uartstdio.h"
 
 static QueueHandle_t uart_rx_queue = NULL;
+
+static uart_stream_mode_e uart_stream_mode = UART_TEXT_MODE;
+
+void set_uart_stream_mode(uint32_t index) {
+
+    switch(index) {
+    case 0 :
+        uart_stream_mode = UART_TEXT_MODE;
+        break;
+    case 1 :
+        uart_stream_mode = UART_BYTE_MODE;
+        break;
+    default :
+        assert(0);
+        break;
+    }
+
+} // End set_uart_stream_mode
 
 static void UART1_int_handler(void) {
 
@@ -100,14 +119,29 @@ void UartStreamer::task(UartStreamer* this_ptr) {
         xQueueReceive(uart_rx_queue, &character, portMAX_DELAY);
 
         if (this_ptr->on_screen) {
-            if('\r' == character) {
-                UARTprintf("\n\r");
-            } else if (character < ' ') {
-                TextCtl::text_color(TextCtl::cyan_text);
-                UARTprintf("[%d]", character);
-                TextCtl::text_color(TextCtl::white_text);
-            } else {
-                UARTprintf("%c", character);
+
+            switch (uart_stream_mode) {
+            case UART_TEXT_MODE :
+
+                if('\r' == character) {
+                    UARTprintf("\n\r");
+                } else if (character < ' ') {
+                    TextCtl::text_color(TextCtl::cyan_text);
+                    UARTprintf("[%d]", character);
+                    TextCtl::text_color(TextCtl::white_text);
+                } else {
+                    UARTprintf("%c", character);
+                }
+
+                break;
+            case UART_BYTE_MODE :
+
+                UARTprintf("0x%x\r\n", character);
+
+                break;
+            default :
+                assert(0);
+                break;
             }
 
         }

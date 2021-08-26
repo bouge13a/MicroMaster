@@ -28,6 +28,7 @@ typedef struct  {
     const uint32_t peripheral;
     const uint32_t port;
     const uint32_t direction;
+    const uint32_t pad_config;
     const bool displayed;
 } gpio_pin_t;
 

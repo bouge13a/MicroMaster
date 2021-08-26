@@ -25,6 +25,7 @@ static gpio_pin_t gpo_0 = {
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = true,
 };
 
@@ -34,6 +35,7 @@ static gpio_pin_t gpo_1 = {
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = true,
 };
 
@@ -43,6 +45,7 @@ static gpio_pin_t gpo_2 = {
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = true,
 };
 
@@ -52,7 +55,8 @@ static gpio_pin_t gpo_3 = {
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
-    .displayed  = true,
+    .pad_config = GPIO_PIN_TYPE_OD,
+    .displayed  = false,
 };
 
 static gpio_pin_t pwr_on = {
@@ -61,6 +65,7 @@ static gpio_pin_t pwr_on = {
     .peripheral = SYSCTL_PERIPH_GPIOD,
     .port       = GPIO_PORTD_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = false,
 };
 
@@ -70,6 +75,7 @@ static gpio_pin_t psel_1v8 = {
     .peripheral = SYSCTL_PERIPH_GPIOD,
     .port       = GPIO_PORTD_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = false,
 };
 
@@ -79,6 +85,7 @@ static gpio_pin_t psel_3v3 = {
     .peripheral = SYSCTL_PERIPH_GPIOD,
     .port       = GPIO_PORTD_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = false,
 };
 
@@ -88,6 +95,7 @@ static gpio_pin_t psel_5v = {
     .peripheral = SYSCTL_PERIPH_GPIOE,
     .port       = GPIO_PORTE_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = false,
 };
 
@@ -97,6 +105,7 @@ static gpio_pin_t pullup_en = {
     .peripheral = SYSCTL_PERIPH_GPIOE,
     .port       = GPIO_PORTE_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
     .displayed  = false,
 };
 

@@ -115,6 +115,7 @@ no_booster_board.obj: ../UART_streamer.hpp
 no_booster_board.obj: ../UART_command.hpp
 no_booster_board.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 no_booster_board.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
+no_booster_board.obj: ../one_wire_command.hpp
 
 ../no_booster_board.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -231,3 +232,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h:
 ../UART_command.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
+../one_wire_command.hpp: 

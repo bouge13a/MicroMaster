@@ -119,7 +119,7 @@ GpoObj::GpoObj(void) {
             MAP_GPIOPadConfigSet(this->gpo_info->gpos[idx]->port,
                                  this->gpo_info->gpos[idx]->pin,
                                  GPIO_STRENGTH_12MA,
-                                 GPIO_PIN_TYPE_STD);
+                                 this->gpo_info->gpos[idx]->pad_config);
         }
 
     }

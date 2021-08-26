@@ -27,6 +27,7 @@ CPP_SRCS += \
 ../memory_functions.cpp \
 ../menu_page.cpp \
 ../no_booster_board.cpp \
+../one_wire_command.cpp \
 ../task_manager.cpp \
 ../test_task.cpp \
 ../text_controls.cpp \
@@ -71,6 +72,7 @@ OBJS += \
 ./memory_functions.obj \
 ./menu_page.obj \
 ./no_booster_board.obj \
+./one_wire_command.obj \
 ./task_manager.obj \
 ./test_task.obj \
 ./text_controls.obj \
@@ -100,6 +102,7 @@ CPP_DEPS += \
 ./memory_functions.d \
 ./menu_page.d \
 ./no_booster_board.d \
+./one_wire_command.d \
 ./task_manager.d \
 ./test_task.d \
 ./text_controls.d \
@@ -129,6 +132,7 @@ OBJS__QUOTED += \
 "memory_functions.obj" \
 "menu_page.obj" \
 "no_booster_board.obj" \
+"one_wire_command.obj" \
 "task_manager.obj" \
 "test_task.obj" \
 "text_controls.obj" \
@@ -164,6 +168,7 @@ CPP_DEPS__QUOTED += \
 "memory_functions.d" \
 "menu_page.d" \
 "no_booster_board.d" \
+"one_wire_command.d" \
 "task_manager.d" \
 "test_task.d" \
 "text_controls.d" \
@@ -191,6 +196,7 @@ CPP_SRCS__QUOTED += \
 "../memory_functions.cpp" \
 "../menu_page.cpp" \
 "../no_booster_board.cpp" \
+"../one_wire_command.cpp" \
 "../task_manager.cpp" \
 "../test_task.cpp" \
 "../text_controls.cpp" \

@@ -6,6 +6,11 @@
  */
 #include <console_uart.hpp>
 #include <stdint.h>
+#include <UART_to_USB.hpp>
+
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
 
 #include "test_task.hpp"
 #include "console_task.hpp"
@@ -28,13 +33,19 @@
 #include "SPI_monitor.hpp"
 #include "UART_streamer.hpp"
 #include "UART_command.hpp"
-
+#include "uartstdio.h"
 
 NoBoosterPack::NoBoosterPack(void) {
 
-    QueueHandle_t uart_rx_queue = xQueueCreate(1000, sizeof(uint8_t));
+    QueueHandle_t uart_rx_queue = xQueueCreate(100, sizeof(uint8_t));
+    QueueHandle_t uart_tx_queue = xQueueCreate(100, sizeof(uint8_t));
+
+    set_uart_tx_q(uart_tx_queue);
 
     UartTask* console_uart = new UartTask(uart_rx_queue);
+
+    UART_to_USB* uart_to_usb = new UART_to_USB(uart_rx_queue,
+                                               uart_tx_queue);
 
     ConsoleTask* console_task = new ConsoleTask(uart_rx_queue);
 

@@ -18,6 +18,7 @@ CPP_SRCS += \
 ../SPI_monitor.cpp \
 ../UART_command.cpp \
 ../UART_streamer.cpp \
+../UART_to_USB.cpp \
 ../console_task.cpp \
 ../console_uart.cpp \
 ../error_logger.cpp \
@@ -37,12 +38,14 @@ CMD_SRCS += \
 C_SRCS += \
 ../heap_4.c \
 ../hooks.c \
-../tm4c123gh6pm_startup_ccs.c 
+../tm4c123gh6pm_startup_ccs.c \
+../usb_serial_structs.c 
 
 C_DEPS += \
 ./heap_4.d \
 ./hooks.d \
-./tm4c123gh6pm_startup_ccs.d 
+./tm4c123gh6pm_startup_ccs.d \
+./usb_serial_structs.d 
 
 OBJS += \
 ./ADC_task.obj \
@@ -57,6 +60,7 @@ OBJS += \
 ./SPI_monitor.obj \
 ./UART_command.obj \
 ./UART_streamer.obj \
+./UART_to_USB.obj \
 ./console_task.obj \
 ./console_uart.obj \
 ./error_logger.obj \
@@ -71,6 +75,7 @@ OBJS += \
 ./test_task.obj \
 ./text_controls.obj \
 ./tm4c123gh6pm_startup_ccs.obj \
+./usb_serial_structs.obj \
 ./utils.obj 
 
 CPP_DEPS += \
@@ -86,6 +91,7 @@ CPP_DEPS += \
 ./SPI_monitor.d \
 ./UART_command.d \
 ./UART_streamer.d \
+./UART_to_USB.d \
 ./console_task.d \
 ./console_uart.d \
 ./error_logger.d \
@@ -112,6 +118,7 @@ OBJS__QUOTED += \
 "SPI_monitor.obj" \
 "UART_command.obj" \
 "UART_streamer.obj" \
+"UART_to_USB.obj" \
 "console_task.obj" \
 "console_uart.obj" \
 "error_logger.obj" \
@@ -126,12 +133,14 @@ OBJS__QUOTED += \
 "test_task.obj" \
 "text_controls.obj" \
 "tm4c123gh6pm_startup_ccs.obj" \
+"usb_serial_structs.obj" \
 "utils.obj" 
 
 C_DEPS__QUOTED += \
 "heap_4.d" \
 "hooks.d" \
-"tm4c123gh6pm_startup_ccs.d" 
+"tm4c123gh6pm_startup_ccs.d" \
+"usb_serial_structs.d" 
 
 CPP_DEPS__QUOTED += \
 "ADC_task.d" \
@@ -146,6 +155,7 @@ CPP_DEPS__QUOTED += \
 "SPI_monitor.d" \
 "UART_command.d" \
 "UART_streamer.d" \
+"UART_to_USB.d" \
 "console_task.d" \
 "console_uart.d" \
 "error_logger.d" \
@@ -172,6 +182,7 @@ CPP_SRCS__QUOTED += \
 "../SPI_monitor.cpp" \
 "../UART_command.cpp" \
 "../UART_streamer.cpp" \
+"../UART_to_USB.cpp" \
 "../console_task.cpp" \
 "../console_uart.cpp" \
 "../error_logger.cpp" \
@@ -188,6 +199,7 @@ CPP_SRCS__QUOTED += \
 C_SRCS__QUOTED += \
 "../heap_4.c" \
 "../hooks.c" \
-"../tm4c123gh6pm_startup_ccs.c" 
+"../tm4c123gh6pm_startup_ccs.c" \
+"../usb_serial_structs.c" 
 
 

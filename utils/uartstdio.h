@@ -28,6 +28,10 @@
 #include <stdarg.h>
 #include <stdint.h>
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
@@ -53,6 +57,8 @@ extern "C"
 #define UART_TX_BUFFER_SIZE     1024
 #endif
 #endif
+
+void set_uart_tx_q(QueueHandle_t uart_tx_queue);
 
 //*****************************************************************************
 //

@@ -31,6 +31,7 @@ no_booster_board.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/
 no_booster_board.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h
 no_booster_board.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h
 no_booster_board.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h
+no_booster_board.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/UART_to_USB.hpp
 no_booster_board.obj: ../test_task.hpp
 no_booster_board.obj: ../console_task.hpp
 no_booster_board.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/vector
@@ -112,6 +113,8 @@ no_booster_board.obj: ../SPI_command.hpp
 no_booster_board.obj: ../SPI_monitor.hpp
 no_booster_board.obj: ../UART_streamer.hpp
 no_booster_board.obj: ../UART_command.hpp
+no_booster_board.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
+no_booster_board.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 
 ../no_booster_board.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -144,6 +147,7 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/mpu_wrappers.h
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/UART_to_USB.hpp: 
 ../test_task.hpp: 
 ../console_task.hpp: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/vector: 
@@ -225,3 +229,5 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h:
 ../SPI_monitor.hpp: 
 ../UART_streamer.hpp: 
 ../UART_command.hpp: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 

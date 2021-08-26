@@ -18,6 +18,21 @@ text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/includ
 text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h
 text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h
+text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h
+text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h
+text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__nullptr
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOSConfig.h
+text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdlib.h
+text_controls.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdlib.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/projdefs.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/portable.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/deprecated_definitions.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/portable/CCS/ARM_CM4F/portmacro.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/mpu_wrappers.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h
+text_controls.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h
 
 ../text_controls.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/text_controls.hpp: 
@@ -37,3 +52,18 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_stdint.h
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__nullptr: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOSConfig.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdlib.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdlib.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/projdefs.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/portable.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/deprecated_definitions.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/portable/CCS/ARM_CM4F/portmacro.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/mpu_wrappers.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h: 

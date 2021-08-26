@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -llibc.a
+LIBS := -llibc.a -l"C:/ti/TivaWare_C_Series-2.2.0.295/usblib/ccs/Debug/usblib.lib"
 

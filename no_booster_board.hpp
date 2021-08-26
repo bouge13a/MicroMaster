@@ -9,10 +9,14 @@
 #define NO_BOOSTER_BOARD_HPP_
 
 
-class NoBoosterPack {
-public:
-    NoBoosterPack(void);
-};
+
+
+    class NoBoosterPack {
+    public:
+        NoBoosterPack(void);
+    };
+
+
 
 
 #endif /* NO_BOOSTER_BOARD_HPP_ */

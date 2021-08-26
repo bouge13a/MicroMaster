@@ -42,8 +42,6 @@ NoBoosterPack::NoBoosterPack(void) {
 
     set_uart_tx_q(uart_tx_queue);
 
-    UartTask* console_uart = new UartTask(uart_rx_queue);
-
     UART_to_USB* uart_to_usb = new UART_to_USB(uart_rx_queue,
                                                uart_tx_queue);
 

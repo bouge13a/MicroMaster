@@ -8,7 +8,7 @@
 #include "text_controls.hpp"
 
 #include <assert.h>
-#include <console_uart.hpp>
+#include <UART_to_USB.hpp>
 #include "uartstdio.h"
 
 // Width of the Menu bar
@@ -101,6 +101,8 @@ void ConsoleTask::start_draw_menu(ConsoleTask* this_ptr) {
 void ConsoleTask::task(ConsoleTask* this_ptr) {
 
     uint8_t rx_char = 0;
+
+    xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
 
     TextCtl::clear_terminal();
 

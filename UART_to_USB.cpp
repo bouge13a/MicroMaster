@@ -160,7 +160,6 @@ static bool g_bSendingBreak = false;
 #define COMMAND_STATUS_UPDATE   0x00000002
 
 static volatile uint32_t g_ui32Flags = 0;
-static char *g_pcStatus;
 
 //*****************************************************************************
 //
@@ -795,7 +794,6 @@ ControlHandler(void *pvCBData, uint32_t ui32Event,
             // Tell the main loop to update the display.
             //
             ui32IntsOff = MAP_IntMasterDisable();
-            g_pcStatus = "Connected";
             g_ui32Flags |= COMMAND_STATUS_UPDATE;
             if(!ui32IntsOff)
             {
@@ -809,7 +807,6 @@ ControlHandler(void *pvCBData, uint32_t ui32Event,
         case USB_EVENT_DISCONNECTED:
             g_bUSBConfigured = false;
             ui32IntsOff = MAP_IntMasterDisable();
-            g_pcStatus = "Disconnected";
             g_ui32Flags |= COMMAND_STATUS_UPDATE;
             if(!ui32IntsOff)
             {
@@ -1038,16 +1035,8 @@ UART_to_USB::UART_to_USB(QueueHandle_t uart_rx_que,
     GPIOPinTypeUART(TX_GPIO_BASE, TX_GPIO_PIN);
     MAP_GPIOPinTypeUART(RX_GPIO_BASE, RX_GPIO_PIN);
 
-    // Set the default UART configuration.
-    //
-//    // Use the internal 16MHz oscillator as the UART clock source.
-//    UARTClockSourceSet(UART0_BASE, UART_CLOCK_PIOSC);
-//
     // Initialize the UART for console I/O.
     UARTStdioConfig(0, 115200, MAP_SysCtlClockGet());
-
-//    MAP_UARTConfigSetExpClk(USB_UART_BASE, MAP_SysCtlClockGet(),
-//                            DEFAULT_BIT_RATE, DEFAULT_UART_CONFIG);
 
     MAP_UARTFIFOLevelSet(USB_UART_BASE, UART_FIFO_TX4_8, UART_FIFO_RX4_8);
 
@@ -1092,6 +1081,12 @@ void UART_to_USB::task(UART_to_USB* this_ptr){
                        (uint8_t *)&character, 1);
 
     }
-}
+} // End UART_to_USB::task
 
+int get_char(void) {
+    uint8_t character = 0;
 
+    xQueueReceive(uart_rx_q, &character, 0);
+
+    return character;
+} // End getchar

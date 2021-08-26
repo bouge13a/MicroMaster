@@ -12,6 +12,8 @@
 #include "task.h"
 #include "queue.h"
 
+int get_char(void);
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -283,7 +283,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
                     UARTprintf("0x%x ", this_ptr->one_wire_msg->rx_bytes[index]);
                 }
 
-                UARTprintf("\r\nEnter number of TX bytes : ");
+                UARTprintf("\r\n\nEnter number of TX bytes : ");
             }
 
             this->one_wire_state = ONE_WIRE_IDLE;

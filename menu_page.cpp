@@ -11,7 +11,7 @@
 #include "uartstdio.h"
 
 static const uint32_t START_ROW = 5;
-static const uint32_t OPTION_SPACING = 15;
+static const uint32_t OPTION_SPACING = 10;
 static const uint32_t OPTION_START_COL = 20;
 
 MenuRow::MenuRow(uint32_t num_of_options,

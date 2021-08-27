@@ -18,9 +18,11 @@ const uint32_t i2c_speed_num = 2;
 const char* spi_mode_menu[] = {"Mode 0",
                                "Mode 1",
                                "Mode 2",
-                               "Mode 3"};
+                               "Mode 3",
+                               "TI",
+                               "MicroWire"};
 const char* spi_mode_name = "SPI Mode";
-const uint32_t spi_mode_num = 4;
+const uint32_t spi_mode_num = 6;
 
 
 const char* uart_parity_menu[] = {"None",
@@ -51,8 +53,8 @@ const uint32_t power_on_num = 2;
 
 
 const char* power_select_menu[] = {"3V3",
-                                 "5V",
-                                 "1V8"};
+                                   "5V",
+                                   "1V8"};
 const char* power_select_name = "Power Select";
 const uint32_t power_select_num = 3;
 

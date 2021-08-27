@@ -49,6 +49,12 @@ void spi_set_mode(uint32_t index) {
     case 3 :
         spi_mode = SSI_FRF_MOTO_MODE_3;
         break;
+    case 4 :
+        spi_mode = SSI_FRF_TI;
+        break;
+    case 5 :
+        spi_mode = SSI_FRF_NMW;
+        break;
     default :
         assert(0);
         break;

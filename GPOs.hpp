@@ -22,6 +22,7 @@ public:
     void set(gpio_pin_t* config, uint32_t value);
     uint32_t get(gpio_pin_t* config);
     gpos_t* get_struct(void);
+
 private:
     gpos_t* gpo_info;
 };

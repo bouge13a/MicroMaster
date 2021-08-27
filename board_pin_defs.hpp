@@ -12,14 +12,14 @@
 
 typedef struct {
     const char* name;
-    uint32_t i2c_peripheral;
-    uint32_t gpio_peripheral;
-    uint32_t i2c_scl_pin;
-    uint32_t i2c_data_pin;
-    uint32_t base;
-    uint32_t gpio_scl_pin;
-    uint32_t gpio_data_pin;
-    uint32_t gpio_base;
+    const uint32_t i2c_peripheral;
+    const uint32_t gpio_peripheral;
+    const uint32_t i2c_scl_pin;
+    const uint32_t i2c_data_pin;
+    const uint32_t base;
+    const uint32_t gpio_scl_pin;
+    const uint32_t gpio_data_pin;
+    const uint32_t gpio_base;
 }i2c_config_t;
 
 typedef struct  {

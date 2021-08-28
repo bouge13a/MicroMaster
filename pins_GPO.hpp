@@ -21,7 +21,7 @@
 
 static gpio_pin_t gpo_0 = {
     .name       = "GPO 0",
-    .pin        = GPIO_PIN_0,
+    .pin        = GPIO_PIN_3,
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
@@ -51,7 +51,7 @@ static gpio_pin_t gpo_2 = {
 
 static gpio_pin_t gpo_3 = {
     .name       = "GPO 3",
-    .pin        = GPIO_PIN_3,
+    .pin        = GPIO_PIN_0,
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,

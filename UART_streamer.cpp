@@ -58,9 +58,11 @@ static void UART1_int_handler(void) {
     UARTIntClear(UART1_BASE, ui32Status);
 }
 
-UartStreamer::UartStreamer(void)  : ConsolePage("UART Streamer",
-                                                portMAX_DELAY,
-                                                false) {
+UartStreamer::UartStreamer(UartCmd* uart_cmd)  : ConsolePage("UART Streamer",
+                                                             portMAX_DELAY,
+                                                             false) {
+
+    this->uart_cmd = uart_cmd;
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "UART Streamer",                                     /* Text name for the task. */
@@ -150,13 +152,18 @@ void UartStreamer::task(UartStreamer* this_ptr) {
 
 void UartStreamer::draw_page(void) {
 
-    UARTprintf("Incoming UART messages will stream\r\n\n");
+    UARTprintf("Incoming UART messages will stream\r\n");
+    UARTprintf("Press spacebar to resend last message from UART Command\r\n\n");
 
 }
 void UartStreamer::draw_data(void) {
 
 }
 void UartStreamer::draw_input(int character) {
+
+    if (' ' == character) {
+        this->uart_cmd->send_message();
+    }
 
 }
 

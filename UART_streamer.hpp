@@ -14,6 +14,7 @@
 #include "queue.h"
 
 #include "console_task.hpp"
+#include "UART_command.hpp"
 
 typedef enum {
     UART_TEXT_MODE,
@@ -28,10 +29,12 @@ extern "C" {
 
     class UartStreamer : public ConsolePage {
     public:
-        UartStreamer(void);
+        UartStreamer(UartCmd* uart_cmd);
     private :
         void task(UartStreamer* this_ptr);
         static void taskfunwrapper(void* parm);
+
+        UartCmd* uart_cmd;
 
         void draw_page(void);
         void draw_data(void);

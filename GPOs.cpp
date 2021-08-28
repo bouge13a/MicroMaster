@@ -120,6 +120,10 @@ GpoObj::GpoObj(void) {
                                  this->gpo_info->gpos[idx]->pin,
                                  GPIO_STRENGTH_12MA,
                                  this->gpo_info->gpos[idx]->pad_config);
+
+            if (this->gpo_info->gpos[idx]->pad_config == GPIO_PIN_TYPE_OD) {
+                GPIOPinTypeGPIOOutputOD(this->gpo_info->gpos[idx]->port, this->gpo_info->gpos[idx]->pin);
+            }
         }
 
     }
@@ -164,11 +168,52 @@ void GpoObj::set(gpio_pin_t* config, uint32_t value) {
 
 uint32_t GpoObj::get(gpio_pin_t* config) {
 
-    if (0 == MAP_GPIOPinRead(config->port, config->pin)) {
-        return 0;
+
+    uint32_t return_val;
+
+    if (config->pad_config ==  GPIO_PIN_TYPE_OD) {
+
+        MAP_GPIODirModeSet(config->port,
+                           config->pin,
+                           GPIO_DIR_MODE_IN);
+
+        MAP_GPIOPadConfigSet(config->port,
+                             config->pin,
+                             GPIO_STRENGTH_12MA,
+                             GPIO_PIN_TYPE_STD);
+
+        if (0 == MAP_GPIOPinRead(config->port, config->pin)) {
+            return_val = 0;
+        } else {
+            return_val = 1;
+        }
+
+
+        MAP_GPIODirModeSet(config->port,
+                           config->pin,
+                           config->direction);
+
+        MAP_GPIOPadConfigSet(config->port,
+                             config->pin,
+                             GPIO_STRENGTH_12MA,
+                             config->pad_config);
+
+        MAP_GPIOPinWrite(config->port,
+                         config->pin,
+                         config->pin);
+
     } else {
-        return 1;
+
+        if (0 == MAP_GPIOPinRead(config->port, config->pin)) {
+            return 0;
+        } else {
+            return 1;
+        }
+
     }
+
+    return return_val;
+
 
 } // End GpoObj::get
 

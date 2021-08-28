@@ -28,11 +28,14 @@ void uart_set_stop_bits(uint32_t index);
 class UartCmd : public ConsolePage {
 public:
     UartCmd(void);
+    void send_message(void);
 private :
 
     char* char_string;
     uint32_t char_string_index;
+    uint32_t last_char_string_index;
     uart_cmd_state_e cmd_state;
+    uart_cmd_state_e msg_type;
 
     void draw_page(void);
     void draw_data(void);

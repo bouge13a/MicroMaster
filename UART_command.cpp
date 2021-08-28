@@ -88,7 +88,10 @@ UartCmd::UartCmd(void)  : ConsolePage("UART Command",
 
     this->char_string = new char[SIZE_OF_CHAR_STRING];
     this->char_string_index = 0;
+    this->last_char_string_index = 0;
     this->cmd_state = UART_GET_SPEED;
+
+    this->msg_type = UART_GET_STRING;
 
 } // End UartCmdTask::UartCmdTask
 
@@ -105,6 +108,35 @@ static uint32_t ascii_to_hex(uint8_t character) {
     return 0;
 }
 
+void UartCmd::send_message(void) {
+
+    if (this->last_char_string_index != 0) {
+        UARTprintf("\r\n");
+    }
+
+    for (uint32_t index=0; index<this->last_char_string_index; index += 2) {
+        UARTCharPut(UART1_BASE, ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );
+
+        if (this->msg_type == UART_GET_STRING) {
+
+            if(0 == index) {
+                UARTprintf("TX: %s", this->char_string);
+            }
+
+        } else if (this->msg_type == UART_GET_HEX) {
+
+            if(0 == index) {
+                UARTprintf("TX : 0x%x", ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );
+            } else {
+                UARTprintf("%x", ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );
+            }
+        }
+    }
+
+    if (this->last_char_string_index != 0) {
+        UARTprintf("\r\n");
+    }
+} // End UartCmd::send_message
 
 void UartCmd::draw_page(void) {
 
@@ -158,9 +190,11 @@ void UartCmd::draw_input(int character) {
         if ('t' == character) {
             this->cmd_state = UART_GET_STRING;
             UARTprintf("t\r\nEnter string : ");
+            this->msg_type = UART_GET_STRING;
         } else if ('h' == character) {
             this->cmd_state = UART_GET_HEX;
             UARTprintf("h\r\nEnter hex : 0x");
+            this->msg_type = UART_GET_HEX;
         }
 
         break;
@@ -187,6 +221,7 @@ void UartCmd::draw_input(int character) {
             }
 
             this->cmd_state = UART_GET_SPEED;
+            this->last_char_string_index = this->char_string_index;
             this->char_string_index = 0;
             UARTprintf("\r\nMessage transmitted");
             UARTprintf("\r\nEnter speed (300 - 115200 Hz) : ");
@@ -211,15 +246,16 @@ void UartCmd::draw_input(int character) {
 
         } else if (character == '\r') {
 
-            if (this->char_string_index % 2 == 1) {
-                this->char_string[this->char_string_index+1] = '\0';
-            }
+//            if (this->char_string_index % 2 == 1) {
+//                this->char_string[this->char_string_index+1] = '\0';
+//            }
 
             for (uint32_t index=0; index<this->char_string_index; index += 2) {
                 UARTCharPut(UART1_BASE, ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );
             }
 
             this->cmd_state = UART_GET_SPEED;
+            this->last_char_string_index = this->char_string_index;
             this->char_string_index = 0;
             UARTprintf("\r\nMessage transmitted");
             UARTprintf("\r\nEnter speed (300 - 115200 Hz) : ");

@@ -80,9 +80,9 @@ NoBoosterPack::NoBoosterPack(void) {
 
     SpiMonitorTask* spi_monitor = new SpiMonitorTask(spi_command, *spi_command->get_vector());
 
-    UartStreamer* uart_streamer = new UartStreamer();
-
     UartCmd* uart_cmd = new UartCmd();
+
+    UartStreamer* uart_streamer = new UartStreamer(uart_cmd);
 
     OneWireCmd* one_wire_command = new OneWireCmd(gpo_obj);
 

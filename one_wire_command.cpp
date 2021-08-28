@@ -30,10 +30,10 @@ static const uint32_t NUM_OF_RX_MSGS = 10;
 
 static const uint32_t RESET_PULSE_TIME_US = 480;
 static const uint32_t IDLE_TIME_US = 65;
-static const uint32_t AFTER_RESET_WAIT_US = 500;
-static const uint32_t START_BIT_TIME_US = 10;
+static const uint32_t AFTER_RESET_WAIT_US = 240;
+static const uint32_t START_BIT_TIME_US = 5;
 static const uint32_t RELEASE_TIME_US = 55;
-static const uint32_t INTER_BIT_TIME_US = 5;
+static const uint32_t INTER_BIT_TIME_US = 65;
 static const uint32_t READ_TIME_US = 27;
 
 static void timer0_int_handler(void) {
@@ -120,6 +120,8 @@ OneWireCmd::OneWireCmd(GpoObj* gpo_obj) : ConsolePage("1 Wire Command",
     this->one_wire_cmd_state = ENTER_NUM_TX_BYTES;
     this->one_wire_state = ONE_WIRE_IDLE;
 
+    this->gpo_obj->set(this->one_wire_pin, 1);
+
 } // End TestTask
 
 
@@ -135,7 +137,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
             assert(this_ptr->one_wire_msg);
 
-            if(!this_ptr->gpo_obj->get(this_ptr->one_wire_pin)) {
+            if( 0 == this_ptr->gpo_obj->get(this_ptr->one_wire_pin)) {
                 this_ptr->logger->set_error(this_ptr->pullup_err);
                 this_ptr->one_wire_state = ONE_WIRE_FINISH;
                 this_ptr->one_wire_msg->errors = ONE_WIRE_PULLUPP_ERR;
@@ -187,7 +189,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
                 } else if (this_ptr->one_wire_write_state == ONE_WIRE_RELEASE) {
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
-                    if(1 == ((this_ptr->one_wire_msg->tx_bytes[this_ptr->one_wire_msg->bytes_txed] >> this_ptr->bit_counter) & 0x0001)) {
+                    if(1 == ((this_ptr->one_wire_msg->tx_bytes[this_ptr->one_wire_msg->bytes_txed] >> (7-this_ptr->bit_counter)) & 0x0001)) {
                         this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
                     } else {
                         this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
@@ -196,21 +198,22 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                 } else if (this_ptr->one_wire_write_state == ONE_WIRE_STOP) {
 
+                    this_ptr->bit_counter = (this_ptr->bit_counter + 1) % 8;
+                    if (0 == this_ptr->bit_counter) {
+                        this_ptr->one_wire_msg->bytes_txed++;
+                    }
                     this_ptr->one_wire_write_state = ONE_WIRE_START;
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
                     this_ptr->set_timer(INTER_BIT_TIME_US);
 
                 }
 
-                this_ptr->bit_counter = (this_ptr->bit_counter + 1) % 8;
-                if (0 == this_ptr->bit_counter) {
-                    this_ptr->one_wire_msg->bytes_txed++;
-                }
 
             } else {
 
                 if (this_ptr->one_wire_msg->num_rx_bytes > 0) {
                     this_ptr->one_wire_state = ONE_WIRE_RECEIVE;
+                    this_ptr->set_timer(27);
                 } else {
                     this_ptr->one_wire_state = ONE_WIRE_FINISH;
                 }
@@ -236,26 +239,25 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                     this_ptr->one_wire_write_state = ONE_WIRE_READ;
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
-                    this_ptr->set_timer(READ_TIME_US);
+                    this_ptr->set_timer(START_BIT_TIME_US);
 
                 } else if (this_ptr->one_wire_write_state == ONE_WIRE_READ) {
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
-                    this_ptr->one_wire_msg->rx_bytes[this_ptr->one_wire_msg->bytes_rxed] |= this_ptr->gpo_obj->get(one_wire_pin) << this->bit_counter;
-                    this->set_timer(READ_TIME_US);
+                    this_ptr->one_wire_msg->rx_bytes[this_ptr->one_wire_msg->bytes_rxed] |= this_ptr->gpo_obj->get(one_wire_pin) << (7-this->bit_counter);
+                    this->set_timer(INTER_BIT_TIME_US);
 
 
                 } else if (this_ptr->one_wire_write_state == ONE_WIRE_STOP) {
 
+                    this_ptr->bit_counter = (this_ptr->bit_counter + 1) % 8;
+                    if (0 == this_ptr->bit_counter) {
+                        this_ptr->one_wire_msg->bytes_rxed++;
+                    }
                     this_ptr->one_wire_write_state = ONE_WIRE_START;
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
                     this_ptr->set_timer(INTER_BIT_TIME_US);
 
-                }
-
-                this_ptr->bit_counter = (this_ptr->bit_counter + 1) % 8;
-                if (0 == this_ptr->bit_counter) {
-                    this_ptr->one_wire_msg->bytes_rxed++;
                 }
 
             } else {
@@ -329,7 +331,8 @@ void OneWireCmd::print_errors(OneWireCmd* this_ptr) {
 
 void OneWireCmd::set_timer(uint32_t useconds) {
 
-    TimerLoadSet(TIMER0_BASE, TIMER_A, useconds/16);
+    TimerDisable(TIMER0_BASE, TIMER_A);
+    TimerLoadSet(TIMER0_BASE, TIMER_A, useconds*48);
     TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     TimerEnable(TIMER0_BASE, TIMER_A);
 

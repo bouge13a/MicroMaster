@@ -35,7 +35,7 @@ I2cMonitorTask::I2cMonitorTask(I2cTask* i2c0, std::vector<I2cMsg*>& i2c_monitor_
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I2c Monitor",                                     /* Text name for the task. */
-                200,                  /* Stack size in words, not bytes. */
+                70,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */
                 &this->task_handle);

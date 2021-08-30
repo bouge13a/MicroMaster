@@ -383,8 +383,8 @@ void OneWireCmd::draw_input(int character) {
             this->one_wire_cmd_msg->num_tx_bytes = atoi((const char*)this->byte_buffer);
             this->byte_buffer_index = 0;
             this->one_wire_cmd_state = ENTER_TX_BYTES;
-            UARTprintf("\r\nbyte 1 : ");
-        } else {
+            UARTprintf("\r\nbyte 1 : 0x");
+        } else if(character >= '0' && character <= '9'){
             this->byte_buffer_index = 0;
             UARTprintf("\r\nError: Maximum of 2 digits\r\n");
             UARTprintf("Enter number of TX bytes : ");
@@ -422,13 +422,29 @@ void OneWireCmd::draw_input(int character) {
         break;
     case ENTER_NUM_RX_BYTES :
 
-        if ((character >= '0' && character <= '9')){
+        if ((character >= '0' && character <= '9') && (this->byte_buffer_index < 3)){
 
-            this->one_wire_cmd_msg->num_rx_bytes = character -'0';
+            this->byte_buffer[this->byte_buffer_index] = (uint8_t)character;
+            this->byte_buffer_index++;
+            UARTprintf("%c", (uint8_t)character);
+        } else if ('\r' == character) {
+            UARTprintf("%c", (uint8_t)character);
+            this->byte_buffer[this->byte_buffer_index] = '\0';
 
-            UARTprintf("%c", character);
-            UARTprintf("\nPress Spacebar to send:\n\r");
+            if(atoi((const char*)this->byte_buffer) > NUM_OF_RX_MSGS) {
+                this->byte_buffer_index = 0;
+                UARTprintf("\r\nError: Maximum of %d bytes\r\n", NUM_OF_RX_MSGS);
+                UARTprintf("Enter number of TX bytes : ");
+                break;
+            }
+
+            this->one_wire_cmd_msg->num_rx_bytes = atoi((const char*)this->byte_buffer);
+            this->byte_buffer_index = 0;
             this->one_wire_cmd_state = ENTER_MESSAGE;
+        } else if (character >= '0' && character <= '9') {
+            this->byte_buffer_index = 0;
+            UARTprintf("\r\nError: Maximum of 2 digits\r\n");
+            UARTprintf("Enter number of TX bytes : ");
         }
 
         break;

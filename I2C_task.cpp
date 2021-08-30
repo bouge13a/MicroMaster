@@ -54,7 +54,7 @@ I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I2C Task",                            /* Text name for the task. */
-                200,                  /* Stack size in words, not bytes. */
+                80,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */
                 &this->task_handle );                      /* Used to pass out the created task's handle. */

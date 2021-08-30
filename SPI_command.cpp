@@ -103,8 +103,8 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
                                            false)  {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
-                "Test",                                     /* Text name for the task. */
-                200,                  /* Stack size in words, not bytes. */
+                "SPI Command",                                     /* Text name for the task. */
+                80,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */
                 NULL);

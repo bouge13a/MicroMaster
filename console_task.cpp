@@ -31,7 +31,7 @@ ConsoleTask::ConsoleTask (QueueHandle_t uart_rx_queue) : ConsolePage ("Home Page
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Console",                                    /* Text name for the task. */
-                200,                                          /* Stack size in words, not bytes. */
+                120,                                          /* Stack size in words, not bytes. */
                 this,                                         /* Parameter passed into the task. */
                 3,                                            /* Priority at which the task is created. */
                 &this->task_handle );                         /* Used to pass out the created task's handle. */

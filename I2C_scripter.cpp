@@ -27,7 +27,7 @@ I2cScripterTask::I2cScripterTask(I2cTask* i2c) : ConsolePage("I2C Scripter",
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I2C script",         /* Text name for the task. */
-                200,                  /* Stack size in words, not bytes. */
+                80,                  /* Stack size in words, not bytes. */
                 this,                 /* Parameter passed into the task. */
                 3,                    /* Priority at which the task is created. */
                 NULL);

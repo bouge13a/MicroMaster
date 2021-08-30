@@ -53,7 +53,7 @@ AdcTask::AdcTask(void) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "ADC",                                    /* Text name for the task. */
-                200,                                          /* Stack size in words, not bytes. */
+                50,                                          /* Stack size in words, not bytes. */
                 this,                                         /* Parameter passed into the task. */
                 3,                                            /* Priority at which the task is created. */
                 &this->task_handle );                         /* Used to pass out the created task's handle. */

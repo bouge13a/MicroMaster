@@ -28,6 +28,7 @@ CPP_SRCS += \
 ../menu_page.cpp \
 ../no_booster_board.cpp \
 ../one_wire_command.cpp \
+../one_wire_search.cpp \
 ../task_manager.cpp \
 ../test_task.cpp \
 ../text_controls.cpp \
@@ -73,6 +74,7 @@ OBJS += \
 ./menu_page.obj \
 ./no_booster_board.obj \
 ./one_wire_command.obj \
+./one_wire_search.obj \
 ./task_manager.obj \
 ./test_task.obj \
 ./text_controls.obj \
@@ -103,6 +105,7 @@ CPP_DEPS += \
 ./menu_page.d \
 ./no_booster_board.d \
 ./one_wire_command.d \
+./one_wire_search.d \
 ./task_manager.d \
 ./test_task.d \
 ./text_controls.d \
@@ -133,6 +136,7 @@ OBJS__QUOTED += \
 "menu_page.obj" \
 "no_booster_board.obj" \
 "one_wire_command.obj" \
+"one_wire_search.obj" \
 "task_manager.obj" \
 "test_task.obj" \
 "text_controls.obj" \
@@ -169,6 +173,7 @@ CPP_DEPS__QUOTED += \
 "menu_page.d" \
 "no_booster_board.d" \
 "one_wire_command.d" \
+"one_wire_search.d" \
 "task_manager.d" \
 "test_task.d" \
 "text_controls.d" \
@@ -197,6 +202,7 @@ CPP_SRCS__QUOTED += \
 "../menu_page.cpp" \
 "../no_booster_board.cpp" \
 "../one_wire_command.cpp" \
+"../one_wire_search.cpp" \
 "../task_manager.cpp" \
 "../test_task.cpp" \
 "../text_controls.cpp" \

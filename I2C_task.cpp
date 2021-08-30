@@ -324,7 +324,7 @@ void I2cTask::task(I2cTask* this_ptr) {
                     UARTprintf("0x%x ", this_ptr->i2c_msg->tx_data[index]);
                 }
 
-                UARTprintf("RX: ");
+                UARTprintf("\r\nRX: ");
                 for (uint32_t index=0; index<this_ptr->i2c_msg->bytes_rxed; index++) {
                     UARTprintf("0x%x ", this_ptr->i2c_msg->rx_data[index]);
                 }
@@ -630,6 +630,7 @@ void I2cTask::draw_input(int character) {
 void I2cTask::reset_monitor_index(void) {
 
     this->i2c_monitor_index = 0;
+    this->i2c_monitor_msgs.clear();
 
 } // End I2cTask::reset_monitor_index
 

@@ -25,8 +25,8 @@
 
 static SemaphoreHandle_t timer_semphr = NULL;
 
-static const uint32_t NUM_OF_TX_MSGS = 10;
-static const uint32_t NUM_OF_RX_MSGS = 10;
+static const uint32_t NUM_OF_TX_MSGS = 20;
+static const uint32_t NUM_OF_RX_MSGS = 20;
 
 static const uint32_t RESET_PULSE_TIME_US = 480;
 static const uint32_t IDLE_TIME_US = 65;
@@ -113,6 +113,7 @@ OneWireCmd::OneWireCmd(GpoObj* gpo_obj) : ConsolePage("1 Wire Command",
     this->pullup_err = this->logger->create_error("1 Wire", "Line state low, check pull up resistor");
     this->no_resp_err = this->logger->create_error("1 Wire", "No response from device");
 
+    this->byte_buffer = new uint8_t[3];
     this->bit_counter = 0;
     this->byte_counter = 0;
     this->byte_buffer_index = 0;
@@ -181,12 +182,9 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                 if (this_ptr->one_wire_write_state == ONE_WIRE_START) {
 
-                    this_ptr->one_wire_write_state = ONE_WIRE_RELEASE;
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
+
                     SysCtlDelay(START_BIT_TIME_US);
-
-
-//                } else if (this_ptr->one_wire_write_state == ONE_WIRE_RELEASE) {
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
                     if(1 == ((this_ptr->one_wire_msg->tx_bytes[this_ptr->one_wire_msg->bytes_txed] >> (this_ptr->bit_counter)) & 0x0001)) {
@@ -215,7 +213,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                 if (this_ptr->one_wire_msg->num_rx_bytes > 0) {
                     this_ptr->one_wire_state = ONE_WIRE_RECEIVE;
-                    this_ptr->set_timer(5);
+                    this_ptr->set_timer(INTER_BIT_TIME_US);
                 } else {
                     this_ptr->one_wire_state = ONE_WIRE_FINISH;
                 }
@@ -232,19 +230,13 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                 if (this_ptr->one_wire_write_state == ONE_WIRE_START) {
 
-                    this_ptr->one_wire_write_state = ONE_WIRE_RELEASE;
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
-//                    this_ptr->set_timer(START_BIT_TIME_US);
 
                     SysCtlDelay(START_BIT_TIME_US);
-//                } else if (this_ptr->one_wire_write_state == ONE_WIRE_RELEASE) {
 
-                    this_ptr->one_wire_write_state = ONE_WIRE_READ;
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
-//                    this_ptr->set_timer(READ_TIME_US);
+
                     SysCtlDelay(10);
-//
-//                } else if (this_ptr->one_wire_write_state == ONE_WIRE_READ) {
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
                     this_ptr->one_wire_msg->rx_bytes[this_ptr->one_wire_msg->bytes_rxed] |= this_ptr->gpo_obj->get(one_wire_pin) << (this->bit_counter);
@@ -286,7 +278,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
                     UARTprintf("0x%x ", this_ptr->one_wire_msg->tx_bytes[index]);
                 }
 
-                UARTprintf("RX: ");
+                UARTprintf("\r\nRX: ");
                 for (uint32_t index=0; index<this_ptr->one_wire_msg->bytes_rxed; index++) {
                     UARTprintf("0x%x ", this_ptr->one_wire_msg->rx_bytes[index]);
                 }
@@ -372,13 +364,30 @@ void OneWireCmd::draw_input(int character) {
     switch(this->one_wire_cmd_state) {
     case ENTER_NUM_TX_BYTES :
 
-        if ((character >= '0' && character <= '9')){
+        if ((character >= '0' && character <= '9') && (this->byte_buffer_index < 3)){
 
-            this->one_wire_cmd_msg->num_tx_bytes = character -'0';
+            this->byte_buffer[this->byte_buffer_index] = (uint8_t)character;
+            this->byte_buffer_index++;
+            UARTprintf("%c", (uint8_t)character);
+        } else if ('\r' == character) {
+            UARTprintf("%c", (uint8_t)character);
+            this->byte_buffer[this->byte_buffer_index] = '\0';
 
-            UARTprintf("%c", character);
-            UARTprintf("\nbyte 1 : 0x");
+            if(atoi((const char*)this->byte_buffer) > NUM_OF_TX_MSGS) {
+                this->byte_buffer_index = 0;
+                UARTprintf("\r\nError: Maximum of %d bytes\r\n", NUM_OF_TX_MSGS);
+                UARTprintf("Enter number of TX bytes : ");
+                break;
+            }
+
+            this->one_wire_cmd_msg->num_tx_bytes = atoi((const char*)this->byte_buffer);
+            this->byte_buffer_index = 0;
             this->one_wire_cmd_state = ENTER_TX_BYTES;
+            UARTprintf("\r\nbyte 1 : ");
+        } else {
+            this->byte_buffer_index = 0;
+            UARTprintf("\r\nError: Maximum of 2 digits\r\n");
+            UARTprintf("Enter number of TX bytes : ");
         }
 
         break;

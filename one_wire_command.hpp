@@ -25,8 +25,6 @@ typedef enum {
 
 typedef enum {
     ONE_WIRE_START,
-    ONE_WIRE_RELEASE,
-    ONE_WIRE_READ,
     ONE_WIRE_STOP,
 }one_wire_write_states_e;
 
@@ -81,6 +79,7 @@ extern "C" {
 
         uint32_t bit_counter;
         uint32_t byte_counter;
+        uint8_t* byte_buffer;
         uint32_t byte_buffer_index;
 
         void print_errors(OneWireCmd* this_ptr);

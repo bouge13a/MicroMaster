@@ -85,6 +85,7 @@ SpiMsg::SpiMsg(spi_msg_type_e msg_type) {
 void SpiCmdTask::reset_monitor_index(void) {
 
     this->spi_monitor_index = 0;
+    this->spi_monitor_msgs.clear();
 
 } // End I2cTask::reset_monitor_index
 
@@ -282,7 +283,7 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
                     UARTprintf("0x%x ", this_ptr->spi_msg->tx_bytes[index]);
                 }
 
-                UARTprintf("RX: ");
+                UARTprintf("\r\nRX: ");
                 for (uint32_t index=0; index<this_ptr->spi_msg->bytes_rxed; index++) {
                     UARTprintf("0x%x ", this_ptr->spi_msg->rx_bytes[index]);
                 }

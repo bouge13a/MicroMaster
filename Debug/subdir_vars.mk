@@ -11,7 +11,7 @@ CPP_SRCS += \
 ../GPOs.cpp \
 ../I2C_monitor.cpp \
 ../I2C_scripter.cpp \
-../I2C_sniffer.cpp \
+../I2C_search.cpp \
 ../I2C_task.cpp \
 ../PWM_page.cpp \
 ../SPI_command.cpp \
@@ -55,7 +55,7 @@ OBJS += \
 ./GPOs.obj \
 ./I2C_monitor.obj \
 ./I2C_scripter.obj \
-./I2C_sniffer.obj \
+./I2C_search.obj \
 ./I2C_task.obj \
 ./PWM_page.obj \
 ./SPI_command.obj \
@@ -88,7 +88,7 @@ CPP_DEPS += \
 ./GPOs.d \
 ./I2C_monitor.d \
 ./I2C_scripter.d \
-./I2C_sniffer.d \
+./I2C_search.d \
 ./I2C_task.d \
 ./PWM_page.d \
 ./SPI_command.d \
@@ -117,7 +117,7 @@ OBJS__QUOTED += \
 "GPOs.obj" \
 "I2C_monitor.obj" \
 "I2C_scripter.obj" \
-"I2C_sniffer.obj" \
+"I2C_search.obj" \
 "I2C_task.obj" \
 "PWM_page.obj" \
 "SPI_command.obj" \
@@ -156,7 +156,7 @@ CPP_DEPS__QUOTED += \
 "GPOs.d" \
 "I2C_monitor.d" \
 "I2C_scripter.d" \
-"I2C_sniffer.d" \
+"I2C_search.d" \
 "I2C_task.d" \
 "PWM_page.d" \
 "SPI_command.d" \
@@ -185,7 +185,7 @@ CPP_SRCS__QUOTED += \
 "../GPOs.cpp" \
 "../I2C_monitor.cpp" \
 "../I2C_scripter.cpp" \
-"../I2C_sniffer.cpp" \
+"../I2C_search.cpp" \
 "../I2C_task.cpp" \
 "../PWM_page.cpp" \
 "../SPI_command.cpp" \

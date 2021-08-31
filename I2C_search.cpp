@@ -6,11 +6,11 @@
  */
 
 
-#include "I2C_sniffer.hpp"
 #include "text_controls.hpp"
 #include "uartstdio.h"
 #include <assert.h>
 #include <console_uart.hpp>
+#include <I2C_search.hpp>
 
 static uint8_t I2C_TEST_REG = 0x00;
 
@@ -19,12 +19,12 @@ void I2cSnifferTask::taskfunwrapper(void* parm){
 } // End I2cSnifferTask::taskfunwrapper
 
 
-I2cSnifferTask::I2cSnifferTask(I2cTask* i2c) : ConsolePage("I2C Sniffer",
+I2cSnifferTask::I2cSnifferTask(I2cTask* i2c) : ConsolePage("I2C Search",
                                                            portMAX_DELAY,
                                                            false) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
-                "I2C Sniff",                                     /* Text name for the task. */
+                "I2C Search",                                     /* Text name for the task. */
                 80,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */

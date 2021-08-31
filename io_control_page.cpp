@@ -19,6 +19,8 @@ static const uint32_t GPO_DATA_COL = 15;
 static const uint32_t GPI_DATA_COL = 45;
 static const uint32_t ADC_DATA_COL = 75;
 
+static const uint32_t NUM_OF_DISPLAYED_GPOS = 3;
+
 
 IoCtlPage::IoCtlPage(GpoObj* gpo_obj,
                      GpiObj* gpi_obj,
@@ -142,11 +144,11 @@ void IoCtlPage::draw_input(int character) {
 
     switch (character) {
     case ArrowKeys::DOWN:
-        this->gpo_index = (this->gpo_index + 1) % this->gpo_struct->num_gpos;
+        this->gpo_index = (this->gpo_index + 1) % NUM_OF_DISPLAYED_GPOS;
         break;
     case ArrowKeys::UP:
         if (this->gpo_index == 0) {
-            this->gpo_index = this->gpo_struct->num_gpos - 1;
+            this->gpo_index = NUM_OF_DISPLAYED_GPOS - 1;
         } else {
             this->gpo_index--;
         }

@@ -10,17 +10,25 @@
 #include "uartstdio.h"
 #include "text_controls.hpp"
 
+static SemaphoreHandle_t timer_semphr = NULL;
 
-OneWireSearch::OneWireSearch(void) : ConsolePage("1 Wire Search",
-                                            portMAX_DELAY,
-                                            false) {
+OneWireSearch::OneWireSearch(GpoObj* gpo_obj) : ConsolePage("1 Wire Search",
+                                                            portMAX_DELAY,
+                                                            false) {
+    this->gpo_obj = gpo_obj;
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
-                "1 wire search",      /* Text name for the task. */
+                "1 Wire Search",      /* Text name for the task. */
                 100,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */
                 NULL);
+
+    timer_semphr = xSemaphoreCreateBinary();
+
+    this->one_wire_q = xQueueCreate(2, sizeof(uint32_t*));
+
+
 
 } // End TestTask
 
@@ -29,7 +37,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
     while(1){
 
-
+        vTaskDelay(1000);
     }
 
 } // End AdcTask::task

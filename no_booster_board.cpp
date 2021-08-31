@@ -5,6 +5,7 @@
  *      Author: steph
  */
 #include <console_uart.hpp>
+#include <I2C_search.hpp>
 #include <stdint.h>
 #include <UART_to_USB.hpp>
 
@@ -20,7 +21,6 @@
 #include "error_logger.hpp"
 #include "I2C_monitor.hpp"
 #include "task_manager.hpp"
-#include "I2C_sniffer.hpp"
 #include "I2C_scripter.hpp"
 #include "GPOs.hpp"
 #include "GPIs.hpp"

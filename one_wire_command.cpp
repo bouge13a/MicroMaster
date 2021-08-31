@@ -35,7 +35,6 @@ static const uint32_t START_BIT_TIME_US = 100;
 static const uint32_t RELEASE_TIME_US = 65;
 static const uint32_t INTER_BIT_TIME_US = 5;
 static const uint32_t INTER_BYTE_TIME_US = 500;
-static const uint32_t READ_TIME_US = 5;
 
 static void timer0_int_handler(void) {
 
@@ -434,10 +433,10 @@ void OneWireCmd::draw_input(int character) {
             if(atoi((const char*)this->byte_buffer) > NUM_OF_RX_MSGS) {
                 this->byte_buffer_index = 0;
                 UARTprintf("\r\nError: Maximum of %d bytes\r\n", NUM_OF_RX_MSGS);
-                UARTprintf("Enter number of TX bytes : ");
+                UARTprintf("Enter number of RX bytes : ");
                 break;
             }
-
+            UARTprintf("\r\nPress Space-bar to send message");
             this->one_wire_cmd_msg->num_rx_bytes = atoi((const char*)this->byte_buffer);
             this->byte_buffer_index = 0;
             this->one_wire_cmd_state = ENTER_MESSAGE;

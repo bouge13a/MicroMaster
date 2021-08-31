@@ -12,8 +12,12 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "semphr.h"
 
 #include "console_task.hpp"
+#include "GPOs.hpp"
+
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,10 +25,14 @@ extern "C" {
 
     class OneWireSearch : public ConsolePage {
     public:
-        OneWireSearch(void);
+        OneWireSearch(GpoObj* gpo_obj);
     private :
         void task(OneWireSearch* this_ptr);
         static void taskfunwrapper(void* parm);
+
+        GpoObj* gpo_obj;
+
+        QueueHandle_t one_wire_q;
 
         void draw_page(void);
         void draw_data(void);

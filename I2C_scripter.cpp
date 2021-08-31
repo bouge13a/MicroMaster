@@ -153,9 +153,9 @@ void I2cScripterTask::draw_input(int character) {
         } else if (this->buffer_idx < TX_BUFFER_SIZE) {
 
             if (this->ascii_to_hex((char*)&character)) {
-                if(this->buffer_idx == 0) {
-                    this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = character << 4;
-                }
+
+                this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = character << 4;
+
                 this->buffer_state = GET_NIBBLE_1;
             }
 

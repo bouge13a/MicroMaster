@@ -321,12 +321,12 @@ void I2cTask::task(I2cTask* this_ptr) {
 
                 UARTprintf("TX: ");
                 for (uint32_t index=0; index<this_ptr->i2c_msg->bytes_txed; index++) {
-                    UARTprintf("0x%x ", this_ptr->i2c_msg->tx_data[index]);
+                    UARTprintf("0x%2x ", this_ptr->i2c_msg->tx_data[index]);
                 }
 
                 UARTprintf("\r\nRX: ");
                 for (uint32_t index=0; index<this_ptr->i2c_msg->bytes_rxed; index++) {
-                    UARTprintf("0x%x ", this_ptr->i2c_msg->rx_data[index]);
+                    UARTprintf("0x%2x ", this_ptr->i2c_msg->rx_data[index]);
                 }
 
                 UARTprintf("\r\nMeasured transaction time: %d microseconds\r\n", message_time/16);

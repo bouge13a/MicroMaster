@@ -98,7 +98,7 @@ bool I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
 
     switch(this->message_format[index]) {
     case HEX_FORMAT :
-        UARTprintf("0x%x ", this->i2c_monitor_msgs[index]->rx_data[inner_index]);
+        UARTprintf("0x%2x ", this->i2c_monitor_msgs[index]->rx_data[inner_index]);
         return false;
     case BIN_FORMAT :
         int_to_bin_string(this->i2c_monitor_msgs[index]->rx_data[inner_index], bin_string);

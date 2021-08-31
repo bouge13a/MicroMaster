@@ -274,12 +274,12 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                 UARTprintf("TX: ");
                 for (uint32_t index=0; index<this_ptr->one_wire_msg->bytes_txed; index++) {
-                    UARTprintf("0x%x ", this_ptr->one_wire_msg->tx_bytes[index]);
+                    UARTprintf("0x%2x ", this_ptr->one_wire_msg->tx_bytes[index]);
                 }
 
                 UARTprintf("\r\nRX: ");
                 for (uint32_t index=0; index<this_ptr->one_wire_msg->bytes_rxed; index++) {
-                    UARTprintf("0x%x ", this_ptr->one_wire_msg->rx_bytes[index]);
+                    UARTprintf("0x%2x ", this_ptr->one_wire_msg->rx_bytes[index]);
                 }
 
                 UARTprintf("\r\n\nEnter number of TX bytes : ");

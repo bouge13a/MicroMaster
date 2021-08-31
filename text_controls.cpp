@@ -11,6 +11,7 @@ namespace TextCtl {
 
     void set_text_mode(uint32_t mode) {
         UARTprintf("\033[%dm", mode);
+        UARTprintf("\033[%dm", TextCtl::mode_concealed);
     }
 
     void text_color(uint32_t color) {

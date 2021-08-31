@@ -70,13 +70,13 @@ void I2cSnifferTask::task(I2cSnifferTask* this_ptr) {
                 } else if (this->i2c_msg->errors == ADDR_NACK_ERR) {
 
                     TextCtl::text_color(TextCtl::red_text);
-                    UARTprintf("0x%x, ", index);
+                    UARTprintf("0x%2x, ", index);
                     TextCtl::text_color(TextCtl::white_text);
 
                 } else if (this->i2c_msg->errors == NONE) {
 
                     TextCtl::text_color(TextCtl::green_text);
-                    UARTprintf("0x%x, ", index);
+                    UARTprintf("0x%2x, ", index);
                     TextCtl::text_color(TextCtl::white_text);
 
                 } else if (this->i2c_msg->errors == TIMEOUT_ERR){

@@ -280,12 +280,12 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
 
                 UARTprintf("TX: ");
                 for (uint32_t index=0; index<this_ptr->spi_msg->bytes_txed; index++) {
-                    UARTprintf("0x%x ", this_ptr->spi_msg->tx_bytes[index]);
+                    UARTprintf("0x%2x ", this_ptr->spi_msg->tx_bytes[index]);
                 }
 
                 UARTprintf("\r\nRX: ");
                 for (uint32_t index=0; index<this_ptr->spi_msg->bytes_rxed; index++) {
-                    UARTprintf("0x%x ", this_ptr->spi_msg->rx_bytes[index]);
+                    UARTprintf("0x%2x ", this_ptr->spi_msg->rx_bytes[index]);
                 }
 
                 UARTprintf("\r\n\nMonitor message? y/n : ");

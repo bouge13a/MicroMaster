@@ -135,6 +135,7 @@ void I2cScripterTask::draw_input(int character) {
         if ('[' == character) {
             this->buffer_state = GET_NIBBLE_0;
             UARTprintf("%c", character);
+            this->i2c_msg->num_tx_bytes = 0;
         }
 
         break;
@@ -144,6 +145,7 @@ void I2cScripterTask::draw_input(int character) {
         if (0 == this->buffer_idx) {
 
             if (this->ascii_to_hex((char*)&character)) {
+
                 this->i2c_msg->address = character << 4;
                 this->buffer_state = GET_NIBBLE_1;
             }
@@ -151,7 +153,9 @@ void I2cScripterTask::draw_input(int character) {
         } else if (this->buffer_idx < TX_BUFFER_SIZE) {
 
             if (this->ascii_to_hex((char*)&character)) {
-                this->i2c_msg->tx_data[this->buffer_idx] = character << 4;
+                if(this->buffer_idx == 0) {
+                    this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = character << 4;
+                }
                 this->buffer_state = GET_NIBBLE_1;
             }
 
@@ -170,7 +174,9 @@ void I2cScripterTask::draw_input(int character) {
         if (0 == this->buffer_idx) {
 
             if (this->ascii_to_hex((char*)&character)) {
+
                 this->i2c_msg->address = this->i2c_msg->address | character;
+
                 this->buffer_state = GET_SPACE_BAR;
                 this->buffer_idx++;
             }
@@ -178,9 +184,10 @@ void I2cScripterTask::draw_input(int character) {
         } else if (this->buffer_idx < TX_BUFFER_SIZE) {
 
             if (this->ascii_to_hex((char*)&character)) {
-                this->i2c_msg->tx_data[this->buffer_idx] = this->i2c_msg->address | character;
+                this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] | character;
                 this->buffer_state = GET_SPACE_BAR;
                 this->buffer_idx++;
+                this->i2c_msg->num_tx_bytes++;
             }
 
         } else {
@@ -226,7 +233,9 @@ void I2cScripterTask::draw_reset(void) {
     this->buffer_state = START_SCRIPTER;
     TextCtl::cursor_pos(START_ROW, 0);
     TextCtl::clear_below_line();
-    UARTprintf("\r\nTransmit messages in the format [xx xx xx ...] starting with address\r\n");
+
+    UARTprintf("Press r to reset\r\n");
+    UARTprintf("Transmit messages in the format [xx xx xx ...] starting with address\r\n");
 
 
 

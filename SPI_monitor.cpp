@@ -96,7 +96,7 @@ bool SpiMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
 
     switch(this->message_format[index]) {
     case SPI_HEX_FORMAT :
-        UARTprintf("0x%x ", this->spi_monitor_msgs[index]->rx_bytes[inner_index]);
+        UARTprintf("0x%2x ", this->spi_monitor_msgs[index]->rx_bytes[inner_index]);
         return false;
     case SPI_BIN_FORMAT :
         int_to_bin_string(this->spi_monitor_msgs[index]->rx_bytes[inner_index], bin_string);

@@ -1,7 +1,7 @@
 ******************************************************************************
                   TI ARM Linker PC v20.2.2                     
 ******************************************************************************
->> Linked Tue Aug 31 20:21:41 2021
+>> Linked Wed Sep  1 12:45:18 2021
 
 OUTPUT FILE NAME:   <MicroMasterTM4C123G.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 000170e9
@@ -11,25 +11,25 @@ MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00040000  0001a580  00025a80  R  X
-  SRAM                  20000000   00008000  00006d74  0000128c  RW X
+  FLASH                 00000000   00040000  0001a568  00025a98  R  X
+  SRAM                  20000000   00008000  00006d48  000012b8  RW X
 
 
 SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    0001a580   0001a580    r-x
+00000000    00000000    0001a568   0001a568    r-x
   00000000    00000000    0000026c   0000026c    r-- .intvecs
   0000026c    0000026c    00018f34   00018f34    r-x .text
-  000191a0    000191a0    000010b8   000010b8    r-- .const
-  0001a258    0001a258    00000328   00000328    r-- .cinit
-20000000    20000000    00006d78   00000000    rw-
+  000191a0    000191a0    000010b0   000010b0    r-- .const
+  0001a250    0001a250    00000318   00000318    r-- .cinit
+20000000    20000000    00006d50   00000000    rw-
   20000000    20000000    0000026c   00000000    rw- .vtable
   2000026c    2000026c    00005b88   00000000    rw- .bss
   20005df8    20005df8    00000800   00000000    rw- .stack
-  200065f8    200065f8    00000770   00000000    rw- .data
-  20006d68    20006d68    00000010   00000000    rw- .sysmem
+  200065f8    200065f8    00000744   00000000    rw- .data
+  20006d40    20006d40    00000010   00000000    rw- .sysmem
 
 
 SECTION ALLOCATION MAP
@@ -664,7 +664,7 @@ section   page    origin      length       input sections
                   00019198    00000004                                   : pre_init.c.obj (.text:_system_pre_init)
                   0001919c    00000004                                   : exit.c.obj (.text:abort:abort)
 
-.const     0    000191a0    000010b8     
+.const     0    000191a0    000010b0     
                   000191a0    00000120     sysctl.obj (.const:g_pppui32XTALtoVCO)
                   000192c0    00000101     rtsv7M4_T_le_v4SPD16_eabi.lib : ctype.c.obj (.const:.string:_ctypes_)
                   000193c1    00000003     --HOLE-- [fill = 0]
@@ -741,71 +741,70 @@ section   page    origin      length       input sections
                   0001a018    00000010     rtsv7M4_T_le_v4SPD16_eabi.lib : typeinfo.c.obj (.const:_ZTVN10__cxxabiv117__class_type_infoE)
                   0001a028    00000010                                   : typeinfo.c.obj (.const:_ZTVN10__cxxabiv120__si_class_type_infoE)
                   0001a038    0000000f     UART_streamer.obj (.const:.typeinfo:_ZTS12UartStreamer)
-                  0001a047    00000001     --HOLE-- [fill = 0]
-                  0001a048    0000000e     PWM_page.obj (.const:.string)
-                  0001a056    0000000e     I2C_monitor.obj (.const:.typeinfo:_ZTS11ConsolePage)
-                  0001a064    0000000e     console_task.obj (.const:.typeinfo:_ZTS11ConsoleTask)
-                  0001a072    0000000e     error_logger.obj (.const:.typeinfo:_ZTS11ErrorLogger)
-                  0001a080    0000000e     menu_page.obj (.const:.typeinfo:_ZTS11MenuOptions)
-                  0001a08e    0000000e     task_manager.obj (.const:.typeinfo:_ZTS11TaskManager)
-                  0001a09c    0000000d     one_wire_command.obj (.const:.typeinfo:_ZTS10OneWireCmd)
-                  0001a0a9    0000000d     SPI_command.obj (.const:.typeinfo:_ZTS10SpiCmdTask)
-                  0001a0b6    0000000d     rtsv7M4_T_le_v4SPD16_eabi.lib : stdlib_typeinfo.cpp.obj (.const:.typeinfo:_ZTSSt9type_info)
-                  0001a0c3    00000001     --HOLE-- [fill = 0]
-                  0001a0c4    0000000c     one_wire_command.obj (.const:.typeinfo:_ZTI10OneWireCmd)
-                  0001a0d0    0000000c     SPI_command.obj (.const:.typeinfo:_ZTI10SpiCmdTask)
-                  0001a0dc    0000000c     console_task.obj (.const:.typeinfo:_ZTI11ConsoleTask)
-                  0001a0e8    0000000c     error_logger.obj (.const:.typeinfo:_ZTI11ErrorLogger)
-                  0001a0f4    0000000c     menu_page.obj (.const:.typeinfo:_ZTI11MenuOptions)
-                  0001a100    0000000c     task_manager.obj (.const:.typeinfo:_ZTI11TaskManager)
-                  0001a10c    0000000c     UART_streamer.obj (.const:.typeinfo:_ZTI12UartStreamer)
-                  0001a118    0000000c     I2C_monitor.obj (.const:.typeinfo:_ZTI14I2cMonitorTask)
-                  0001a124    0000000c     I2C_search.obj (.const:.typeinfo:_ZTI14I2cSnifferTask)
-                  0001a130    0000000c     SPI_monitor.obj (.const:.typeinfo:_ZTI14SpiMonitorTask)
-                  0001a13c    0000000c     I2C_scripter.obj (.const:.typeinfo:_ZTI15I2cScripterTask)
-                  0001a148    0000000c     I2C_task.obj (.const:.typeinfo:_ZTI7I2cTask)
-                  0001a154    0000000c     PWM_page.obj (.const:.typeinfo:_ZTI7PWMpage)
-                  0001a160    0000000c     UART_command.obj (.const:.typeinfo:_ZTI7UartCmd)
-                  0001a16c    0000000c     io_control_page.obj (.const:.typeinfo:_ZTI9IoCtlPage)
-                  0001a178    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : typeinfo.c.obj (.const:.typeinfo:_ZTIN10__cxxabiv117__class_type_infoE)
-                  0001a184    0000000c                                   : typeinfo.c.obj (.const:.typeinfo:_ZTIN10__cxxabiv120__si_class_type_infoE)
-                  0001a190    0000000c     uartstdio.obj (.const:g_ui32UARTBase)
-                  0001a19c    0000000c     uartstdio.obj (.const:g_ui32UARTPeriph)
-                  0001a1a8    0000000b     io_control_page.obj (.const:.typeinfo:_ZTS9IoCtlPage)
-                  0001a1b3    00000009     I2C_task.obj (.const:.typeinfo:_ZTS7I2cTask)
-                  0001a1bc    00000009     PWM_page.obj (.const:.typeinfo:_ZTS7PWMpage)
-                  0001a1c5    00000009     UART_command.obj (.const:.typeinfo:_ZTS7UartCmd)
-                  0001a1ce    00000002     --HOLE-- [fill = 0]
-                  0001a1d0    00000008     I2C_monitor.obj (.const:.typeinfo:_ZTI11ConsolePage)
-                  0001a1d8    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : stdlib_typeinfo.cpp.obj (.const:.typeinfo:_ZTISt9type_info)
-                  0001a1e0    00000008     sysctl.obj (.const:g_pui32VCOFrequencies)
-                  0001a1e8    00000008     usblib.lib : usbdcdc.obj (.const:g_sCDCCompSerConfigHeader)
-                  0001a1f0    00000008                : usbdcdc.obj (.const:g_sCDCCompSerConfigHeaderHS)
-                  0001a1f8    00000008                : usbdcdc.obj (.const:g_sCDCSerCommInterfaceSection)
-                  0001a200    00000008                : usbdcdc.obj (.const:g_sCDCSerConfigHeader)
-                  0001a208    00000008                : usbdcdc.obj (.const:g_sCDCSerConfigHeaderHS)
-                  0001a210    00000008                : usbdcdc.obj (.const:g_sCDCSerConfigSection)
-                  0001a218    00000008                : usbdcdc.obj (.const:g_sCDCSerDataInterfaceSection)
-                  0001a220    00000008                : usbdcdc.obj (.const:g_sCDCSerDataInterfaceSectionHS)
-                  0001a228    00000008                : usbdcdc.obj (.const:g_sIADSerConfigSection)
-                  0001a230    00000008     port.obj (.const)
-                  0001a238    00000007     rtsv7M4_T_le_v4SPD16_eabi.lib : vector.cpp.obj (.const:.string:_ZZNKSt3__220__vector_base_commonILb1EE20__throw_length_errorEvEs)
-                  0001a23f    00000004     usb_serial_structs.obj (.const:.string:g_pui8LangDescriptor)
-                  0001a243    00000001     --HOLE-- [fill = 0]
-                  0001a244    00000004     usblib.lib : usbdcdc.obj (.const:g_pCDCCompSerConfigDescriptors)
-                  0001a248    00000004                : usbdcdc.obj (.const:g_pCDCCompSerConfigDescriptorsHS)
-                  0001a24c    00000004                : usbdcdc.obj (.const:g_ppCDCSerConfigDescriptors)
-                  0001a250    00000004                : usbdcdc.obj (.const:g_ppCDCSerConfigDescriptorsHS)
-                  0001a254    00000004     uartstdio.obj (.const)
+                  0001a047    0000000e     CAN_command.obj (.const:.typeinfo:_ZTS11ConsolePage)
+                  0001a055    0000000e     console_task.obj (.const:.typeinfo:_ZTS11ConsoleTask)
+                  0001a063    0000000e     error_logger.obj (.const:.typeinfo:_ZTS11ErrorLogger)
+                  0001a071    0000000e     menu_page.obj (.const:.typeinfo:_ZTS11MenuOptions)
+                  0001a07f    0000000e     task_manager.obj (.const:.typeinfo:_ZTS11TaskManager)
+                  0001a08d    0000000d     one_wire_command.obj (.const:.typeinfo:_ZTS10OneWireCmd)
+                  0001a09a    0000000d     SPI_command.obj (.const:.typeinfo:_ZTS10SpiCmdTask)
+                  0001a0a7    0000000d     rtsv7M4_T_le_v4SPD16_eabi.lib : stdlib_typeinfo.cpp.obj (.const:.typeinfo:_ZTSSt9type_info)
+                  0001a0b4    0000000c     one_wire_command.obj (.const:.typeinfo:_ZTI10OneWireCmd)
+                  0001a0c0    0000000c     SPI_command.obj (.const:.typeinfo:_ZTI10SpiCmdTask)
+                  0001a0cc    0000000c     console_task.obj (.const:.typeinfo:_ZTI11ConsoleTask)
+                  0001a0d8    0000000c     error_logger.obj (.const:.typeinfo:_ZTI11ErrorLogger)
+                  0001a0e4    0000000c     menu_page.obj (.const:.typeinfo:_ZTI11MenuOptions)
+                  0001a0f0    0000000c     task_manager.obj (.const:.typeinfo:_ZTI11TaskManager)
+                  0001a0fc    0000000c     UART_streamer.obj (.const:.typeinfo:_ZTI12UartStreamer)
+                  0001a108    0000000c     I2C_monitor.obj (.const:.typeinfo:_ZTI14I2cMonitorTask)
+                  0001a114    0000000c     I2C_search.obj (.const:.typeinfo:_ZTI14I2cSnifferTask)
+                  0001a120    0000000c     SPI_monitor.obj (.const:.typeinfo:_ZTI14SpiMonitorTask)
+                  0001a12c    0000000c     I2C_scripter.obj (.const:.typeinfo:_ZTI15I2cScripterTask)
+                  0001a138    0000000c     I2C_task.obj (.const:.typeinfo:_ZTI7I2cTask)
+                  0001a144    0000000c     PWM_page.obj (.const:.typeinfo:_ZTI7PWMpage)
+                  0001a150    0000000c     UART_command.obj (.const:.typeinfo:_ZTI7UartCmd)
+                  0001a15c    0000000c     io_control_page.obj (.const:.typeinfo:_ZTI9IoCtlPage)
+                  0001a168    0000000c     rtsv7M4_T_le_v4SPD16_eabi.lib : typeinfo.c.obj (.const:.typeinfo:_ZTIN10__cxxabiv117__class_type_infoE)
+                  0001a174    0000000c                                   : typeinfo.c.obj (.const:.typeinfo:_ZTIN10__cxxabiv120__si_class_type_infoE)
+                  0001a180    0000000c     uartstdio.obj (.const:g_ui32UARTBase)
+                  0001a18c    0000000c     uartstdio.obj (.const:g_ui32UARTPeriph)
+                  0001a198    0000000b     io_control_page.obj (.const:.typeinfo:_ZTS9IoCtlPage)
+                  0001a1a3    00000009     I2C_task.obj (.const:.typeinfo:_ZTS7I2cTask)
+                  0001a1ac    00000009     PWM_page.obj (.const:.typeinfo:_ZTS7PWMpage)
+                  0001a1b5    00000009     UART_command.obj (.const:.typeinfo:_ZTS7UartCmd)
+                  0001a1be    00000002     --HOLE-- [fill = 0]
+                  0001a1c0    00000008     CAN_command.obj (.const:.typeinfo:_ZTI11ConsolePage)
+                  0001a1c8    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : stdlib_typeinfo.cpp.obj (.const:.typeinfo:_ZTISt9type_info)
+                  0001a1d0    00000008     sysctl.obj (.const:g_pui32VCOFrequencies)
+                  0001a1d8    00000008     usblib.lib : usbdcdc.obj (.const:g_sCDCCompSerConfigHeader)
+                  0001a1e0    00000008                : usbdcdc.obj (.const:g_sCDCCompSerConfigHeaderHS)
+                  0001a1e8    00000008                : usbdcdc.obj (.const:g_sCDCSerCommInterfaceSection)
+                  0001a1f0    00000008                : usbdcdc.obj (.const:g_sCDCSerConfigHeader)
+                  0001a1f8    00000008                : usbdcdc.obj (.const:g_sCDCSerConfigHeaderHS)
+                  0001a200    00000008                : usbdcdc.obj (.const:g_sCDCSerConfigSection)
+                  0001a208    00000008                : usbdcdc.obj (.const:g_sCDCSerDataInterfaceSection)
+                  0001a210    00000008                : usbdcdc.obj (.const:g_sCDCSerDataInterfaceSectionHS)
+                  0001a218    00000008                : usbdcdc.obj (.const:g_sIADSerConfigSection)
+                  0001a220    00000008     port.obj (.const)
+                  0001a228    00000007     rtsv7M4_T_le_v4SPD16_eabi.lib : vector.cpp.obj (.const:.string:_ZZNKSt3__220__vector_base_commonILb1EE20__throw_length_errorEvEs)
+                  0001a22f    00000001     --HOLE-- [fill = 0]
+                  0001a230    00000006     PWM_page.obj (.const:.string)
+                  0001a236    00000004     usb_serial_structs.obj (.const:.string:g_pui8LangDescriptor)
+                  0001a23a    00000002     --HOLE-- [fill = 0]
+                  0001a23c    00000004     usblib.lib : usbdcdc.obj (.const:g_pCDCCompSerConfigDescriptors)
+                  0001a240    00000004                : usbdcdc.obj (.const:g_pCDCCompSerConfigDescriptorsHS)
+                  0001a244    00000004                : usbdcdc.obj (.const:g_ppCDCSerConfigDescriptors)
+                  0001a248    00000004                : usbdcdc.obj (.const:g_ppCDCSerConfigDescriptorsHS)
+                  0001a24c    00000004     uartstdio.obj (.const)
 
-.cinit     0    0001a258    00000328     
-                  0001a258    000002ef     (.cinit..data.load) [load image, compression = lzss]
-                  0001a547    00000001     --HOLE-- [fill = 0]
-                  0001a548    0000000c     (__TI_handler_table)
-                  0001a554    00000004     --HOLE-- [fill = 0]
-                  0001a558    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  0001a560    00000008     (.cinit..vtable.load) [load image, compression = zero_init]
-                  0001a568    00000018     (__TI_cinit_table)
+.cinit     0    0001a250    00000318     
+                  0001a250    000002de     (.cinit..data.load) [load image, compression = lzss]
+                  0001a52e    00000002     --HOLE-- [fill = 0]
+                  0001a530    0000000c     (__TI_handler_table)
+                  0001a53c    00000004     --HOLE-- [fill = 0]
+                  0001a540    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  0001a548    00000008     (.cinit..vtable.load) [load image, compression = zero_init]
+                  0001a550    00000018     (__TI_cinit_table)
 
 .init_array 
 *          0    00000000    00000000     UNINITIALIZED
@@ -846,7 +845,7 @@ section   page    origin      length       input sections
                   20005df8    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.stack)
                   20005dfc    000007fc     --HOLE--
 
-.data      0    200065f8    00000770     UNINITIALIZED
+.data      0    200065f8    00000744     UNINITIALIZED
                   200065f8    000000f0     rtsv7M4_T_le_v4SPD16_eabi.lib : defs.c.obj (.data:_ftable)
                   200066e8    00000078                                   : host_device.c.obj (.data:_device)
                   20006760    00000060     usb_serial_structs.obj (.data:g_sCDCDevice)
@@ -855,80 +854,79 @@ section   page    origin      length       input sections
                   20006848    00000038     usb_serial_structs.obj (.data:g_sTxBuffer)
                   20006880    00000034     tasks.obj (.data)
                   200068b4    00000028     PWM_page.obj (.data:pwm_0)
-                  200068dc    00000028     PWM_page.obj (.data:pwm_1)
-                  20006904    00000024     GPOs.obj (.data:gpos)
-                  20006928    00000024     no_booster_board.obj (.data:i2c0)
-                  2000694c    00000020     ADC_task.obj (.data:adc_0)
-                  2000696c    00000020     ADC_task.obj (.data:adc_1)
-                  2000698c    00000020     ADC_task.obj (.data:adc_2)
-                  200069ac    00000020     ADC_task.obj (.data:adc_3)
-                  200069cc    00000020     no_booster_board.obj (.data)
-                  200069ec    0000001c     GPIs.obj (.data:gpi_0)
-                  20006a08    0000001c     GPIs.obj (.data:gpi_1)
-                  20006a24    0000001c     GPIs.obj (.data:gpi_2)
-                  20006a40    0000001c     GPIs.obj (.data:gpi_3)
-                  20006a5c    0000001c     GPOs.obj (.data:gpo_0)
-                  20006a78    0000001c     GPOs.obj (.data:gpo_1)
-                  20006a94    0000001c     GPOs.obj (.data:gpo_2)
-                  20006ab0    0000001c     GPOs.obj (.data:gpo_3)
-                  20006acc    0000001c     GPOs.obj (.data:psel_1v8)
-                  20006ae8    0000001c     GPOs.obj (.data:psel_3v3)
-                  20006b04    0000001c     GPOs.obj (.data:psel_5v)
-                  20006b20    0000001c     GPOs.obj (.data:pullup_en)
-                  20006b3c    0000001c     GPOs.obj (.data:pwr_on)
-                  20006b58    00000019     UART_to_USB.obj (.data)
-                  20006b71    00000001     I2C_search.obj (.data)
-                  20006b72    00000002     usblib.lib : usbdcdc.obj (.data)
-                  20006b74    00000018     GPOs.obj (.data)
-                  20006b8c    00000018     heap_4.obj (.data)
-                  20006ba4    00000018     no_booster_board.obj (.data:spi_mode_menu)
-                  20006bbc    00000014     no_booster_board.obj (.data:uart_parity_menu)
-                  20006bd0    00000012     usblib.lib : usbdcdc.obj (.data:g_pui8CDCSerDeviceDescriptor)
-                  20006be2    00000002     --HOLE--
-                  20006be4    00000010     SPI_command.obj (.data)
-                  20006bf4    00000010     ADC_task.obj (.data:board_adc_pins)
-                  20006c04    00000010     GPIs.obj (.data:board_gpi_pins)
-                  20006c14    00000010     I2C_monitor.obj (.data:format_types)
-                  20006c24    00000010     SPI_monitor.obj (.data:format_types)
-                  20006c34    00000010     usblib.lib : usbdcdc.obj (.data:g_psCDCCompSerSections)
-                  20006c44    00000010                : usbdcdc.obj (.data:g_psCDCCompSerSectionsHS)
-                  20006c54    00000010     rtsv7M4_T_le_v4SPD16_eabi.lib : defs.c.obj (.data)
-                  20006c64    0000000c                                   : exit.c.obj (.data:$O1$$)
-                  20006c70    0000000c     UART_command.obj (.data)
-                  20006c7c    0000000c     usblib.lib : usbdcdc.obj (.data:g_psCDCSerSections)
-                  20006c88    0000000c                : usbdcdc.obj (.data:g_psCDCSerSectionsHS)
-                  20006c94    0000000c     port.obj (.data)
-                  20006ca0    0000000c     no_booster_board.obj (.data:power_select_menu)
-                  20006cac    0000000c     usblib.lib : usbtick.obj (.data)
-                  20006cb8    00000009                : usbdcdc.obj (.data:g_pui8CDCSerDescriptor)
-                  20006cc1    00000003     --HOLE--
-                  20006cc4    00000009     uartstdio.obj (.data)
-                  20006ccd    00000003     --HOLE--
-                  20006cd0    00000009     usblib.lib : usbmode.obj (.data)
-                  20006cd9    00000003     --HOLE--
-                  20006cdc    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.c.obj (.data:$O1$$)
-                  20006ce4    00000008                                   : memory.c.obj (.data:$O1$$)
-                  20006cec    00000008     ADC_task.obj (.data:adc_pin_struct)
-                  20006cf4    00000008     GPIs.obj (.data:board_gpi_info)
-                  20006cfc    00000008     GPOs.obj (.data:board_gpo_info)
-                  20006d04    00000008     PWM_page.obj (.data:board_pwm_info)
-                  20006d0c    00000008     error_logger.obj (.data)
-                  20006d14    00000008     usblib.lib : usbdcdc.obj (.data:g_pui8IADSerDescriptor)
-                  20006d1c    00000008     no_booster_board.obj (.data:i2c_speed_menu)
-                  20006d24    00000008     no_booster_board.obj (.data:power_on_menu)
-                  20006d2c    00000008     no_booster_board.obj (.data:pullup_en_menu)
-                  20006d34    00000008     PWM_page.obj (.data:pwm_pins)
-                  20006d3c    00000008     no_booster_board.obj (.data:uart_mode_menu)
-                  20006d44    00000008     no_booster_board.obj (.data:uart_stop_bit_menu)
-                  20006d4c    00000008     usblib.lib : usbdenum.obj (.data)
-                  20006d54    00000005     UART_streamer.obj (.data)
-                  20006d59    00000003     --HOLE--
-                  20006d5c    00000004     ADC_task.obj (.data)
-                  20006d60    00000004     one_wire_command.obj (.data)
-                  20006d64    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : errno.c.obj (.data)
+                  200068dc    00000024     GPOs.obj (.data:gpos)
+                  20006900    00000024     no_booster_board.obj (.data:i2c0)
+                  20006924    00000020     ADC_task.obj (.data:adc_0)
+                  20006944    00000020     ADC_task.obj (.data:adc_1)
+                  20006964    00000020     ADC_task.obj (.data:adc_2)
+                  20006984    00000020     ADC_task.obj (.data:adc_3)
+                  200069a4    00000020     no_booster_board.obj (.data)
+                  200069c4    0000001c     GPIs.obj (.data:gpi_0)
+                  200069e0    0000001c     GPIs.obj (.data:gpi_1)
+                  200069fc    0000001c     GPIs.obj (.data:gpi_2)
+                  20006a18    0000001c     GPIs.obj (.data:gpi_3)
+                  20006a34    0000001c     GPOs.obj (.data:gpo_0)
+                  20006a50    0000001c     GPOs.obj (.data:gpo_1)
+                  20006a6c    0000001c     GPOs.obj (.data:gpo_2)
+                  20006a88    0000001c     GPOs.obj (.data:gpo_3)
+                  20006aa4    0000001c     GPOs.obj (.data:psel_1v8)
+                  20006ac0    0000001c     GPOs.obj (.data:psel_3v3)
+                  20006adc    0000001c     GPOs.obj (.data:psel_5v)
+                  20006af8    0000001c     GPOs.obj (.data:pullup_en)
+                  20006b14    0000001c     GPOs.obj (.data:pwr_on)
+                  20006b30    00000019     UART_to_USB.obj (.data)
+                  20006b49    00000001     I2C_search.obj (.data)
+                  20006b4a    00000002     usblib.lib : usbdcdc.obj (.data)
+                  20006b4c    00000018     GPOs.obj (.data)
+                  20006b64    00000018     heap_4.obj (.data)
+                  20006b7c    00000018     no_booster_board.obj (.data:spi_mode_menu)
+                  20006b94    00000014     no_booster_board.obj (.data:uart_parity_menu)
+                  20006ba8    00000012     usblib.lib : usbdcdc.obj (.data:g_pui8CDCSerDeviceDescriptor)
+                  20006bba    00000002     --HOLE--
+                  20006bbc    00000010     SPI_command.obj (.data)
+                  20006bcc    00000010     ADC_task.obj (.data:board_adc_pins)
+                  20006bdc    00000010     GPIs.obj (.data:board_gpi_pins)
+                  20006bec    00000010     I2C_monitor.obj (.data:format_types)
+                  20006bfc    00000010     SPI_monitor.obj (.data:format_types)
+                  20006c0c    00000010     usblib.lib : usbdcdc.obj (.data:g_psCDCCompSerSections)
+                  20006c1c    00000010                : usbdcdc.obj (.data:g_psCDCCompSerSectionsHS)
+                  20006c2c    00000010     rtsv7M4_T_le_v4SPD16_eabi.lib : defs.c.obj (.data)
+                  20006c3c    0000000c                                   : exit.c.obj (.data:$O1$$)
+                  20006c48    0000000c     UART_command.obj (.data)
+                  20006c54    0000000c     usblib.lib : usbdcdc.obj (.data:g_psCDCSerSections)
+                  20006c60    0000000c                : usbdcdc.obj (.data:g_psCDCSerSectionsHS)
+                  20006c6c    0000000c     port.obj (.data)
+                  20006c78    0000000c     no_booster_board.obj (.data:power_select_menu)
+                  20006c84    0000000c     usblib.lib : usbtick.obj (.data)
+                  20006c90    00000009                : usbdcdc.obj (.data:g_pui8CDCSerDescriptor)
+                  20006c99    00000003     --HOLE--
+                  20006c9c    00000009     uartstdio.obj (.data)
+                  20006ca5    00000003     --HOLE--
+                  20006ca8    00000009     usblib.lib : usbmode.obj (.data)
+                  20006cb1    00000003     --HOLE--
+                  20006cb4    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.c.obj (.data:$O1$$)
+                  20006cbc    00000008                                   : memory.c.obj (.data:$O1$$)
+                  20006cc4    00000008     ADC_task.obj (.data:adc_pin_struct)
+                  20006ccc    00000008     GPIs.obj (.data:board_gpi_info)
+                  20006cd4    00000008     GPOs.obj (.data:board_gpo_info)
+                  20006cdc    00000008     PWM_page.obj (.data:board_pwm_info)
+                  20006ce4    00000008     error_logger.obj (.data)
+                  20006cec    00000008     usblib.lib : usbdcdc.obj (.data:g_pui8IADSerDescriptor)
+                  20006cf4    00000008     no_booster_board.obj (.data:i2c_speed_menu)
+                  20006cfc    00000008     no_booster_board.obj (.data:power_on_menu)
+                  20006d04    00000008     no_booster_board.obj (.data:pullup_en_menu)
+                  20006d0c    00000008     no_booster_board.obj (.data:uart_mode_menu)
+                  20006d14    00000008     no_booster_board.obj (.data:uart_stop_bit_menu)
+                  20006d1c    00000008     usblib.lib : usbdenum.obj (.data)
+                  20006d24    00000005     UART_streamer.obj (.data)
+                  20006d29    00000003     --HOLE--
+                  20006d2c    00000004     ADC_task.obj (.data)
+                  20006d30    00000004     one_wire_command.obj (.data)
+                  20006d34    00000004     PWM_page.obj (.data:pwm_pins)
+                  20006d38    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : errno.c.obj (.data)
 
-.sysmem    0    20006d68    00000010     UNINITIALIZED
-                  20006d68    00000010     rtsv7M4_T_le_v4SPD16_eabi.lib : memory.c.obj (.sysmem)
+.sysmem    0    20006d40    00000010     UNINITIALIZED
+                  20006d40    00000010     rtsv7M4_T_le_v4SPD16_eabi.lib : memory.c.obj (.sysmem)
 
 __llvm_prf_cnts 
 *          0    20000000    00000000     UNINITIALIZED
@@ -941,7 +939,7 @@ MODULE SUMMARY
        ADC_task.obj                   652      30        20636  
        SPI_command.obj                6844     121       16     
        I2C_task.obj                   5884     49        0      
-       I2C_monitor.obj                3641     171       28     
+       I2C_monitor.obj                3641     149       28     
        console_task.obj               3626     150       0      
        one_wire_command.obj           3132     53        4      
        menu_page.obj                  2970     122       0      
@@ -952,7 +950,7 @@ MODULE SUMMARY
        I2C_scripter.obj               1540     58        0      
        no_booster_board.obj           1124     252       164    
        UART_to_USB.obj                1448     0         25     
-       PWM_page.obj                   1131     63        96     
+       PWM_page.obj                   1131     55        52     
        heap_4.obj                     1108     0         32     
        io_control_page.obj            940      51        0      
        usb_serial_structs.obj         0        214       720    
@@ -966,8 +964,9 @@ MODULE SUMMARY
        main.obj                       60       0         0      
        memory_functions.obj           48       0         0      
        hooks.obj                      42       0         0      
+       CAN_command.obj                0        22        0      
     +--+------------------------------+--------+---------+---------+
-       Total:                         43398    2416      23431  
+       Total:                         43398    2408      23387  
                                                                 
     .\FreeRTOS\
        tasks.obj                      7644     0         260    
@@ -1095,22 +1094,22 @@ MODULE SUMMARY
                                                                 
        Heap:                          0        0         16     
        Stack:                         0        0         2048   
-       Linker Generated:              0        803       0      
+       Linker Generated:              0        786       0      
     +--+------------------------------+--------+---------+---------+
-       Grand Total:                   102171   5682      28006  
+       Grand Total:                   102171   5657      27962  
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 0001a568 records: 3, size/record: 8, table size: 24
-	.data: load addr=0001a258, load size=000002ef bytes, run addr=200065f8, run size=00000770 bytes, compression=lzss
-	.bss: load addr=0001a558, load size=00000008 bytes, run addr=2000026c, run size=00005b88 bytes, compression=zero_init
-	.vtable: load addr=0001a560, load size=00000008 bytes, run addr=20000000, run size=0000026c bytes, compression=zero_init
+__TI_cinit_table @ 0001a550 records: 3, size/record: 8, table size: 24
+	.data: load addr=0001a250, load size=000002de bytes, run addr=200065f8, run size=00000744 bytes, compression=lzss
+	.bss: load addr=0001a540, load size=00000008 bytes, run addr=2000026c, run size=00005b88 bytes, compression=zero_init
+	.vtable: load addr=0001a548, load size=00000008 bytes, run addr=20000000, run size=0000026c bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 0001a548 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 0001a530 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -1728,7 +1727,7 @@ address   name
 00011659  _ZN11ErrorLogger10draw_resetEv                                                                                                                                                                                                                                                   
 00011493  _ZN11ErrorLogger12create_errorEPKcS1_                                                                                                                                                                                                                                            
 00011469  _ZN11ErrorLogger12get_instanceEv                                                                                                                                                                                                                                                 
-20006d10  _ZN11ErrorLogger3objE                                                                                                                                                                                                                                                            
+20006ce8  _ZN11ErrorLogger3objE                                                                                                                                                                                                                                                            
 0001156d  _ZN11ErrorLogger9draw_dataEv                                                                                                                                                                                                                                                     
 0001164f  _ZN11ErrorLogger9draw_helpEv                                                                                                                                                                                                                                                     
 00011523  _ZN11ErrorLogger9draw_pageEv                                                                                                                                                                                                                                                     
@@ -2230,44 +2229,44 @@ address   name
 00009baf  _ZNSt9type_infoD1Ev                                                                                                                                                                                                                                                              
 00009baf  _ZNSt9type_infoD2Ev                                                                                                                                                                                                                                                              
 0001919d  _ZSt17__throw_bad_allocv                                                                                                                                                                                                                                                         
-0001a0c4  _ZTI10OneWireCmd                                                                                                                                                                                                                                                                 
-0001a0d0  _ZTI10SpiCmdTask                                                                                                                                                                                                                                                                 
-0001a1d0  _ZTI11ConsolePage                                                                                                                                                                                                                                                                
-0001a0dc  _ZTI11ConsoleTask                                                                                                                                                                                                                                                                
-0001a0e8  _ZTI11ErrorLogger                                                                                                                                                                                                                                                                
-0001a0f4  _ZTI11MenuOptions                                                                                                                                                                                                                                                                
-0001a100  _ZTI11TaskManager                                                                                                                                                                                                                                                                
-0001a10c  _ZTI12UartStreamer                                                                                                                                                                                                                                                               
-0001a118  _ZTI14I2cMonitorTask                                                                                                                                                                                                                                                             
-0001a124  _ZTI14I2cSnifferTask                                                                                                                                                                                                                                                             
-0001a130  _ZTI14SpiMonitorTask                                                                                                                                                                                                                                                             
-0001a13c  _ZTI15I2cScripterTask                                                                                                                                                                                                                                                            
-0001a148  _ZTI7I2cTask                                                                                                                                                                                                                                                                     
-0001a154  _ZTI7PWMpage                                                                                                                                                                                                                                                                     
-0001a160  _ZTI7UartCmd                                                                                                                                                                                                                                                                     
-0001a16c  _ZTI9IoCtlPage                                                                                                                                                                                                                                                                   
-0001a178  _ZTIN10__cxxabiv117__class_type_infoE                                                                                                                                                                                                                                            
-0001a184  _ZTIN10__cxxabiv120__si_class_type_infoE                                                                                                                                                                                                                                         
-0001a1d8  _ZTISt9type_info                                                                                                                                                                                                                                                                 
-0001a09c  _ZTS10OneWireCmd                                                                                                                                                                                                                                                                 
-0001a0a9  _ZTS10SpiCmdTask                                                                                                                                                                                                                                                                 
-0001a056  _ZTS11ConsolePage                                                                                                                                                                                                                                                                
-0001a064  _ZTS11ConsoleTask                                                                                                                                                                                                                                                                
-0001a072  _ZTS11ErrorLogger                                                                                                                                                                                                                                                                
-0001a080  _ZTS11MenuOptions                                                                                                                                                                                                                                                                
-0001a08e  _ZTS11TaskManager                                                                                                                                                                                                                                                                
+0001a0b4  _ZTI10OneWireCmd                                                                                                                                                                                                                                                                 
+0001a0c0  _ZTI10SpiCmdTask                                                                                                                                                                                                                                                                 
+0001a1c0  _ZTI11ConsolePage                                                                                                                                                                                                                                                                
+0001a0cc  _ZTI11ConsoleTask                                                                                                                                                                                                                                                                
+0001a0d8  _ZTI11ErrorLogger                                                                                                                                                                                                                                                                
+0001a0e4  _ZTI11MenuOptions                                                                                                                                                                                                                                                                
+0001a0f0  _ZTI11TaskManager                                                                                                                                                                                                                                                                
+0001a0fc  _ZTI12UartStreamer                                                                                                                                                                                                                                                               
+0001a108  _ZTI14I2cMonitorTask                                                                                                                                                                                                                                                             
+0001a114  _ZTI14I2cSnifferTask                                                                                                                                                                                                                                                             
+0001a120  _ZTI14SpiMonitorTask                                                                                                                                                                                                                                                             
+0001a12c  _ZTI15I2cScripterTask                                                                                                                                                                                                                                                            
+0001a138  _ZTI7I2cTask                                                                                                                                                                                                                                                                     
+0001a144  _ZTI7PWMpage                                                                                                                                                                                                                                                                     
+0001a150  _ZTI7UartCmd                                                                                                                                                                                                                                                                     
+0001a15c  _ZTI9IoCtlPage                                                                                                                                                                                                                                                                   
+0001a168  _ZTIN10__cxxabiv117__class_type_infoE                                                                                                                                                                                                                                            
+0001a174  _ZTIN10__cxxabiv120__si_class_type_infoE                                                                                                                                                                                                                                         
+0001a1c8  _ZTISt9type_info                                                                                                                                                                                                                                                                 
+0001a08d  _ZTS10OneWireCmd                                                                                                                                                                                                                                                                 
+0001a09a  _ZTS10SpiCmdTask                                                                                                                                                                                                                                                                 
+0001a047  _ZTS11ConsolePage                                                                                                                                                                                                                                                                
+0001a055  _ZTS11ConsoleTask                                                                                                                                                                                                                                                                
+0001a063  _ZTS11ErrorLogger                                                                                                                                                                                                                                                                
+0001a071  _ZTS11MenuOptions                                                                                                                                                                                                                                                                
+0001a07f  _ZTS11TaskManager                                                                                                                                                                                                                                                                
 0001a038  _ZTS12UartStreamer                                                                                                                                                                                                                                                               
 00019fe4  _ZTS14I2cMonitorTask                                                                                                                                                                                                                                                             
 00019ff5  _ZTS14I2cSnifferTask                                                                                                                                                                                                                                                             
 0001a006  _ZTS14SpiMonitorTask                                                                                                                                                                                                                                                             
 00019fd2  _ZTS15I2cScripterTask                                                                                                                                                                                                                                                            
-0001a1b3  _ZTS7I2cTask                                                                                                                                                                                                                                                                     
-0001a1bc  _ZTS7PWMpage                                                                                                                                                                                                                                                                     
-0001a1c5  _ZTS7UartCmd                                                                                                                                                                                                                                                                     
-0001a1a8  _ZTS9IoCtlPage                                                                                                                                                                                                                                                                   
+0001a1a3  _ZTS7I2cTask                                                                                                                                                                                                                                                                     
+0001a1ac  _ZTS7PWMpage                                                                                                                                                                                                                                                                     
+0001a1b5  _ZTS7UartCmd                                                                                                                                                                                                                                                                     
+0001a198  _ZTS9IoCtlPage                                                                                                                                                                                                                                                                   
 00019c62  _ZTSN10__cxxabiv117__class_type_infoE                                                                                                                                                                                                                                            
 00019bd4  _ZTSN10__cxxabiv120__si_class_type_infoE                                                                                                                                                                                                                                         
-0001a0b6  _ZTSSt9type_info                                                                                                                                                                                                                                                                 
+0001a0a7  _ZTSSt9type_info                                                                                                                                                                                                                                                                 
 00019d24  _ZTV10OneWireCmd                                                                                                                                                                                                                                                                 
 00019d40  _ZTV10SpiCmdTask                                                                                                                                                                                                                                                                 
 00019d5c  _ZTV11ConsolePage                                                                                                                                                                                                                                                                
@@ -2286,7 +2285,7 @@ address   name
 00019ec8  _ZTV9IoCtlPage                                                                                                                                                                                                                                                                   
 0001a018  _ZTVN10__cxxabiv117__class_type_infoE                                                                                                                                                                                                                                            
 0001a028  _ZTVN10__cxxabiv120__si_class_type_infoE                                                                                                                                                                                                                                         
-0001a238  _ZZNKSt3__220__vector_base_commonILb1EE20__throw_length_errorEvEs                                                                                                                                                                                                                
+0001a228  _ZZNKSt3__220__vector_base_commonILb1EE20__throw_length_errorEvEs                                                                                                                                                                                                                
 000198dc  _ZZNSt3__29allocatorIP11ConsolePageE8allocateEjPKvEs                                                                                                                                                                                                                             
 00019920  _ZZNSt3__29allocatorIP6I2cMsgE8allocateEjPKvEs                                                                                                                                                                                                                                   
 00019964  _ZZNSt3__29allocatorIP6SpiMsgE8allocateEjPKvEs                                                                                                                                                                                                                                   
@@ -2302,20 +2301,20 @@ address   name
 00000800  __STACK_SIZE                                                                                                                                                                                                                                                                     
 20005ff8  __STACK_TOP                                                                                                                                                                                                                                                                      
 00000010  __SYSMEM_SIZE                                                                                                                                                                                                                                                                    
-0001a568  __TI_CINIT_Base                                                                                                                                                                                                                                                                  
-0001a580  __TI_CINIT_Limit                                                                                                                                                                                                                                                                 
-0001a548  __TI_Handler_Table_Base                                                                                                                                                                                                                                                          
-0001a554  __TI_Handler_Table_Limit                                                                                                                                                                                                                                                         
+0001a550  __TI_CINIT_Base                                                                                                                                                                                                                                                                  
+0001a568  __TI_CINIT_Limit                                                                                                                                                                                                                                                                 
+0001a530  __TI_Handler_Table_Base                                                                                                                                                                                                                                                          
+0001a53c  __TI_Handler_Table_Limit                                                                                                                                                                                                                                                         
 000168a1  __TI_auto_init_nobinit_nopinit                                                                                                                                                                                                                                                   
 00017081  __TI_cleanup                                                                                                                                                                                                                                                                     
-20006c64  __TI_cleanup_ptr                                                                                                                                                                                                                                                                 
+20006c3c  __TI_cleanup_ptr                                                                                                                                                                                                                                                                 
 00014c99  __TI_closefile                                                                                                                                                                                                                                                                   
 00015311  __TI_decompress_lzss                                                                                                                                                                                                                                                             
 00018c71  __TI_decompress_none                                                                                                                                                                                                                                                             
 000162f1  __TI_doflush                                                                                                                                                                                                                                                                     
-20006c68  __TI_dtors_ptr                                                                                                                                                                                                                                                                   
-20006c6c  __TI_enable_exit_profile_output                                                                                                                                                                                                                                                  
-20006c54  __TI_ft_end                                                                                                                                                                                                                                                                      
+20006c40  __TI_dtors_ptr                                                                                                                                                                                                                                                                   
+20006c44  __TI_enable_exit_profile_output                                                                                                                                                                                                                                                  
+20006c2c  __TI_ft_end                                                                                                                                                                                                                                                                      
 00015fcd  __TI_ltoa                                                                                                                                                                                                                                                                        
 ffffffff  __TI_pprof_out_hndl                                                                                                                                                                                                                                                              
 00009161  __TI_printfi                                                                                                                                                                                                                                                                     
@@ -2350,9 +2349,9 @@ ffffffff  __TI_prof_data_start
 00014ba7  __aeabi_memset                                                                                                                                                                                                                                                                   
 00014ba7  __aeabi_memset4                                                                                                                                                                                                                                                                  
 00014ba7  __aeabi_memset8                                                                                                                                                                                                                                                                  
-20006c60  __aeabi_stderr                                                                                                                                                                                                                                                                   
-20006c58  __aeabi_stdin                                                                                                                                                                                                                                                                    
-20006c5c  __aeabi_stdout                                                                                                                                                                                                                                                                   
+20006c38  __aeabi_stderr                                                                                                                                                                                                                                                                   
+20006c30  __aeabi_stdin                                                                                                                                                                                                                                                                    
+20006c34  __aeabi_stdout                                                                                                                                                                                                                                                                   
 00017e41  __aeabi_ui2d                                                                                                                                                                                                                                                                     
 00016a6d  __aeabi_uidiv                                                                                                                                                                                                                                                                    
 00016a6d  __aeabi_uidivmod                                                                                                                                                                                                                                                                 
@@ -2369,26 +2368,26 @@ UNDEFED   __mpu_init
 000192c0  _ctypes_                                                                                                                                                                                                                                                                         
 200066e8  _device                                                                                                                                                                                                                                                                          
 200065f8  _ftable                                                                                                                                                                                                                                                                          
-20006cdc  _lock                                                                                                                                                                                                                                                                            
+20006cb4  _lock                                                                                                                                                                                                                                                                            
 0000a373  _nop                                                                                                                                                                                                                                                                             
 200067c0  _stream                                                                                                                                                                                                                                                                          
-20006d68  _sys_memory                                                                                                                                                                                                                                                                      
+20006d40  _sys_memory                                                                                                                                                                                                                                                                      
 UNDEFED   _system_post_cinit                                                                                                                                                                                                                                                               
 00019199  _system_pre_init                                                                                                                                                                                                                                                                 
-20006ce0  _unlock                                                                                                                                                                                                                                                                          
+20006cb8  _unlock                                                                                                                                                                                                                                                                          
 0001919d  abort                                                                                                                                                                                                                                                                            
-20006cec  adc_pin_struct                                                                                                                                                                                                                                                                   
+20006cc4  adc_pin_struct                                                                                                                                                                                                                                                                   
 0001343d  aligned_alloc                                                                                                                                                                                                                                                                    
 0001633d  atoi                                                                                                                                                                                                                                                                             
 ffffffff  binit                                                                                                                                                                                                                                                                            
-20006cf4  board_gpi_info                                                                                                                                                                                                                                                                   
-20006cfc  board_gpo_info                                                                                                                                                                                                                                                                   
-20006d04  board_pwm_info                                                                                                                                                                                                                                                                   
+20006ccc  board_gpi_info                                                                                                                                                                                                                                                                   
+20006cd4  board_gpo_info                                                                                                                                                                                                                                                                   
+20006cdc  board_pwm_info                                                                                                                                                                                                                                                                   
 00015ac1  close                                                                                                                                                                                                                                                                            
 00018081  copysign                                                                                                                                                                                                                                                                         
 00018081  copysignl                                                                                                                                                                                                                                                                        
 000006a5  eTaskGetState                                                                                                                                                                                                                                                                    
-20006d64  errno                                                                                                                                                                                                                                                                            
+20006d38  errno                                                                                                                                                                                                                                                                            
 00016745  exit                                                                                                                                                                                                                                                                             
 00014b29  fflush                                                                                                                                                                                                                                                                           
 000172a9  finddevice                                                                                                                                                                                                                                                                       
@@ -2397,59 +2396,59 @@ ffffffff  binit
 0001556d  frexp                                                                                                                                                                                                                                                                            
 0001556d  frexpl                                                                                                                                                                                                                                                                           
 000155d1  fseek                                                                                                                                                                                                                                                                            
-20006cac  g_bUSBTimerInitialized                                                                                                                                                                                                                                                           
-20006cd0  g_iUSBMode                                                                                                                                                                                                                                                                       
-0001a244  g_pCDCCompSerConfigDescriptors                                                                                                                                                                                                                                                   
-0001a248  g_pCDCCompSerConfigDescriptorsHS                                                                                                                                                                                                                                                 
+20006c84  g_bUSBTimerInitialized                                                                                                                                                                                                                                                           
+20006ca8  g_iUSBMode                                                                                                                                                                                                                                                                       
+0001a23c  g_pCDCCompSerConfigDescriptors                                                                                                                                                                                                                                                   
+0001a240  g_pCDCCompSerConfigDescriptorsHS                                                                                                                                                                                                                                                 
 20000000  g_pfnRAMVectors                                                                                                                                                                                                                                                                  
 20005d20  g_pfnTickHandlers                                                                                                                                                                                                                                                                
 00000000  g_pfnVectors                                                                                                                                                                                                                                                                     
-0001a24c  g_ppCDCSerConfigDescriptors                                                                                                                                                                                                                                                      
-0001a250  g_ppCDCSerConfigDescriptorsHS                                                                                                                                                                                                                                                    
+0001a244  g_ppCDCSerConfigDescriptors                                                                                                                                                                                                                                                      
+0001a248  g_ppCDCSerConfigDescriptorsHS                                                                                                                                                                                                                                                    
 20005df0  g_ppsDevInfo                                                                                                                                                                                                                                                                     
 00019f14  g_ppui8StringDescriptors                                                                                                                                                                                                                                                         
-20006c34  g_psCDCCompSerSections                                                                                                                                                                                                                                                           
-20006c44  g_psCDCCompSerSectionsHS                                                                                                                                                                                                                                                         
-20006c7c  g_psCDCSerSections                                                                                                                                                                                                                                                               
-20006c88  g_psCDCSerSectionsHS                                                                                                                                                                                                                                                             
+20006c0c  g_psCDCCompSerSections                                                                                                                                                                                                                                                           
+20006c1c  g_psCDCCompSerSectionsHS                                                                                                                                                                                                                                                         
+20006c54  g_psCDCSerSections                                                                                                                                                                                                                                                               
+20006c60  g_psCDCSerSectionsHS                                                                                                                                                                                                                                                             
 20005c50  g_psDCDInst                                                                                                                                                                                                                                                                      
 00019c1d  g_pui8CDCSerCommInterface                                                                                                                                                                                                                                                        
 00019f2c  g_pui8CDCSerDataInterface                                                                                                                                                                                                                                                        
 00019f43  g_pui8CDCSerDataInterfaceHS                                                                                                                                                                                                                                                      
-20006cb8  g_pui8CDCSerDescriptor                                                                                                                                                                                                                                                           
-20006bd0  g_pui8CDCSerDeviceDescriptor                                                                                                                                                                                                                                                     
+20006c90  g_pui8CDCSerDescriptor                                                                                                                                                                                                                                                           
+20006ba8  g_pui8CDCSerDeviceDescriptor                                                                                                                                                                                                                                                     
 00019aac  g_pui8ConfigString                                                                                                                                                                                                                                                               
 00019ba8  g_pui8ControlInterfaceString                                                                                                                                                                                                                                                     
-20006d14  g_pui8IADSerDescriptor                                                                                                                                                                                                                                                           
-0001a23f  g_pui8LangDescriptor                                                                                                                                                                                                                                                             
+20006cec  g_pui8IADSerDescriptor                                                                                                                                                                                                                                                           
+0001a236  g_pui8LangDescriptor                                                                                                                                                                                                                                                             
 00019bf9  g_pui8ManufacturerString                                                                                                                                                                                                                                                         
 00019c40  g_pui8ProductString                                                                                                                                                                                                                                                              
 00019fac  g_pui8SerialNumberString                                                                                                                                                                                                                                                         
 2000594c  g_pui8USBRxBuffer                                                                                                                                                                                                                                                                
 20005a4c  g_pui8USBTxBuffer                                                                                                                                                                                                                                                                
 20005d38  g_pvTickInstance                                                                                                                                                                                                                                                                 
-0001a1e8  g_sCDCCompSerConfigHeader                                                                                                                                                                                                                                                        
-0001a1f0  g_sCDCCompSerConfigHeaderHS                                                                                                                                                                                                                                                      
+0001a1d8  g_sCDCCompSerConfigHeader                                                                                                                                                                                                                                                        
+0001a1e0  g_sCDCCompSerConfigHeaderHS                                                                                                                                                                                                                                                      
 20006760  g_sCDCDevice                                                                                                                                                                                                                                                                     
 00019b48  g_sCDCHandlers                                                                                                                                                                                                                                                                   
-0001a1f8  g_sCDCSerCommInterfaceSection                                                                                                                                                                                                                                                    
-0001a200  g_sCDCSerConfigHeader                                                                                                                                                                                                                                                            
-0001a208  g_sCDCSerConfigHeaderHS                                                                                                                                                                                                                                                          
-0001a210  g_sCDCSerConfigSection                                                                                                                                                                                                                                                           
-0001a218  g_sCDCSerDataInterfaceSection                                                                                                                                                                                                                                                    
-0001a220  g_sCDCSerDataInterfaceSectionHS                                                                                                                                                                                                                                                  
-0001a228  g_sIADSerConfigSection                                                                                                                                                                                                                                                           
+0001a1e8  g_sCDCSerCommInterfaceSection                                                                                                                                                                                                                                                    
+0001a1f0  g_sCDCSerConfigHeader                                                                                                                                                                                                                                                            
+0001a1f8  g_sCDCSerConfigHeaderHS                                                                                                                                                                                                                                                          
+0001a200  g_sCDCSerConfigSection                                                                                                                                                                                                                                                           
+0001a208  g_sCDCSerDataInterfaceSection                                                                                                                                                                                                                                                    
+0001a210  g_sCDCSerDataInterfaceSectionHS                                                                                                                                                                                                                                                  
+0001a218  g_sIADSerConfigSection                                                                                                                                                                                                                                                           
 20006810  g_sRxBuffer                                                                                                                                                                                                                                                                      
 20006848  g_sTxBuffer                                                                                                                                                                                                                                                                      
-20006cb0  g_ui32CurrentUSBTick                                                                                                                                                                                                                                                             
-20006b64  g_ui32UARTRxCount                                                                                                                                                                                                                                                                
-20006b60  g_ui32UARTTxCount                                                                                                                                                                                                                                                                
-20006cb4  g_ui32USBSOFCount                                                                                                                                                                                                                                                                
-20006cd4  g_ui32WaitTicks                                                                                                                                                                                                                                                                  
+20006c88  g_ui32CurrentUSBTick                                                                                                                                                                                                                                                             
+20006b3c  g_ui32UARTRxCount                                                                                                                                                                                                                                                                
+20006b38  g_ui32UARTTxCount                                                                                                                                                                                                                                                                
+20006c8c  g_ui32USBSOFCount                                                                                                                                                                                                                                                                
+20006cac  g_ui32WaitTicks                                                                                                                                                                                                                                                                  
 000168e5  getdevice                                                                                                                                                                                                                                                                        
-20006b74  gpo_obj                                                                                                                                                                                                                                                                          
-20006d1c  i2c_speed_menu                                                                                                                                                                                                                                                                   
-200069cc  i2c_speed_name                                                                                                                                                                                                                                                                   
+20006b4c  gpo_obj                                                                                                                                                                                                                                                                          
+20006cf4  i2c_speed_menu                                                                                                                                                                                                                                                                   
+200069a4  i2c_speed_name                                                                                                                                                                                                                                                                   
 0001332d  ldexp                                                                                                                                                                                                                                                                            
 0001332d  ldexpl                                                                                                                                                                                                                                                                           
 00017a85  lseek                                                                                                                                                                                                                                                                            
@@ -2464,17 +2463,17 @@ ffffffff  binit
 20005ddc  parmbuf                                                                                                                                                                                                                                                                          
 00006a1d  pcQueueGetName                                                                                                                                                                                                                                                                   
 00000d49  pcTaskGetName                                                                                                                                                                                                                                                                    
-20006d24  power_on_menu                                                                                                                                                                                                                                                                    
-200069e0  power_on_name                                                                                                                                                                                                                                                                    
-20006b78  power_on_pin                                                                                                                                                                                                                                                                     
-20006ca0  power_select_menu                                                                                                                                                                                                                                                                
-200069e4  power_select_name                                                                                                                                                                                                                                                                
-20006b7c  psel_1v8_pin                                                                                                                                                                                                                                                                     
-20006b80  psel_3v3_pin                                                                                                                                                                                                                                                                     
-20006b84  psel_5v_pin                                                                                                                                                                                                                                                                      
-20006d2c  pullup_en_menu                                                                                                                                                                                                                                                                   
-200069e8  pullup_en_name                                                                                                                                                                                                                                                                   
-20006b88  pullup_en_pin                                                                                                                                                                                                                                                                    
+20006cfc  power_on_menu                                                                                                                                                                                                                                                                    
+200069b8  power_on_name                                                                                                                                                                                                                                                                    
+20006b50  power_on_pin                                                                                                                                                                                                                                                                     
+20006c78  power_select_menu                                                                                                                                                                                                                                                                
+200069bc  power_select_name                                                                                                                                                                                                                                                                
+20006b54  psel_1v8_pin                                                                                                                                                                                                                                                                     
+20006b58  psel_3v3_pin                                                                                                                                                                                                                                                                     
+20006b5c  psel_5v_pin                                                                                                                                                                                                                                                                      
+20006d04  pullup_en_menu                                                                                                                                                                                                                                                                   
+200069c0  pullup_en_name                                                                                                                                                                                                                                                                   
+20006b60  pullup_en_pin                                                                                                                                                                                                                                                                    
 0000fb71  pvPortMalloc                                                                                                                                                                                                                                                                     
 00001a85  pvTaskIncrementMutexHeldCount                                                                                                                                                                                                                                                    
 20006880  pxCurrentTCB                                                                                                                                                                                                                                                                     
@@ -2484,8 +2483,8 @@ ffffffff  binit
 0001332d  scalbnl                                                                                                                                                                                                                                                                          
 0000ed9b  set_uart_tx_q                                                                                                                                                                                                                                                                    
 000139d1  setvbuf                                                                                                                                                                                                                                                                          
-20006ba4  spi_mode_menu                                                                                                                                                                                                                                                                    
-200069d0  spi_mode_name                                                                                                                                                                                                                                                                    
+20006b7c  spi_mode_menu                                                                                                                                                                                                                                                                    
+200069a8  spi_mode_name                                                                                                                                                                                                                                                                    
 00016aad  sprintf                                                                                                                                                                                                                                                                          
 000183b3  strchr                                                                                                                                                                                                                                                                           
 00018175  strcmp                                                                                                                                                                                                                                                                           
@@ -2518,15 +2517,15 @@ ffffffff  binit
 0000f1d7  uDMAIntRegister                                                                                                                                                                                                                                                                  
 0000f1ff  uDMAIntStatus                                                                                                                                                                                                                                                                    
 0000f1ed  uDMAIntUnregister                                                                                                                                                                                                                                                                
-20006d3c  uart_mode_menu                                                                                                                                                                                                                                                                   
-200069dc  uart_mode_name                                                                                                                                                                                                                                                                   
-20006bbc  uart_parity_menu                                                                                                                                                                                                                                                                 
-200069d4  uart_parity_name                                                                                                                                                                                                                                                                 
-20006d44  uart_stop_bit_menu                                                                                                                                                                                                                                                               
-200069d8  uart_stop_bit_name                                                                                                                                                                                                                                                               
+20006d0c  uart_mode_menu                                                                                                                                                                                                                                                                   
+200069b4  uart_mode_name                                                                                                                                                                                                                                                                   
+20006b94  uart_parity_menu                                                                                                                                                                                                                                                                 
+200069ac  uart_parity_name                                                                                                                                                                                                                                                                 
+20006d14  uart_stop_bit_menu                                                                                                                                                                                                                                                               
+200069b0  uart_stop_bit_name                                                                                                                                                                                                                                                               
 2000026c  ucHeap                                                                                                                                                                                                                                                                           
 0000674d  ucQueueGetQueueType                                                                                                                                                                                                                                                              
-0001a230  ulMaxSyscallInterruptPriority                                                                                                                                                                                                                                                    
+0001a220  ulMaxSyscallInterruptPriority                                                                                                                                                                                                                                                    
 00013abd  ulPortGetIPSR                                                                                                                                                                                                                                                                    
 00001a9d  ulTaskNotifyTake                                                                                                                                                                                                                                                                 
 000175b5  unlink                                                                                                                                                                                                                                                                           
@@ -3993,57 +3992,57 @@ address   name
 0001a018  _ZTVN10__cxxabiv117__class_type_infoE                                                                                                                                                                                                                                            
 0001a028  _ZTVN10__cxxabiv120__si_class_type_infoE                                                                                                                                                                                                                                         
 0001a038  _ZTS12UartStreamer                                                                                                                                                                                                                                                               
-0001a056  _ZTS11ConsolePage                                                                                                                                                                                                                                                                
-0001a064  _ZTS11ConsoleTask                                                                                                                                                                                                                                                                
-0001a072  _ZTS11ErrorLogger                                                                                                                                                                                                                                                                
-0001a080  _ZTS11MenuOptions                                                                                                                                                                                                                                                                
-0001a08e  _ZTS11TaskManager                                                                                                                                                                                                                                                                
-0001a09c  _ZTS10OneWireCmd                                                                                                                                                                                                                                                                 
-0001a0a9  _ZTS10SpiCmdTask                                                                                                                                                                                                                                                                 
-0001a0b6  _ZTSSt9type_info                                                                                                                                                                                                                                                                 
-0001a0c4  _ZTI10OneWireCmd                                                                                                                                                                                                                                                                 
-0001a0d0  _ZTI10SpiCmdTask                                                                                                                                                                                                                                                                 
-0001a0dc  _ZTI11ConsoleTask                                                                                                                                                                                                                                                                
-0001a0e8  _ZTI11ErrorLogger                                                                                                                                                                                                                                                                
-0001a0f4  _ZTI11MenuOptions                                                                                                                                                                                                                                                                
-0001a100  _ZTI11TaskManager                                                                                                                                                                                                                                                                
-0001a10c  _ZTI12UartStreamer                                                                                                                                                                                                                                                               
-0001a118  _ZTI14I2cMonitorTask                                                                                                                                                                                                                                                             
-0001a124  _ZTI14I2cSnifferTask                                                                                                                                                                                                                                                             
-0001a130  _ZTI14SpiMonitorTask                                                                                                                                                                                                                                                             
-0001a13c  _ZTI15I2cScripterTask                                                                                                                                                                                                                                                            
-0001a148  _ZTI7I2cTask                                                                                                                                                                                                                                                                     
-0001a154  _ZTI7PWMpage                                                                                                                                                                                                                                                                     
-0001a160  _ZTI7UartCmd                                                                                                                                                                                                                                                                     
-0001a16c  _ZTI9IoCtlPage                                                                                                                                                                                                                                                                   
-0001a178  _ZTIN10__cxxabiv117__class_type_infoE                                                                                                                                                                                                                                            
-0001a184  _ZTIN10__cxxabiv120__si_class_type_infoE                                                                                                                                                                                                                                         
-0001a1a8  _ZTS9IoCtlPage                                                                                                                                                                                                                                                                   
-0001a1b3  _ZTS7I2cTask                                                                                                                                                                                                                                                                     
-0001a1bc  _ZTS7PWMpage                                                                                                                                                                                                                                                                     
-0001a1c5  _ZTS7UartCmd                                                                                                                                                                                                                                                                     
-0001a1d0  _ZTI11ConsolePage                                                                                                                                                                                                                                                                
-0001a1d8  _ZTISt9type_info                                                                                                                                                                                                                                                                 
-0001a1e8  g_sCDCCompSerConfigHeader                                                                                                                                                                                                                                                        
-0001a1f0  g_sCDCCompSerConfigHeaderHS                                                                                                                                                                                                                                                      
-0001a1f8  g_sCDCSerCommInterfaceSection                                                                                                                                                                                                                                                    
-0001a200  g_sCDCSerConfigHeader                                                                                                                                                                                                                                                            
-0001a208  g_sCDCSerConfigHeaderHS                                                                                                                                                                                                                                                          
-0001a210  g_sCDCSerConfigSection                                                                                                                                                                                                                                                           
-0001a218  g_sCDCSerDataInterfaceSection                                                                                                                                                                                                                                                    
-0001a220  g_sCDCSerDataInterfaceSectionHS                                                                                                                                                                                                                                                  
-0001a228  g_sIADSerConfigSection                                                                                                                                                                                                                                                           
-0001a230  ulMaxSyscallInterruptPriority                                                                                                                                                                                                                                                    
-0001a238  _ZZNKSt3__220__vector_base_commonILb1EE20__throw_length_errorEvEs                                                                                                                                                                                                                
-0001a23f  g_pui8LangDescriptor                                                                                                                                                                                                                                                             
-0001a244  g_pCDCCompSerConfigDescriptors                                                                                                                                                                                                                                                   
-0001a248  g_pCDCCompSerConfigDescriptorsHS                                                                                                                                                                                                                                                 
-0001a24c  g_ppCDCSerConfigDescriptors                                                                                                                                                                                                                                                      
-0001a250  g_ppCDCSerConfigDescriptorsHS                                                                                                                                                                                                                                                    
-0001a548  __TI_Handler_Table_Base                                                                                                                                                                                                                                                          
-0001a554  __TI_Handler_Table_Limit                                                                                                                                                                                                                                                         
-0001a568  __TI_CINIT_Base                                                                                                                                                                                                                                                                  
-0001a580  __TI_CINIT_Limit                                                                                                                                                                                                                                                                 
+0001a047  _ZTS11ConsolePage                                                                                                                                                                                                                                                                
+0001a055  _ZTS11ConsoleTask                                                                                                                                                                                                                                                                
+0001a063  _ZTS11ErrorLogger                                                                                                                                                                                                                                                                
+0001a071  _ZTS11MenuOptions                                                                                                                                                                                                                                                                
+0001a07f  _ZTS11TaskManager                                                                                                                                                                                                                                                                
+0001a08d  _ZTS10OneWireCmd                                                                                                                                                                                                                                                                 
+0001a09a  _ZTS10SpiCmdTask                                                                                                                                                                                                                                                                 
+0001a0a7  _ZTSSt9type_info                                                                                                                                                                                                                                                                 
+0001a0b4  _ZTI10OneWireCmd                                                                                                                                                                                                                                                                 
+0001a0c0  _ZTI10SpiCmdTask                                                                                                                                                                                                                                                                 
+0001a0cc  _ZTI11ConsoleTask                                                                                                                                                                                                                                                                
+0001a0d8  _ZTI11ErrorLogger                                                                                                                                                                                                                                                                
+0001a0e4  _ZTI11MenuOptions                                                                                                                                                                                                                                                                
+0001a0f0  _ZTI11TaskManager                                                                                                                                                                                                                                                                
+0001a0fc  _ZTI12UartStreamer                                                                                                                                                                                                                                                               
+0001a108  _ZTI14I2cMonitorTask                                                                                                                                                                                                                                                             
+0001a114  _ZTI14I2cSnifferTask                                                                                                                                                                                                                                                             
+0001a120  _ZTI14SpiMonitorTask                                                                                                                                                                                                                                                             
+0001a12c  _ZTI15I2cScripterTask                                                                                                                                                                                                                                                            
+0001a138  _ZTI7I2cTask                                                                                                                                                                                                                                                                     
+0001a144  _ZTI7PWMpage                                                                                                                                                                                                                                                                     
+0001a150  _ZTI7UartCmd                                                                                                                                                                                                                                                                     
+0001a15c  _ZTI9IoCtlPage                                                                                                                                                                                                                                                                   
+0001a168  _ZTIN10__cxxabiv117__class_type_infoE                                                                                                                                                                                                                                            
+0001a174  _ZTIN10__cxxabiv120__si_class_type_infoE                                                                                                                                                                                                                                         
+0001a198  _ZTS9IoCtlPage                                                                                                                                                                                                                                                                   
+0001a1a3  _ZTS7I2cTask                                                                                                                                                                                                                                                                     
+0001a1ac  _ZTS7PWMpage                                                                                                                                                                                                                                                                     
+0001a1b5  _ZTS7UartCmd                                                                                                                                                                                                                                                                     
+0001a1c0  _ZTI11ConsolePage                                                                                                                                                                                                                                                                
+0001a1c8  _ZTISt9type_info                                                                                                                                                                                                                                                                 
+0001a1d8  g_sCDCCompSerConfigHeader                                                                                                                                                                                                                                                        
+0001a1e0  g_sCDCCompSerConfigHeaderHS                                                                                                                                                                                                                                                      
+0001a1e8  g_sCDCSerCommInterfaceSection                                                                                                                                                                                                                                                    
+0001a1f0  g_sCDCSerConfigHeader                                                                                                                                                                                                                                                            
+0001a1f8  g_sCDCSerConfigHeaderHS                                                                                                                                                                                                                                                          
+0001a200  g_sCDCSerConfigSection                                                                                                                                                                                                                                                           
+0001a208  g_sCDCSerDataInterfaceSection                                                                                                                                                                                                                                                    
+0001a210  g_sCDCSerDataInterfaceSectionHS                                                                                                                                                                                                                                                  
+0001a218  g_sIADSerConfigSection                                                                                                                                                                                                                                                           
+0001a220  ulMaxSyscallInterruptPriority                                                                                                                                                                                                                                                    
+0001a228  _ZZNKSt3__220__vector_base_commonILb1EE20__throw_length_errorEvEs                                                                                                                                                                                                                
+0001a236  g_pui8LangDescriptor                                                                                                                                                                                                                                                             
+0001a23c  g_pCDCCompSerConfigDescriptors                                                                                                                                                                                                                                                   
+0001a240  g_pCDCCompSerConfigDescriptorsHS                                                                                                                                                                                                                                                 
+0001a244  g_ppCDCSerConfigDescriptors                                                                                                                                                                                                                                                      
+0001a248  g_ppCDCSerConfigDescriptorsHS                                                                                                                                                                                                                                                    
+0001a530  __TI_Handler_Table_Base                                                                                                                                                                                                                                                          
+0001a53c  __TI_Handler_Table_Limit                                                                                                                                                                                                                                                         
+0001a550  __TI_CINIT_Base                                                                                                                                                                                                                                                                  
+0001a568  __TI_CINIT_Limit                                                                                                                                                                                                                                                                 
 20000000  __start___llvm_prf_cnts                                                                                                                                                                                                                                                          
 20000000  __stop___llvm_prf_cnts                                                                                                                                                                                                                                                           
 20000000  g_pfnRAMVectors                                                                                                                                                                                                                                                                  
@@ -4068,58 +4067,58 @@ address   name
 20006810  g_sRxBuffer                                                                                                                                                                                                                                                                      
 20006848  g_sTxBuffer                                                                                                                                                                                                                                                                      
 20006880  pxCurrentTCB                                                                                                                                                                                                                                                                     
-200069cc  i2c_speed_name                                                                                                                                                                                                                                                                   
-200069d0  spi_mode_name                                                                                                                                                                                                                                                                    
-200069d4  uart_parity_name                                                                                                                                                                                                                                                                 
-200069d8  uart_stop_bit_name                                                                                                                                                                                                                                                               
-200069dc  uart_mode_name                                                                                                                                                                                                                                                                   
-200069e0  power_on_name                                                                                                                                                                                                                                                                    
-200069e4  power_select_name                                                                                                                                                                                                                                                                
-200069e8  pullup_en_name                                                                                                                                                                                                                                                                   
-20006b60  g_ui32UARTTxCount                                                                                                                                                                                                                                                                
-20006b64  g_ui32UARTRxCount                                                                                                                                                                                                                                                                
-20006b74  gpo_obj                                                                                                                                                                                                                                                                          
-20006b78  power_on_pin                                                                                                                                                                                                                                                                     
-20006b7c  psel_1v8_pin                                                                                                                                                                                                                                                                     
-20006b80  psel_3v3_pin                                                                                                                                                                                                                                                                     
-20006b84  psel_5v_pin                                                                                                                                                                                                                                                                      
-20006b88  pullup_en_pin                                                                                                                                                                                                                                                                    
-20006ba4  spi_mode_menu                                                                                                                                                                                                                                                                    
-20006bbc  uart_parity_menu                                                                                                                                                                                                                                                                 
-20006bd0  g_pui8CDCSerDeviceDescriptor                                                                                                                                                                                                                                                     
-20006c34  g_psCDCCompSerSections                                                                                                                                                                                                                                                           
-20006c44  g_psCDCCompSerSectionsHS                                                                                                                                                                                                                                                         
-20006c54  __TI_ft_end                                                                                                                                                                                                                                                                      
-20006c58  __aeabi_stdin                                                                                                                                                                                                                                                                    
-20006c5c  __aeabi_stdout                                                                                                                                                                                                                                                                   
-20006c60  __aeabi_stderr                                                                                                                                                                                                                                                                   
-20006c64  __TI_cleanup_ptr                                                                                                                                                                                                                                                                 
-20006c68  __TI_dtors_ptr                                                                                                                                                                                                                                                                   
-20006c6c  __TI_enable_exit_profile_output                                                                                                                                                                                                                                                  
-20006c7c  g_psCDCSerSections                                                                                                                                                                                                                                                               
-20006c88  g_psCDCSerSectionsHS                                                                                                                                                                                                                                                             
-20006ca0  power_select_menu                                                                                                                                                                                                                                                                
-20006cac  g_bUSBTimerInitialized                                                                                                                                                                                                                                                           
-20006cb0  g_ui32CurrentUSBTick                                                                                                                                                                                                                                                             
-20006cb4  g_ui32USBSOFCount                                                                                                                                                                                                                                                                
-20006cb8  g_pui8CDCSerDescriptor                                                                                                                                                                                                                                                           
-20006cd0  g_iUSBMode                                                                                                                                                                                                                                                                       
-20006cd4  g_ui32WaitTicks                                                                                                                                                                                                                                                                  
-20006cdc  _lock                                                                                                                                                                                                                                                                            
-20006ce0  _unlock                                                                                                                                                                                                                                                                          
-20006cec  adc_pin_struct                                                                                                                                                                                                                                                                   
-20006cf4  board_gpi_info                                                                                                                                                                                                                                                                   
-20006cfc  board_gpo_info                                                                                                                                                                                                                                                                   
-20006d04  board_pwm_info                                                                                                                                                                                                                                                                   
-20006d10  _ZN11ErrorLogger3objE                                                                                                                                                                                                                                                            
-20006d14  g_pui8IADSerDescriptor                                                                                                                                                                                                                                                           
-20006d1c  i2c_speed_menu                                                                                                                                                                                                                                                                   
-20006d24  power_on_menu                                                                                                                                                                                                                                                                    
-20006d2c  pullup_en_menu                                                                                                                                                                                                                                                                   
-20006d3c  uart_mode_menu                                                                                                                                                                                                                                                                   
-20006d44  uart_stop_bit_menu                                                                                                                                                                                                                                                               
-20006d64  errno                                                                                                                                                                                                                                                                            
-20006d68  _sys_memory                                                                                                                                                                                                                                                                      
+200069a4  i2c_speed_name                                                                                                                                                                                                                                                                   
+200069a8  spi_mode_name                                                                                                                                                                                                                                                                    
+200069ac  uart_parity_name                                                                                                                                                                                                                                                                 
+200069b0  uart_stop_bit_name                                                                                                                                                                                                                                                               
+200069b4  uart_mode_name                                                                                                                                                                                                                                                                   
+200069b8  power_on_name                                                                                                                                                                                                                                                                    
+200069bc  power_select_name                                                                                                                                                                                                                                                                
+200069c0  pullup_en_name                                                                                                                                                                                                                                                                   
+20006b38  g_ui32UARTTxCount                                                                                                                                                                                                                                                                
+20006b3c  g_ui32UARTRxCount                                                                                                                                                                                                                                                                
+20006b4c  gpo_obj                                                                                                                                                                                                                                                                          
+20006b50  power_on_pin                                                                                                                                                                                                                                                                     
+20006b54  psel_1v8_pin                                                                                                                                                                                                                                                                     
+20006b58  psel_3v3_pin                                                                                                                                                                                                                                                                     
+20006b5c  psel_5v_pin                                                                                                                                                                                                                                                                      
+20006b60  pullup_en_pin                                                                                                                                                                                                                                                                    
+20006b7c  spi_mode_menu                                                                                                                                                                                                                                                                    
+20006b94  uart_parity_menu                                                                                                                                                                                                                                                                 
+20006ba8  g_pui8CDCSerDeviceDescriptor                                                                                                                                                                                                                                                     
+20006c0c  g_psCDCCompSerSections                                                                                                                                                                                                                                                           
+20006c1c  g_psCDCCompSerSectionsHS                                                                                                                                                                                                                                                         
+20006c2c  __TI_ft_end                                                                                                                                                                                                                                                                      
+20006c30  __aeabi_stdin                                                                                                                                                                                                                                                                    
+20006c34  __aeabi_stdout                                                                                                                                                                                                                                                                   
+20006c38  __aeabi_stderr                                                                                                                                                                                                                                                                   
+20006c3c  __TI_cleanup_ptr                                                                                                                                                                                                                                                                 
+20006c40  __TI_dtors_ptr                                                                                                                                                                                                                                                                   
+20006c44  __TI_enable_exit_profile_output                                                                                                                                                                                                                                                  
+20006c54  g_psCDCSerSections                                                                                                                                                                                                                                                               
+20006c60  g_psCDCSerSectionsHS                                                                                                                                                                                                                                                             
+20006c78  power_select_menu                                                                                                                                                                                                                                                                
+20006c84  g_bUSBTimerInitialized                                                                                                                                                                                                                                                           
+20006c88  g_ui32CurrentUSBTick                                                                                                                                                                                                                                                             
+20006c8c  g_ui32USBSOFCount                                                                                                                                                                                                                                                                
+20006c90  g_pui8CDCSerDescriptor                                                                                                                                                                                                                                                           
+20006ca8  g_iUSBMode                                                                                                                                                                                                                                                                       
+20006cac  g_ui32WaitTicks                                                                                                                                                                                                                                                                  
+20006cb4  _lock                                                                                                                                                                                                                                                                            
+20006cb8  _unlock                                                                                                                                                                                                                                                                          
+20006cc4  adc_pin_struct                                                                                                                                                                                                                                                                   
+20006ccc  board_gpi_info                                                                                                                                                                                                                                                                   
+20006cd4  board_gpo_info                                                                                                                                                                                                                                                                   
+20006cdc  board_pwm_info                                                                                                                                                                                                                                                                   
+20006ce8  _ZN11ErrorLogger3objE                                                                                                                                                                                                                                                            
+20006cec  g_pui8IADSerDescriptor                                                                                                                                                                                                                                                           
+20006cf4  i2c_speed_menu                                                                                                                                                                                                                                                                   
+20006cfc  power_on_menu                                                                                                                                                                                                                                                                    
+20006d04  pullup_en_menu                                                                                                                                                                                                                                                                   
+20006d0c  uart_mode_menu                                                                                                                                                                                                                                                                   
+20006d14  uart_stop_bit_menu                                                                                                                                                                                                                                                               
+20006d38  errno                                                                                                                                                                                                                                                                            
+20006d40  _sys_memory                                                                                                                                                                                                                                                                      
 ffffffff  __TI_pprof_out_hndl                                                                                                                                                                                                                                                              
 ffffffff  __TI_prof_data_size                                                                                                                                                                                                                                                              
 ffffffff  __TI_prof_data_start                                                                                                                                                                                                                                                             

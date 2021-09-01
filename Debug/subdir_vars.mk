@@ -7,6 +7,7 @@ SHELL = cmd.exe
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../ADC_task.cpp \
+../CAN_command.cpp \
 ../GPIs.cpp \
 ../GPOs.cpp \
 ../I2C_monitor.cpp \
@@ -51,6 +52,7 @@ C_DEPS += \
 
 OBJS += \
 ./ADC_task.obj \
+./CAN_command.obj \
 ./GPIs.obj \
 ./GPOs.obj \
 ./I2C_monitor.obj \
@@ -84,6 +86,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./ADC_task.d \
+./CAN_command.d \
 ./GPIs.d \
 ./GPOs.d \
 ./I2C_monitor.d \
@@ -113,6 +116,7 @@ CPP_DEPS += \
 
 OBJS__QUOTED += \
 "ADC_task.obj" \
+"CAN_command.obj" \
 "GPIs.obj" \
 "GPOs.obj" \
 "I2C_monitor.obj" \
@@ -152,6 +156,7 @@ C_DEPS__QUOTED += \
 
 CPP_DEPS__QUOTED += \
 "ADC_task.d" \
+"CAN_command.d" \
 "GPIs.d" \
 "GPOs.d" \
 "I2C_monitor.d" \
@@ -181,6 +186,7 @@ CPP_DEPS__QUOTED += \
 
 CPP_SRCS__QUOTED += \
 "../ADC_task.cpp" \
+"../CAN_command.cpp" \
 "../GPIs.cpp" \
 "../GPOs.cpp" \
 "../I2C_monitor.cpp" \

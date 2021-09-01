@@ -20,12 +20,28 @@
 #include "uartstdio.h"
 #include "text_controls.hpp"
 
-static void CANIntHandler(void) {
+static uint32_t ui32Status;
 
-    uint32_t ui32Status;
+static bool error_flag = false;
+
+static void CANIntHandler(void) {
 
     // Read the CAN interrupt status to find the cause of the interrupt
     ui32Status = CANIntStatus(CAN0_BASE, CAN_INT_STS_CAUSE);
+
+    if(ui32Status == CAN_INT_INTID_STATUS) {
+
+        ui32Status = CANStatusGet(CAN0_BASE, CAN_STS_CONTROL);
+        error_flag = true;
+
+    } else if (ui32Status == CAN_RX_MESSAGE_OBJ) {
+
+        CANIntClear(CAN0_BASE, 1);
+
+        // Since a message was received, clear any error flags.
+        error_flag = false;
+    }
+
 
 
 } // End CANIntHandler
@@ -81,7 +97,7 @@ CanCommand::CanCommand(void) : ConsolePage("CAN Command",
     // CAN will receive any message on the bus, and an interrupt will occur.
     // Use message object 1 for receiving messages (this is not the same as
     // the CAN ID which can be any value in this example).
-    CANMessageSet(CAN0_BASE, 1, &can_rx_msg, MSG_OBJ_TYPE_RX);
+    CANMessageSet(CAN0_BASE, CAN_RX_MESSAGE_OBJ, &can_rx_msg, MSG_OBJ_TYPE_RX);
 
 } // End TestTask
 

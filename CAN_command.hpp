@@ -16,6 +16,11 @@
 
 #include "console_task.hpp"
 
+typedef enum {
+    CAN_RX_MESSAGE_OBJ = 1,
+    CAN_TX_MESSAGE_OBJ,
+}can_msg_obj_e;
+
 #ifdef __cplusplus
 extern "C" {
 #endif

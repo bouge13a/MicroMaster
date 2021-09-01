@@ -81,11 +81,11 @@ void I2cSnifferTask::task(I2cSnifferTask* this_ptr) {
 
                 } else if (this->i2c_msg->errors == TIMEOUT_ERR){
 
-                    UARTprintf("TIMEOUT @ 0x%x, ", index);
+                    UARTprintf("TIMEOUT @ 0x%2x, ", index);
 
                 } else if (this->i2c_msg->errors == ARB_LOST_ERR) {
 
-                    UARTprintf("ARB LOST @ 0x%x, ", index);
+                    UARTprintf("ARB LOST @ 0x%2x, ", index);
                     break;
                 }
             }

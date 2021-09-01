@@ -1014,7 +1014,7 @@ UART_to_USB::UART_to_USB(QueueHandle_t uart_rx_que,
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "USB",                                     /* Text name for the task. */
-                50,                  /* Stack size in words, not bytes. */
+                100,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */
                 NULL);

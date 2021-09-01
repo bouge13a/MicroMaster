@@ -103,25 +103,29 @@ bool SpiMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
         UARTprintf("0b%s ", bin_string);
         return false;
     case SPI_MSB_DEC_FORMAT :
-        if (this->spi_monitor_msgs[index]->num_rx_bytes == 1) {
-            UARTprintf("%d", this->spi_monitor_msgs[index]->rx_bytes[0]);
-        } else if (this->spi_monitor_msgs[index]->num_rx_bytes != 2) {
-            UARTprintf("Not Applicable");
-        } else {
-            data = this->spi_monitor_msgs[index]->rx_bytes[0] << 4;
-            data = data | this->spi_monitor_msgs[index]->rx_bytes[1];
-            UARTprintf("%d", data);
+        if (inner_index == 0) {
+            if (this->spi_monitor_msgs[index]->num_rx_bytes == 1) {
+                UARTprintf("%d", this->spi_monitor_msgs[index]->rx_bytes[0]);
+            } else if (this->spi_monitor_msgs[index]->num_rx_bytes != 2) {
+                UARTprintf("Not Applicable");
+            } else {
+                data = this->spi_monitor_msgs[index]->rx_bytes[0] << 4;
+                data = data | this->spi_monitor_msgs[index]->rx_bytes[1];
+                UARTprintf("%d", data);
+            }
         }
         return true;
     case SPI_LSB_DEC_FORMAT :
-        if (this->spi_monitor_msgs[index]->num_rx_bytes == 1) {
-            UARTprintf("%d", this->spi_monitor_msgs[index]->rx_bytes[0]);
-        } else if (this->spi_monitor_msgs[index]->num_rx_bytes != 2) {
-            UARTprintf("Not Applicable");
-        } else {
-            data = this->spi_monitor_msgs[index]->rx_bytes[0];
-            data = data | (this->spi_monitor_msgs[index]->rx_bytes[1] << 8);
-            UARTprintf("%d", data);
+        if (inner_index == 0) {
+            if (this->spi_monitor_msgs[index]->num_rx_bytes == 1) {
+                UARTprintf("%d", this->spi_monitor_msgs[index]->rx_bytes[0]);
+            } else if (this->spi_monitor_msgs[index]->num_rx_bytes != 2) {
+                UARTprintf("Not Applicable");
+            } else {
+                data = this->spi_monitor_msgs[index]->rx_bytes[0];
+                data = data | (this->spi_monitor_msgs[index]->rx_bytes[1] << 8);
+                UARTprintf("%d", data);
+            }
         }
         return true;
     default :

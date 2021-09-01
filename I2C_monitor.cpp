@@ -105,25 +105,29 @@ bool I2cMonitorTask::print_data(uint32_t inner_index, uint32_t index) {
         UARTprintf("0b%s ", bin_string);
         return false;
     case MSB_DEC_FORMAT :
-        if (this->i2c_monitor_msgs[index]->num_rx_bytes == 1) {
-            UARTprintf("%d", this->i2c_monitor_msgs[index]->rx_data[0]);
-        } else if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
-            UARTprintf("Not Applicable");
-        } else {
-            data = this->i2c_monitor_msgs[index]->rx_data[0] << 4;
-            data = data | this->i2c_monitor_msgs[index]->rx_data[1];
-            UARTprintf("%d", data);
+        if (inner_index == 0) {
+            if (this->i2c_monitor_msgs[index]->num_rx_bytes == 1) {
+                UARTprintf("%d", this->i2c_monitor_msgs[index]->rx_data[0]);
+            } else if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
+                UARTprintf("Not Applicable");
+            } else {
+                data = this->i2c_monitor_msgs[index]->rx_data[0] << 4;
+                data = data | this->i2c_monitor_msgs[index]->rx_data[1];
+                UARTprintf("%d", data);
+            }
         }
         return true;
     case LSB_DEC_FORMAT :
-        if (this->i2c_monitor_msgs[index]->num_rx_bytes == 1) {
-            UARTprintf("%d", this->i2c_monitor_msgs[index]->rx_data[0]);
-        } else if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
-            UARTprintf("Not Applicable");
-        } else {
-            data = this->i2c_monitor_msgs[index]->rx_data[0];
-            data = data | (this->i2c_monitor_msgs[index]->rx_data[1] << 8);
-            UARTprintf("%d", data);
+        if (inner_index == 0) {
+            if (this->i2c_monitor_msgs[index]->num_rx_bytes == 1) {
+                UARTprintf("%d", this->i2c_monitor_msgs[index]->rx_data[0]);
+            } else if (this->i2c_monitor_msgs[index]->num_rx_bytes != 2) {
+                UARTprintf("Not Applicable");
+            } else {
+                data = this->i2c_monitor_msgs[index]->rx_data[0];
+                data = data | (this->i2c_monitor_msgs[index]->rx_data[1] << 8);
+                UARTprintf("%d", data);
+            }
         }
         return true;
     default :
@@ -172,6 +176,7 @@ void I2cMonitorTask::draw_data(void) {
                 for(uint32_t inner_index = 0; inner_index<this->i2c_monitor_msgs[index]->bytes_rxed; inner_index++) {
                     print_data(inner_index, index);
                 }
+
             }
         }
     }

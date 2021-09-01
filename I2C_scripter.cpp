@@ -142,60 +142,67 @@ void I2cScripterTask::draw_input(int character) {
 
     case GET_NIBBLE_0 :
 
-        if (0 == this->buffer_idx) {
+        if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
 
-            if (this->ascii_to_hex((char*)&character)) {
+            if (0 == this->buffer_idx) {
 
-                this->i2c_msg->address = character << 4;
-                this->buffer_state = GET_NIBBLE_1;
+                if (this->ascii_to_hex((char*)&character)) {
+
+                    this->i2c_msg->address = character << 4;
+                    this->buffer_state = GET_NIBBLE_1;
+                }
+
+            } else if (this->buffer_idx < TX_BUFFER_SIZE) {
+
+                if (this->ascii_to_hex((char*)&character)) {
+
+                    this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = character << 4;
+
+                    this->buffer_state = GET_NIBBLE_1;
+                }
+
+            } else {
+
+                UARTprintf("\r\nError: too many bytes\r\n");
+                this->buffer_state = START_SCRIPTER;
+                this->buffer_idx = 0;
+
             }
-
-        } else if (this->buffer_idx < TX_BUFFER_SIZE) {
-
-            if (this->ascii_to_hex((char*)&character)) {
-
-                this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = character << 4;
-
-                this->buffer_state = GET_NIBBLE_1;
-            }
-
-        } else {
-
-            UARTprintf("\r\nError: too many bytes\r\n");
-            this->buffer_state = START_SCRIPTER;
-            this->buffer_idx = 0;
-
         }
 
         break;
 
     case GET_NIBBLE_1 :
 
-        if (0 == this->buffer_idx) {
+        if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
 
-            if (this->ascii_to_hex((char*)&character)) {
 
-                this->i2c_msg->address = this->i2c_msg->address | character;
+            if (0 == this->buffer_idx) {
 
-                this->buffer_state = GET_SPACE_BAR;
-                this->buffer_idx++;
+                if (this->ascii_to_hex((char*)&character)) {
+
+                    this->i2c_msg->address = this->i2c_msg->address | character;
+
+                    this->buffer_state = GET_SPACE_BAR;
+                    this->buffer_idx++;
+                }
+
+            } else if (this->buffer_idx < TX_BUFFER_SIZE) {
+
+                if (this->ascii_to_hex((char*)&character)) {
+                    this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] | character;
+                    this->buffer_state = GET_SPACE_BAR;
+                    this->buffer_idx++;
+                    this->i2c_msg->num_tx_bytes++;
+                }
+
+            } else {
+
+                UARTprintf("\r\nError: too many bytes\r\n");
+                this->buffer_state = START_SCRIPTER;
+                this->buffer_idx = 0;
+
             }
-
-        } else if (this->buffer_idx < TX_BUFFER_SIZE) {
-
-            if (this->ascii_to_hex((char*)&character)) {
-                this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] = this->i2c_msg->tx_data[this->i2c_msg->num_tx_bytes] | character;
-                this->buffer_state = GET_SPACE_BAR;
-                this->buffer_idx++;
-                this->i2c_msg->num_tx_bytes++;
-            }
-
-        } else {
-
-            UARTprintf("\r\nError: too many bytes\r\n");
-            this->buffer_state = START_SCRIPTER;
-            this->buffer_idx = 0;
-
         }
 
         break;

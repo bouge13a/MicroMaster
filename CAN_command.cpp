@@ -5,6 +5,7 @@
  *      Author: steph
  */
 
+#include <assert.h>
 
 #include "CAN_command.hpp"
 
@@ -24,7 +25,15 @@ static uint32_t ui32Status;
 
 static bool error_flag = false;
 
+SemaphoreHandle_t can_rx_semphr;
+
+static const uint32_t SIZE_OF_RX_MSG_DATA = 8;
+
 static void CANIntHandler(void) {
+
+    BaseType_t xHigherPriorityTaskWoken, xResult;
+
+    xHigherPriorityTaskWoken = pdFALSE;
 
     // Read the CAN interrupt status to find the cause of the interrupt
     ui32Status = CANIntStatus(CAN0_BASE, CAN_INT_STS_CAUSE);
@@ -36,19 +45,33 @@ static void CANIntHandler(void) {
 
     } else if (ui32Status == CAN_RX_MESSAGE_OBJ) {
 
-        CANIntClear(CAN0_BASE, 1);
-
-        // Since a message was received, clear any error flags.
+        CANIntClear(CAN0_BASE, CAN_RX_MESSAGE_OBJ);
         error_flag = false;
+
+        xResult = xSemaphoreGiveFromISR( can_rx_semphr, &xHigherPriorityTaskWoken );
+
+        // Was the message posted successfully?
+        if( xResult != pdFAIL ) {
+            portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+        }
+
+    } else if (ui32Status == CAN_TX_MESSAGE_OBJ) {
+
+        CANIntClear(CAN0_BASE, CAN_TX_MESSAGE_OBJ);
+        error_flag = false;
+
+    } else {
+
+        assert(0);
     }
-
-
 
 } // End CANIntHandler
 
-CanCommand::CanCommand(void) : ConsolePage("CAN Command",
-                                           portMAX_DELAY,
-                                           false) {
+CanCommand::CanCommand(QueueHandle_t can_rx_q) : ConsolePage("CAN Command",
+                                                              portMAX_DELAY,
+                                                              false) {
+
+    this->can_rx_q = can_rx_q;
 
     xTaskCreate(this->tx_taskfunwrapper, /* Function that implements the task. */
                 "CAN TX",      /* Text name for the task. */
@@ -66,6 +89,7 @@ CanCommand::CanCommand(void) : ConsolePage("CAN Command",
 
     this->can_tx_q = xQueueCreate(2, sizeof(uint32_t*));
 
+    can_rx_semphr = xSemaphoreCreateBinary();
 
     GPIOPinConfigure(GPIO_PB4_CAN0RX);
     GPIOPinConfigure(GPIO_PB5_CAN0TX);
@@ -79,6 +103,8 @@ CanCommand::CanCommand(void) : ConsolePage("CAN Command",
 
     CANIntRegister(CAN0_BASE, CANIntHandler); // if using dynamic vectors
 
+    IntPrioritySet(INT_CAN0, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
+
     CANIntEnable(CAN0_BASE, CAN_INT_MASTER | CAN_INT_ERROR | CAN_INT_STATUS);
 
     IntEnable(INT_CAN0);
@@ -88,16 +114,37 @@ CanCommand::CanCommand(void) : ConsolePage("CAN Command",
     // Initialize a message object to be used for receiving CAN messages with
     // any CAN ID.  In order to receive any CAN ID, the ID and mask must both
     // be set to 0, and the ID filter enabled.
-    can_rx_msg.ui32MsgID = 0;
-    can_rx_msg.ui32MsgIDMask = 0;
-    can_rx_msg.ui32Flags = MSG_OBJ_RX_INT_ENABLE | MSG_OBJ_USE_ID_FILTER;
-    can_rx_msg.ui32MsgLen = 8;
+    this->can_rx_msg.ui32MsgID     = 0;
+    this->can_rx_msg.ui32MsgIDMask = 0;
+    this->can_rx_msg.ui32Flags     = MSG_OBJ_RX_INT_ENABLE | MSG_OBJ_USE_ID_FILTER;
+    this->can_rx_msg.ui32MsgLen    = SIZE_OF_RX_MSG_DATA;
+    this->can_rx_msg.pui8MsgData   = new uint8_t[SIZE_OF_RX_MSG_DATA];
+
+    this->can_tx_msg.ui32Flags     = MSG_OBJ_TX_INT_ENABLE;
+    this->can_tx_msg.ui32MsgIDMask = 0;
 
     // Now load the message object into the CAN peripheral.  Once loaded the
     // CAN will receive any message on the bus, and an interrupt will occur.
     // Use message object 1 for receiving messages (this is not the same as
     // the CAN ID which can be any value in this example).
     CANMessageSet(CAN0_BASE, CAN_RX_MESSAGE_OBJ, &can_rx_msg, MSG_OBJ_TYPE_RX);
+
+    this->logger = ErrorLogger::get_instance();
+
+    this->bus_off_err     = this->logger->create_error("CAN0", "Entered a Bus Off state");
+    this->ewarn_err       = this->logger->create_error("CAN0", "Error level has reached warning level");
+    this->epass_err       = this->logger->create_error("CAN0", "Error level has reached error passive level");
+    this->lec_stuff_err   = this->logger->create_error("CAN0", "A bit stuffing error has occurred");
+    this->lec_form_err    = this->logger->create_error("CAN0", "A formatting error has occurred");
+    this->lec_ack_err     = this->logger->create_error("CAN0", "An acknowledge error has occurred");
+    this->lec_bit1_err    = this->logger->create_error("CAN0", "The bus remained at a bit level of 1");
+    this->lec_bit0_err    = this->logger->create_error("CAN0", "The bus remained at a bit level of 0");
+    this->lec_crc_err     = this->logger->create_error("CAN0", "A CRC error has occurred");
+
+    this->can_cmd_state = CAN_CMD_ID;
+    this->byte_buffer = 0;
+    this->byte_buffer_idx = 0;
+    this->byte_counter = 0;
 
 } // End TestTask
 
@@ -109,11 +156,74 @@ void CanCommand::rx_taskfunwrapper(void* parm){
     (static_cast<CanCommand*>(parm))->rx_task((CanCommand*)parm);
 } // End CanCommand::taskfunwrapper
 
+void CanCommand::log_print_errors(void) {
+
+    if (CAN_STATUS_BUS_OFF == CAN_STATUS_BUS_OFF & ui32Status) {
+        this->logger->set_error(this->bus_off_err);
+        UARTprintf("\r\nError: %s", this->bus_off_err->info);
+    }
+
+    if (CAN_STATUS_EWARN == CAN_STATUS_EWARN & ui32Status) {
+        this->logger->set_error(this->ewarn_err);
+        UARTprintf("\r\nError: %s", this->ewarn_err->info);
+    }
+
+    if (CAN_STATUS_EPASS == CAN_STATUS_EPASS & ui32Status) {
+        this->logger->set_error(this->epass_err);
+        UARTprintf("\r\nError: %s", this->epass_err->info);
+    }
+
+    if (CAN_STATUS_LEC_STUFF == CAN_STATUS_LEC_STUFF & ui32Status) {
+        this->logger->set_error(this->lec_stuff_err);
+        UARTprintf("\r\nError: %s", this->lec_stuff_err->info);
+    }
+
+    if (CAN_STATUS_LEC_FORM == CAN_STATUS_LEC_FORM & ui32Status) {
+        this->logger->set_error(this->lec_form_err);
+        UARTprintf("\r\nError: %s", this->lec_form_err->info);
+    }
+
+    if (CAN_STATUS_LEC_ACK == CAN_STATUS_LEC_ACK & ui32Status) {
+        this->logger->set_error(this->lec_ack_err);
+        UARTprintf("\r\nError: %s", this->lec_ack_err->info);
+    }
+
+    if (CAN_STATUS_LEC_BIT1 == CAN_STATUS_LEC_BIT1 & ui32Status) {
+        this->logger->set_error(this->lec_bit1_err);
+        UARTprintf("\r\nError: %s", this->lec_bit1_err->info);
+    }
+
+    if (CAN_STATUS_LEC_BIT0 == CAN_STATUS_LEC_BIT0 & ui32Status) {
+        this->logger->set_error(this->lec_bit0_err);
+        UARTprintf("\r\nError: %s", this->lec_bit0_err->info);
+    }
+
+    if (CAN_STATUS_LEC_CRC == CAN_STATUS_LEC_CRC & ui32Status) {
+        this->logger->set_error(this->lec_crc_err);
+        UARTprintf("\r\nError: %s", this->lec_crc_err->info);
+    }
+
+} // End CanCommand::log_print_errors
+
 void CanCommand::tx_task(CanCommand* this_ptr) {
 
     while(1){
 
-        vTaskDelay(1000);
+        xQueueReceive(this_ptr->can_tx_q, &this_ptr->can_tx_msg, portMAX_DELAY);
+
+        CANMessageSet(CAN0_BASE, 1, &this_ptr->can_tx_msg, MSG_OBJ_TYPE_TX);
+
+        vTaskDelay(1);
+
+        if (this_ptr->on_screen) {
+            if(error_flag) {
+                this_ptr->log_print_errors();
+            } else {
+                UARTprintf("\r\nMessage transmitted successfully");
+            }
+        }
+
+        vTaskDelay(0);
     }
 
 } // End AdcTask::task
@@ -122,12 +232,33 @@ void CanCommand::rx_task(CanCommand* this_ptr) {
 
     while(1){
 
-        vTaskDelay(1000);
+        xSemaphoreTake(can_rx_semphr, portMAX_DELAY);
+
+        CANMessageGet(CAN0_BASE, CAN_RX_MESSAGE_OBJ, &can_rx_msg, 0);
+
+        xQueueSend(this_ptr->can_rx_q, &this_ptr->can_rx_msg, 0);
+
+        vTaskDelay(0);
     }
 
 } // End AdcTask::task
 
+static uint32_t ascii_to_hex(uint8_t character) {
+
+    if (character >= '0' && character <='9') {
+        return character - '0';
+    }
+
+    if ((character >= 'a' && character <= 'f') || (character >= 'A' && character <= 'F')) {
+        return character - 'a' + 10;
+    }
+
+    return 0;
+} // End SpiCmdTask::ascii_to_hex
+
 void CanCommand::draw_page(void) {
+
+    UARTprintf("Enter 29 bit CAN ID : 0x");
 
 }
 void CanCommand::draw_data(void) {
@@ -135,9 +266,105 @@ void CanCommand::draw_data(void) {
 }
 void CanCommand::draw_input(int character) {
 
+    switch (this->can_cmd_state) {
+    case CAN_CMD_ID :
+        if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
+            if (this->byte_buffer_idx == 0) {
+
+                this->byte_buffer = ascii_to_hex(character) << 4;
+                this->byte_buffer_idx++;
+                UARTprintf("%c", character);
+
+            } else if (this->byte_buffer_idx == 1) {
+
+                this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+                this->byte_buffer_idx = 0;
+                this->can_tx_msg.pui8MsgData[this->byte_counter] = this->byte_buffer;
+                this->byte_counter++;
+                UARTprintf("%c", character);
+
+                if (this->byte_counter >= 2) {
+
+                    this->can_cmd_state = CAN_CMD_NUM_TX_BYTES;
+                    this->byte_counter = 0;
+                    UARTprintf("\r\nEnter number of TX bytes (1-8) : ");
+
+                }
+
+            }
+        }
+        break;
+
+    case CAN_CMD_NUM_TX_BYTES :
+
+        if ((character >= '0' && character <= '8')) {
+
+            this->can_tx_msg.ui32MsgLen = character - '0';
+            UARTprintf("%c", character);
+            UARTprintf("\r\nbyte 1 : 0x");
+            this->can_cmd_state = CAN_CMD_TX_BYTES;
+
+        }
+
+        break;
+
+    case CAN_CMD_TX_BYTES :
+
+        if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
+
+            if (0 == this->byte_buffer_idx) {
+
+                this->byte_buffer = ascii_to_hex(character) << 4;
+                this->byte_buffer_idx++;
+                UARTprintf("%c", character);
+
+            } else {
+
+                this->byte_buffer = this->byte_buffer | ascii_to_hex(character);
+                this->can_tx_msg.pui8MsgData[this->byte_counter] = this->byte_buffer;
+                this->byte_buffer_idx = 0;
+                this->byte_counter++;
+                UARTprintf("%c", character);
+
+                if(this->byte_counter < this->can_tx_msg.ui32MsgLen) {
+                    UARTprintf("\nbyte %d : 0x", this->byte_counter + 1);
+                }
+            }
+
+            if (this->byte_counter >= this->can_tx_msg.ui32MsgLen ) {
+                this->byte_counter = 0;
+                this->can_cmd_state = CAN_CMD_SEND;
+                this->byte_buffer_idx = 0;
+                UARTprintf("\n\rPress space-bar to send message or s to save message : ");
+            }
+        }
+
+        break;
+
+    case CAN_CMD_SEND :
+        if (' ' == character) {
+            xQueueSend(this->can_tx_q, &this->can_tx_msg, 5);
+            this->can_cmd_state = CAN_CMD_ID;
+        } else if ('s' == character) {
+            this->can_cmd_state = CAN_CMD_ID;
+            UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
+        }
+        break;
+
+    default :
+        assert(0);
+        break;
+
+    }
+
 }
 
 void CanCommand::draw_reset(void) {
+
+    this->byte_buffer_idx = 0;
+    this->byte_counter = 0;
+    this->can_cmd_state = CAN_CMD_ID;
+    UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
 
 }
 

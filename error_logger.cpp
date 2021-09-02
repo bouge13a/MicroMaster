@@ -10,7 +10,7 @@
 #include "text_controls.hpp"
 #include "uartstdio.h"
 
-static const uint32_t MAX_NUM_ERRORS = 20;
+static const uint32_t MAX_NUM_ERRORS = 40;
 static const uint32_t START_ROW = 6;
 static error_t errors[100];
 static uint32_t num_of_errors = 0;

@@ -151,7 +151,7 @@ void I2cTask::task(I2cTask* this_ptr) {
         switch(this_ptr->i2c_state) {
         case I2C_IDLE:
 
-            xQueueReceive(i2c_msg_queue, &this_ptr->i2c_msg, portMAX_DELAY);
+            xQueueReceive(this_ptr->i2c_msg_queue, &this_ptr->i2c_msg, portMAX_DELAY);
 
             assert(this_ptr->i2c_msg);
 

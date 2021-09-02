@@ -1,6 +1,9 @@
 # FIXED
 
 CAN_command.obj: ../CAN_command.cpp
+CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h
+CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h
+CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h
 CAN_command.obj: ../CAN_command.hpp
 CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h
@@ -8,8 +11,6 @@ CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__config_site
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__libcxx_extra.h
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h
-CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h
-CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__nullptr
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdint.h
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdint.h
@@ -31,6 +32,7 @@ CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/inclu
 CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h
 CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h
 CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h
+CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h
 CAN_command.obj: ../driverlib/can.h
 CAN_command.obj: ../console_task.hpp
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/vector
@@ -68,7 +70,6 @@ CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/tuple
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdexcept
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cassert
-CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/atomic
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_atomic.h
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cstdbool
@@ -84,6 +85,7 @@ CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_macros
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h
 CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h
+CAN_command.obj: ../error_logger.hpp
 CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_can.h
 CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h
 CAN_command.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h
@@ -96,6 +98,9 @@ CAN_command.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/
 CAN_command.obj: ../text_controls.hpp
 
 ../CAN_command.cpp: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h: 
 ../CAN_command.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h: 
@@ -103,8 +108,6 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__config:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__config_site: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__libcxx_extra.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h: 
-C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h: 
-C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__nullptr: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdint.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdint.h: 
@@ -126,6 +129,7 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/mpu_wrappers.h
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h: 
 ../driverlib/can.h: 
 ../console_task.hpp: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/vector: 
@@ -163,7 +167,6 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__function
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/tuple: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdexcept: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cassert: 
-C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/atomic: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_atomic.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cstdbool: 
@@ -179,6 +182,7 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_ma
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__undef_macros: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h: 
+../error_logger.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_can.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h: 

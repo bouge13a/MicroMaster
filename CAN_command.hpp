@@ -11,15 +11,24 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "semphr.h"
 
 #include "driverlib/can.h"
 
 #include "console_task.hpp"
+#include "error_logger.hpp"
 
 typedef enum {
     CAN_RX_MESSAGE_OBJ = 1,
     CAN_TX_MESSAGE_OBJ,
 }can_msg_obj_e;
+
+typedef enum {
+    CAN_CMD_ID,
+    CAN_CMD_NUM_TX_BYTES,
+    CAN_CMD_TX_BYTES,
+    CAN_CMD_SEND,
+}can_cmd_states_e;
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +36,8 @@ extern "C" {
 
     class CanCommand : public ConsolePage {
     public:
-        CanCommand(void);
+        CanCommand(QueueHandle_t can_rx_q);
+        void log_print_errors(void);
     private :
         void tx_task(CanCommand* this_ptr);
         static void tx_taskfunwrapper(void* parm);
@@ -35,11 +45,27 @@ extern "C" {
         void rx_task(CanCommand* this_ptr);
         static void rx_taskfunwrapper(void* parm);
 
-
         QueueHandle_t can_tx_q;
+        QueueHandle_t can_rx_q;
 
-        tCANMsgObject can_rx_msg;
         tCANMsgObject can_tx_msg;
+        tCANMsgObject can_rx_msg;
+
+        can_cmd_states_e can_cmd_state;
+        uint32_t byte_buffer_idx;
+        uint8_t byte_buffer;
+        uint32_t byte_counter;
+
+        ErrorLogger* logger;
+        error_t* bus_off_err;
+        error_t* ewarn_err;
+        error_t* epass_err;
+        error_t* lec_stuff_err;
+        error_t* lec_form_err;
+        error_t* lec_ack_err;
+        error_t* lec_bit1_err;
+        error_t* lec_bit0_err;
+        error_t* lec_crc_err;
 
         void draw_page(void);
         void draw_data(void);

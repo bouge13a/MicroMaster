@@ -35,11 +35,14 @@
 #include "UART_command.hpp"
 #include "uartstdio.h"
 #include "one_wire_command.hpp"
+#include "CAN_command.hpp"
 
 NoBoosterPack::NoBoosterPack(void) {
 
     QueueHandle_t uart_rx_queue = xQueueCreate(100, sizeof(uint8_t));
     QueueHandle_t uart_tx_queue = xQueueCreate(100, sizeof(uint8_t));
+
+    QueueHandle_t can_rx_q = xQueueCreate(2, sizeof(tCANMsgObject*));
 
     set_uart_tx_q(uart_tx_queue);
 
@@ -85,6 +88,8 @@ NoBoosterPack::NoBoosterPack(void) {
     UartStreamer* uart_streamer = new UartStreamer(uart_cmd);
 
     OneWireCmd* one_wire_command = new OneWireCmd(gpo_obj);
+
+    CanCommand* can_command = new CanCommand(can_rx_q);
 
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
@@ -139,6 +144,7 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(uart_cmd);
     console_task->add_page(uart_streamer);
     console_task->add_page(one_wire_command);
+    console_task->add_page(can_command);
     console_task->add_page(pwm_page);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);

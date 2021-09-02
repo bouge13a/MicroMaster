@@ -118,6 +118,7 @@ no_booster_board.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/inc
 no_booster_board.obj: ../one_wire_command.hpp
 no_booster_board.obj: ../CAN_command.hpp
 no_booster_board.obj: ../driverlib/can.h
+no_booster_board.obj: ../CAN_sniffer.hpp
 
 ../no_booster_board.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -237,3 +238,4 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h:
 ../one_wire_command.hpp: 
 ../CAN_command.hpp: 
 ../driverlib/can.h: 
+../CAN_sniffer.hpp: 

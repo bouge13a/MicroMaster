@@ -38,6 +38,7 @@ extern "C" {
     public:
         CanCommand(QueueHandle_t can_rx_q);
         void log_print_errors(void);
+        void send_last_message(void);
     private :
         void tx_task(CanCommand* this_ptr);
         static void tx_taskfunwrapper(void* parm);
@@ -51,10 +52,14 @@ extern "C" {
         tCANMsgObject can_tx_msg;
         tCANMsgObject can_rx_msg;
 
+        tCANMsgObject can_tx_msg_p;
+
         can_cmd_states_e can_cmd_state;
         uint32_t byte_buffer_idx;
         uint8_t byte_buffer;
         uint32_t byte_counter;
+
+        bool msg_rdy_flag;
 
         ErrorLogger* logger;
         error_t* bus_off_err;

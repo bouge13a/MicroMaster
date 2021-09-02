@@ -36,6 +36,7 @@
 #include "uartstdio.h"
 #include "one_wire_command.hpp"
 #include "CAN_command.hpp"
+#include "CAN_sniffer.hpp"
 
 NoBoosterPack::NoBoosterPack(void) {
 
@@ -91,6 +92,9 @@ NoBoosterPack::NoBoosterPack(void) {
 
     CanCommand* can_command = new CanCommand(can_rx_q);
 
+    CanSniffer* can_sniffer = new CanSniffer(can_rx_q,
+                                             can_command);
+
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
                                         power_on_menu,
@@ -145,6 +149,7 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(uart_streamer);
     console_task->add_page(one_wire_command);
     console_task->add_page(can_command);
+    console_task->add_page(can_sniffer);
     console_task->add_page(pwm_page);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);

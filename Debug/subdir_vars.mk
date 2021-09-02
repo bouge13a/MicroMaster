@@ -8,6 +8,7 @@ SHELL = cmd.exe
 CPP_SRCS += \
 ../ADC_task.cpp \
 ../CAN_command.cpp \
+../CAN_sniffer.cpp \
 ../GPIs.cpp \
 ../GPOs.cpp \
 ../I2C_monitor.cpp \
@@ -53,6 +54,7 @@ C_DEPS += \
 OBJS += \
 ./ADC_task.obj \
 ./CAN_command.obj \
+./CAN_sniffer.obj \
 ./GPIs.obj \
 ./GPOs.obj \
 ./I2C_monitor.obj \
@@ -87,6 +89,7 @@ OBJS += \
 CPP_DEPS += \
 ./ADC_task.d \
 ./CAN_command.d \
+./CAN_sniffer.d \
 ./GPIs.d \
 ./GPOs.d \
 ./I2C_monitor.d \
@@ -117,6 +120,7 @@ CPP_DEPS += \
 OBJS__QUOTED += \
 "ADC_task.obj" \
 "CAN_command.obj" \
+"CAN_sniffer.obj" \
 "GPIs.obj" \
 "GPOs.obj" \
 "I2C_monitor.obj" \
@@ -157,6 +161,7 @@ C_DEPS__QUOTED += \
 CPP_DEPS__QUOTED += \
 "ADC_task.d" \
 "CAN_command.d" \
+"CAN_sniffer.d" \
 "GPIs.d" \
 "GPOs.d" \
 "I2C_monitor.d" \
@@ -187,6 +192,7 @@ CPP_DEPS__QUOTED += \
 CPP_SRCS__QUOTED += \
 "../ADC_task.cpp" \
 "../CAN_command.cpp" \
+"../CAN_sniffer.cpp" \
 "../GPIs.cpp" \
 "../GPOs.cpp" \
 "../I2C_monitor.cpp" \

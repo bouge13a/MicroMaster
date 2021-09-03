@@ -62,6 +62,11 @@ extern "C" {
     public:
         OneWireCmd(GpoObj* gpo_obj);
         void add_msg(OneWireMsg* msg);
+
+        ErrorLogger* logger;
+        error_t* pullup_err;
+        error_t* no_resp_err;
+
     private :
         void task(OneWireCmd* this_ptr);
         static void taskfunwrapper(void* parm);
@@ -83,10 +88,6 @@ extern "C" {
         uint32_t byte_buffer_index;
 
         void print_errors(OneWireCmd* this_ptr);
-
-        ErrorLogger* logger;
-        error_t* pullup_err;
-        error_t* no_resp_err;
 
         void draw_page(void);
         void draw_data(void);

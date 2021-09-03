@@ -35,6 +35,7 @@
 #include "UART_command.hpp"
 #include "uartstdio.h"
 #include "one_wire_command.hpp"
+#include "one_wire_search.hpp"
 #include "CAN_command.hpp"
 #include "CAN_sniffer.hpp"
 
@@ -89,6 +90,9 @@ NoBoosterPack::NoBoosterPack(void) {
     UartStreamer* uart_streamer = new UartStreamer(uart_cmd);
 
     OneWireCmd* one_wire_command = new OneWireCmd(gpo_obj);
+
+    OneWireSearch* one_wire_search = new OneWireSearch(gpo_obj,
+                                                       one_wire_command);
 
     CanCommand* can_command = new CanCommand(can_rx_q);
 
@@ -148,6 +152,7 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(uart_cmd);
     console_task->add_page(uart_streamer);
     console_task->add_page(one_wire_command);
+    console_task->add_page(one_wire_search);
     console_task->add_page(can_command);
     console_task->add_page(can_sniffer);
     console_task->add_page(pwm_page);

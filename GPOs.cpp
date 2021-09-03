@@ -103,7 +103,9 @@ GpoObj::GpoObj(void) {
 
             MAP_SysCtlPeripheralEnable(this->gpo_info->gpos[idx]->peripheral);
 
-            SysCtlGPIOAHBEnable(this->gpo_info->gpos[idx]->peripheral);
+            if (this->gpo_info->gpos[idx]->port != GPIO_PORTD_BASE) {
+                SysCtlGPIOAHBEnable(this->gpo_info->gpos[idx]->peripheral);
+            }
 
             // Unlock port so we can change it to a GPIO input
             // Once we have enabled (unlocked) the commit register then re-lock it

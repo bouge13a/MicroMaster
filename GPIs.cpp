@@ -31,12 +31,8 @@ GpiObj::GpiObj(void) {
 
             MAP_SysCtlPeripheralEnable(gpi_info->gpis[idx]->peripheral);
 
-            if (this->gpi_info->gpis[idx]->port != GPIO_PORTA_BASE) {
+            if (this->gpi_info->gpis[idx]->port != GPIO_PORTD_BASE) {
                 SysCtlGPIOAHBEnable(this->gpi_info->gpis[idx]->peripheral);
-            } else {
-
-                // Cannot enable PORTA as AHB
-                assert(0);
             }
 
             while(!SysCtlPeripheralReady(this->gpi_info->gpis[idx]->peripheral));

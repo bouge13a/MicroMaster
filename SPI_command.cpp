@@ -189,7 +189,7 @@ void SpiCmdTask::task(SpiCmdTask* this_ptr) {
         switch (this_ptr->state) {
         case SPI_IDLE :
 
-            xQueueReceive(spi_tx_queue, &this_ptr->spi_msg, portMAX_DELAY);
+            xQueueReceive(this_ptr->spi_tx_queue, &this_ptr->spi_msg, portMAX_DELAY);
 
             assert(this_ptr->spi_msg);
 

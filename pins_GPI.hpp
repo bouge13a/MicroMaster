@@ -23,7 +23,7 @@ static gpio_pin_t gpi_0 = {
     .name       = "GPI 0",
     .pin        = GPIO_PIN_0,
     .peripheral = SYSCTL_PERIPH_GPIOD,
-    .port       = GPIO_PORTD_AHB_BASE,
+    .port       = GPIO_PORTD_BASE,
     .direction  = GPIO_DIR_MODE_IN,
     .displayed  = true,
 };
@@ -41,7 +41,7 @@ static gpio_pin_t gpi_2 = {
     .name       = "GPI 2",
     .pin        = GPIO_PIN_7,
     .peripheral = SYSCTL_PERIPH_GPIOD,
-    .port       = GPIO_PORTD_AHB_BASE,
+    .port       = GPIO_PORTD_BASE,
     .direction  = GPIO_DIR_MODE_IN,
     .displayed  = true,
 };
@@ -50,7 +50,7 @@ static gpio_pin_t gpi_3 = {
     .name       = "GPI 3",
     .pin        = GPIO_PIN_1,
     .peripheral = SYSCTL_PERIPH_GPIOD,
-    .port       = GPIO_PORTD_AHB_BASE,
+    .port       = GPIO_PORTD_BASE,
     .direction  = GPIO_DIR_MODE_IN,
     .displayed  = true,
 };

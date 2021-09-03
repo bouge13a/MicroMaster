@@ -302,7 +302,6 @@ void CanCommand::draw_input(int character) {
                     UARTprintf("\r\nEnter number of TX bytes (1-8) : ");
 
                 }
-
             }
         }
         break;

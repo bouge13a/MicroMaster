@@ -1,6 +1,9 @@
 # FIXED
 
 one_wire_search.obj: ../one_wire_search.cpp
+one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h
+one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h
+one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h
 one_wire_search.obj: ../one_wire_search.hpp
 one_wire_search.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h
@@ -8,8 +11,6 @@ one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/incl
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__config_site
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__libcxx_extra.h
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h
-one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h
-one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__nullptr
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdint.h
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdint.h
@@ -68,7 +69,6 @@ one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/incl
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/tuple
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdexcept
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cassert
-one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/atomic
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_atomic.h
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cstdbool
@@ -86,11 +86,25 @@ one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/incl
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h
 one_wire_search.obj: ../GPOs.hpp
 one_wire_search.obj: ../board_pin_defs.hpp
+one_wire_search.obj: ../one_wire_command.hpp
+one_wire_search.obj: ../error_logger.hpp
 one_wire_search.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 one_wire_search.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 one_wire_search.obj: ../text_controls.hpp
+one_wire_search.obj: ../driverlib/inc/hw_memmap.h
+one_wire_search.obj: ../driverlib/timer.h
+one_wire_search.obj: ../driverlib/gpio.h
+one_wire_search.obj: ../driverlib/sysctl.h
+one_wire_search.obj: ../driverlib/interrupt.h
+one_wire_search.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h
+one_wire_search.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_timer.h
+one_wire_search.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h
+one_wire_search.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_sysctl.h
 
 ../one_wire_search.cpp: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h: 
+C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h: 
 ../one_wire_search.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h: 
@@ -98,8 +112,6 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__config:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__config_site: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__libcxx_extra.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h: 
-C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h: 
-C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__nullptr: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdint.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdint.h: 
@@ -158,7 +170,6 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/__function
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/tuple: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdexcept: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cassert: 
-C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/atomic: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_atomic.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/cstdbool: 
@@ -176,6 +187,17 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h: 
 ../GPOs.hpp: 
 ../board_pin_defs.hpp: 
+../one_wire_command.hpp: 
+../error_logger.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
 ../text_controls.hpp: 
+../driverlib/inc/hw_memmap.h: 
+../driverlib/timer.h: 
+../driverlib/gpio.h: 
+../driverlib/sysctl.h: 
+../driverlib/interrupt.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_timer.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_sysctl.h: 

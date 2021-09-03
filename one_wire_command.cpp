@@ -22,7 +22,6 @@
 #include "inc/hw_types.h"
 #include "inc/hw_sysctl.h"
 
-
 static SemaphoreHandle_t timer_semphr = NULL;
 
 static const uint32_t NUM_OF_TX_MSGS = 20;
@@ -245,6 +244,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
                 } else if (this_ptr->one_wire_write_state == ONE_WIRE_STOP) {
 
                     this_ptr->bit_counter = (this_ptr->bit_counter + 1) % 8;
+                    this_ptr->one_wire_write_state = ONE_WIRE_START;
 
                     if (0 == this_ptr->bit_counter) {
                         this_ptr->one_wire_msg->bytes_rxed++;
@@ -252,7 +252,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
                     } else {
                         this_ptr->set_timer(INTER_BIT_TIME_US);
                     }
-                    this_ptr->one_wire_write_state = ONE_WIRE_START;
+
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
 
                 }

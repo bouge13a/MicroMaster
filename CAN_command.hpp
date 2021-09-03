@@ -25,6 +25,7 @@ typedef enum {
 
 typedef enum {
     CAN_CMD_ID,
+    CAN_CMD_SPEED,
     CAN_CMD_NUM_TX_BYTES,
     CAN_CMD_TX_BYTES,
     CAN_CMD_SEND,

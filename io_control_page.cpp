@@ -19,7 +19,7 @@ static const uint32_t GPO_DATA_COL = 15;
 static const uint32_t GPI_DATA_COL = 45;
 static const uint32_t ADC_DATA_COL = 75;
 
-static const uint32_t NUM_OF_DISPLAYED_GPOS = 3;
+static const uint32_t NUM_OF_DISPLAYED_GPOS = 4;
 
 
 IoCtlPage::IoCtlPage(GpoObj* gpo_obj,

@@ -30,8 +30,8 @@ static const uint32_t NUM_OF_RX_MSGS = 20;
 static const uint32_t RESET_PULSE_TIME_US = 480;
 static const uint32_t IDLE_TIME_US = 65;
 static const uint32_t AFTER_RESET_WAIT_US = 480;
-static const uint32_t START_BIT_TIME_US = 100;
-static const uint32_t RELEASE_TIME_US = 65;
+static const uint32_t START_BIT_TIME_US = 65;
+static const uint32_t RELEASE_TIME_US = 40;
 static const uint32_t INTER_BIT_TIME_US = 5;
 static const uint32_t INTER_BYTE_TIME_US = 500;
 
@@ -78,7 +78,7 @@ OneWireCmd::OneWireCmd(GpoObj* gpo_obj) : ConsolePage("1 Wire Command",
                                            false) {
 
     this->gpo_obj = gpo_obj;
-    this->one_wire_pin = gpo_obj->get_config("GPO 3");
+    this->one_wire_pin = gpo_obj->get_config("one wire");
 
     xTaskCreate(this->taskfunwrapper,     /* Function that implements the task. */
                 "1 Wire Cmd",             /* Text name for the task. */
@@ -234,7 +234,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
 
-                    SysCtlDelay(10);
+                    //SysCtlDelay(5);
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
                     this_ptr->one_wire_msg->rx_bytes[this_ptr->one_wire_msg->bytes_rxed] |= this_ptr->gpo_obj->get(one_wire_pin) << (this->bit_counter);

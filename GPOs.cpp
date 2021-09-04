@@ -103,7 +103,7 @@ GpoObj::GpoObj(void) {
 
             MAP_SysCtlPeripheralEnable(this->gpo_info->gpos[idx]->peripheral);
 
-            if (this->gpo_info->gpos[idx]->port != GPIO_PORTD_BASE) {
+            if (this->gpo_info->gpos[idx]->port != GPIO_PORTD_BASE && this->gpo_info->gpos[idx]->port != GPIO_PORTB_BASE) {
                 SysCtlGPIOAHBEnable(this->gpo_info->gpos[idx]->peripheral);
             }
 

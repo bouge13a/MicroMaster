@@ -27,8 +27,8 @@ static SemaphoreHandle_t timer_semphr = NULL;
 static const uint32_t RESET_PULSE_TIME_US = 480;
 static const uint32_t IDLE_TIME_US = 65;
 static const uint32_t AFTER_RESET_WAIT_US = 480;
-static const uint32_t START_BIT_TIME_US = 100;
-static const uint32_t RELEASE_TIME_US = 65;
+static const uint32_t START_BIT_TIME_US = 65;
+static const uint32_t RELEASE_TIME_US = 40;
 static const uint32_t INTER_BIT_TIME_US = 5;
 static const uint32_t INTER_BYTE_TIME_US = 500;
 
@@ -91,7 +91,7 @@ OneWireSearch::OneWireSearch(GpoObj* gpo_obj,
     TimerIntRegister(TIMER3_BASE, TIMER_A, timer2_int_handler);
     IntPrioritySet(INT_TIMER3A, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
 
-    this->one_wire_pin = this->gpo_obj->get_config("GPO 3");
+    this->one_wire_pin = this->gpo_obj->get_config("one wire");
 
     this->ow_search_state = OW_SEARCH_IDLE;
     this->one_wire_write_state = ONE_WIRE_START;
@@ -100,6 +100,8 @@ OneWireSearch::OneWireSearch(GpoObj* gpo_obj,
     this->rom_id_idx = 0;
 
     this->error_flag = false;
+
+    this->id_bit_number = 1;
 
 
 
@@ -169,14 +171,14 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
 
-                    if (this_ptr->search_type == ONE_WIRE_SEARCH_ROM) {
-                        if(1 == (SEARCH_ROM_CMD >> (this_ptr->bit_counter)) & 0x0001) {
+                    if (this_ptr->search_type == SEARCH_ROM_CMD) {
+                        if(1 == ((SEARCH_ROM_CMD >> this_ptr->bit_counter) & 0x0001)) {
                             this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
                         } else {
                             this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
                         }
-                    } else if (this_ptr->search_type == ONE_WIRE_ALARM_SEARCH) {
-                        if(1 == (ALARM_SEARCH_CMD >> (this_ptr->bit_counter)) & 0x0001) {
+                    } else if (this_ptr->search_type == ALARM_SEARCH_CMD) {
+                        if(1 == ((ALARM_SEARCH_CMD >> this_ptr->bit_counter) & 0x0001)) {
                             this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
                         } else {
                             this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
@@ -188,9 +190,10 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 } else if (this_ptr->one_wire_write_state == ONE_WIRE_STOP) {
 
                     this_ptr->bit_counter++;
+                    this_ptr->set_timer(INTER_BIT_TIME_US);
                     this_ptr->one_wire_write_state = ONE_WIRE_START;
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
-                    this_ptr->set_timer(INTER_BIT_TIME_US);
+
 
                 }
             } else {
@@ -214,7 +217,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
                 this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
 
-                SysCtlDelay(10);
+                //SysCtlDelay(5);
 
                 this_ptr->one_wire_write_state = ONE_WIRE_STOP;
                 this_ptr->bit_id = this_ptr->gpo_obj->get(this_ptr->one_wire_pin);
@@ -247,7 +250,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
                 this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
 
-                SysCtlDelay(10);
+                //SysCtlDelay(5);
 
                 this_ptr->one_wire_write_state = ONE_WIRE_STOP;
                 this_ptr->cmp_bit_id = this_ptr->gpo_obj->get(this_ptr->one_wire_pin);
@@ -264,6 +267,8 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 if (this_ptr->bit_id && this_ptr->cmp_bit_id) {
 
                     this_ptr->ow_search_state = OW_SEARCH_FINISH;
+                    this_ptr->last_device_flag = true;
+                    break;
 
                 // if bit id and cmp bit id = 0, there are both zeros and ones
                 } else if (0 == this_ptr->bit_id && 0 == this_ptr->cmp_bit_id) {
@@ -278,7 +283,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
                     } else {
 
-                        this_ptr->search_direction = (this_ptr->rom_ids[this_ptr->rom_id_idx - 1] >> this_ptr->id_bit_number) & 1;
+                        this_ptr->search_direction = (this_ptr->rom_ids[this_ptr->rom_id_idx-1] >> (this_ptr->id_bit_number-1)) & 1;
 
                     }
 
@@ -294,7 +299,11 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                     this_ptr->search_direction = this_ptr->bit_id;
                 }
 
-                this_ptr->rom_ids[this_ptr->rom_id_idx] |= this_ptr->search_direction << this_ptr->id_bit_number;
+                if (this_ptr->search_direction == 1) {
+                    this_ptr->rom_ids[this_ptr->rom_id_idx] |= this_ptr->search_direction << (this_ptr->id_bit_number-1);
+                } else {
+                    this_ptr->rom_ids[this_ptr->rom_id_idx] &= ~(this_ptr->search_direction << (this_ptr->id_bit_number-1));
+                }
 
                 this_ptr->id_bit_number++;
 
@@ -329,20 +338,22 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
             } else if (this_ptr->one_wire_write_state == ONE_WIRE_STOP) {
 
+                this_ptr->one_wire_write_state = ONE_WIRE_START;
 
-                if(this_ptr->id_bit_number < SIZE_OF_ROM_ID) {
+                this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
+                this_ptr->set_timer(INTER_BIT_TIME_US);
+
+                if(this_ptr->id_bit_number <= SIZE_OF_ROM_ID) {
                     this_ptr->ow_search_state = OW_SEARCH_READ_BIT;
                 } else {
+                    this_ptr->id_bit_number = 1;
+                    this_ptr->bit_counter = 0;
                     this_ptr->ow_search_state = OW_SEARCH_FINISH;
                     this_ptr->last_descrepancy = this_ptr->last_zero;
                     if(0 == this_ptr->last_descrepancy) {
                         this_ptr->last_device_flag = true;
                     }
                 }
-
-                this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
-                this_ptr->set_timer(INTER_BIT_TIME_US);
-
             }
 
 
@@ -350,17 +361,34 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
         case OW_SEARCH_FINISH :
 
-            this_ptr->last_descrepancy = 0;
-            this_ptr->last_family_discrepancy = 0;
-            this_ptr->last_device_flag = 0;
+            xSemaphoreTake( timer_semphr, portMAX_DELAY);
+
+
 
             if(!this_ptr->last_device_flag) {
                 this_ptr->rom_id_idx++;
                 this_ptr->ow_search_state = OW_SEARCH_IDLE;
                 xQueueSend(this_ptr->one_wire_q, &this_ptr->search_type, 0);
+                break;
             }
 
-            UARTprintf("%d", this_ptr->rom_ids[this_ptr->rom_id_idx]);
+            this_ptr->last_descrepancy = 0;
+            this_ptr->last_family_discrepancy = 0;
+
+            for (uint32_t index=0; index<=this_ptr->rom_id_idx; index++) {
+                for(uint32_t inner_index=0; inner_index<8; inner_index++) {
+                    UARTprintf("0x%02x ", (uint8_t)(this_ptr->rom_ids[index] >> (inner_index*8)) & 0xff);
+                }
+            }
+
+            if(this_ptr->last_device_flag) {
+                this_ptr->rom_id_idx = 0;
+            }
+            this_ptr->last_device_flag = false;
+
+            UARTprintf("\r\n");
+
+
 
             this_ptr->ow_search_state = OW_SEARCH_IDLE;
             break;
@@ -404,6 +432,10 @@ void OneWireSearch::draw_input(int character) {
 
 void OneWireSearch::draw_reset(void) {
 
+    this->last_descrepancy = 0;
+    this->last_family_discrepancy = 0;
+    this->last_device_flag = false;
+    this->rom_id_idx = 1;
 }
 
 void OneWireSearch::draw_help(void) {

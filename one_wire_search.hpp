@@ -48,10 +48,11 @@ extern "C" {
 
         OneWireCmd* one_wire_cmd;
 
-        one_wire_search_types_e search_type;
+        uint32_t search_type;
         one_wire_search_states_e ow_search_state;
         one_wire_write_states_e one_wire_write_state;
         bool error_flag;
+        bool search_result;
 
         GpoObj* gpo_obj;
         gpio_pin_t* one_wire_pin;
@@ -69,7 +70,7 @@ extern "C" {
         uint32_t last_descrepancy;
         uint32_t last_family_discrepancy;
         uint32_t last_zero;
-        uint32_t search_direction;
+        uint64_t search_direction;
 
         QueueHandle_t one_wire_q;
 

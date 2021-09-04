@@ -66,7 +66,7 @@ UartStreamer::UartStreamer(UartCmd* uart_cmd)  : ConsolePage("UART Streamer",
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "UART Streamer",                                     /* Text name for the task. */
-                50,                  /* Stack size in words, not bytes. */
+                75,                  /* Stack size in words, not bytes. */
                 this,                                      /* Parameter passed into the task. */
                 3,                                         /* Priority at which the task is created. */
                 NULL);

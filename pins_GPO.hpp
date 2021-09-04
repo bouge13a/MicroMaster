@@ -55,6 +55,16 @@ static gpio_pin_t gpo_3 = {
     .peripheral = SYSCTL_PERIPH_GPIOF,
     .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_OUT,
+    .pad_config = GPIO_PIN_TYPE_STD,
+    .displayed  = true,
+};
+
+static gpio_pin_t one_wire = {
+    .name       = "one wire",
+    .pin        = GPIO_PIN_4,
+    .peripheral = SYSCTL_PERIPH_GPIOE,
+    .port       = GPIO_PORTE_AHB_BASE,
+    .direction  = GPIO_DIR_MODE_OUT,
     .pad_config = GPIO_PIN_TYPE_OD,
     .displayed  = false,
 };
@@ -119,6 +129,7 @@ static gpio_pin_t* gpos[] = {
     &psel_3v3,
     &psel_5v,
     &pullup_en,
+    &one_wire,
 };
 
 gpos_t board_gpo_info = {

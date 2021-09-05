@@ -44,6 +44,8 @@ extern "C" {
         void task(OneWireSearch* this_ptr);
         static void taskfunwrapper(void* parm);
 
+        unsigned char crc_check(unsigned char value);
+
         void set_timer(uint32_t useconds);
 
         OneWireCmd* one_wire_cmd;

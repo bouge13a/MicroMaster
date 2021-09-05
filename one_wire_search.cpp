@@ -6,6 +6,7 @@
  */
 
 #include <assert.h>
+#include <string.h>
 #include "one_wire_search.hpp"
 
 #include "uartstdio.h"
@@ -29,7 +30,7 @@ static const uint32_t IDLE_TIME_US = 65;
 static const uint32_t AFTER_RESET_WAIT_US = 480;
 static const uint32_t START_BIT_TIME_US = 65;
 static const uint32_t RELEASE_TIME_US = 40;
-static const uint32_t INTER_BIT_TIME_US = 5;
+static const uint32_t INTER_BIT_TIME_US = 15;
 static const uint32_t INTER_BYTE_TIME_US = 500;
 
 static const uint8_t SEARCH_ROM_CMD = 0xF0;
@@ -37,7 +38,7 @@ static const uint8_t ALARM_SEARCH_CMD = 0xEC;
 
 static const uint32_t SIZE_OF_ROM_ID = 64;
 
-static unsigned char crc8;
+static volatile unsigned char crc8;
 
 static unsigned char dscrc_table[] = {
         0, 94,188,226, 97, 63,221,131,194,156,126, 32,163,253, 31, 65,
@@ -157,6 +158,9 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 this->error_flag = true;
                 break;
             }
+
+            crc8 = 0;
+            this_ptr->last_zero = 0;
 
             this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
             this_ptr->set_timer(RESET_PULSE_TIME_US);
@@ -404,6 +408,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 this_ptr->last_descrepancy = 0;
                 this_ptr->last_family_discrepancy = 0;
                 this_ptr->last_device_flag = false;
+                this_ptr->rom_id_idx = 0;
                 this_ptr->ow_search_state = OW_SEARCH_IDLE;
                 UARTprintf("\r\nSearch Ended");
                 break;
@@ -412,6 +417,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
             if(!this_ptr->last_device_flag) {
                 this_ptr->rom_id_idx++;
                 this_ptr->ow_search_state = OW_SEARCH_IDLE;
+                //vTaskDelay(100);
                 xQueueSend(this_ptr->one_wire_q, &this_ptr->search_type, 0);
                 break;
             }
@@ -425,9 +431,11 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 }
             }
 
-            if(this_ptr->last_device_flag) {
-                this_ptr->rom_id_idx = 0;
-            }
+
+            memset(rom_ids, 0, sizeof(8*10));
+
+            this_ptr->rom_id_idx = 0;
+
             this_ptr->last_device_flag = false;
 
             UARTprintf("\r\n");

@@ -54,7 +54,8 @@ PWMpage::PWMpage(void) : ConsolePage("PWM Module",
 
     }
 
-    this->pwm_cmd_state = ENTER_PIN;
+
+    this->pwm_cmd_state = ENTER_STATE;
     this->cmd_buffer = new uint8_t[SIZE_OF_CMD_BUFFER];
     this->cmd_buffer_index = 0;
 
@@ -93,7 +94,7 @@ void PWMpage::set_pulse_width(uint32_t duty_cycle,
 void PWMpage::draw_page(void) {
 
     TextCtl::cursor_pos(START_ROW, 0);
-    UARTprintf("Enter pin to control: ");
+    UARTprintf("Turn on (y/n) : ");
 
 } // End PWMpage::draw_page
 
@@ -105,19 +106,8 @@ void PWMpage::draw_data(void) {
 
 void PWMpage::draw_input(int character) {
 
+
     switch(this->pwm_cmd_state) {
-    case ENTER_PIN :
-
-        pin_buffer = atoi((const char*)&character);
-        if (pin_buffer == 0 || pin_buffer > this->pwm_info->num_pwm_pins) {
-            break;
-        }
-        this->pin_buffer--;
-        this->pwm_cmd_state = ENTER_DUTY_CYCLE;
-        UARTprintf("%c\r\n", character);
-        UARTprintf("Enter Duty Cycle: ");
-
-        break;
     case ENTER_DUTY_CYCLE :
 
         if ((character >= '0') && (character <= '9')) {
@@ -145,10 +135,16 @@ void PWMpage::draw_input(int character) {
         } else if (character == '\r') {
             UARTprintf("%c", (uint8_t)character);
             this->cmd_buffer[this->cmd_buffer_index] = '\0';
-            this->period_buffer = SysCtlClockGet()/atoi((const char*)this->cmd_buffer);
+            this->period_buffer = ((SysCtlClockGet())/atoi((const char*)this->cmd_buffer));
             this->cmd_buffer_index = 0;
+
+            set_pulse_width(this->duty_cycle_buffer,
+                            this->period_buffer,
+                            this->pin_buffer,
+                            true);
+
             this->pwm_cmd_state = ENTER_STATE;
-            UARTprintf("\r\nTurn on (y/n) : ");
+            UARTprintf("\r\n\nTurn on (y/n) : ");
 
         }
 
@@ -156,15 +152,10 @@ void PWMpage::draw_input(int character) {
     case ENTER_STATE :
 
         if ('y' == character || 'Y' == character) {
-            set_pulse_width(this->duty_cycle_buffer,
-                            this->period_buffer,
-                            this->pin_buffer,
-                            true);
 
-            TextCtl::cursor_pos(START_ROW, 0);
-            TextCtl::clear_below_line();
-            UARTprintf("Enter pin to control: ");
-            this->pwm_cmd_state = ENTER_PIN;
+            UARTprintf("%c\r\n");
+            UARTprintf("Enter duty cycle (0-100) : ");
+            this->pwm_cmd_state = ENTER_DUTY_CYCLE;
 
         } else if ('n' == character || 'N' == character) {
 
@@ -173,10 +164,9 @@ void PWMpage::draw_input(int character) {
                             this->pin_buffer,
                             false);
 
-            TextCtl::cursor_pos(START_ROW, 0);
-            TextCtl::clear_below_line();
-            UARTprintf("Enter pin to control: ");
-            this->pwm_cmd_state = ENTER_PIN;
+            UARTprintf("%c\r\n");
+            UARTprintf("Turn on (y/n) : ");
+
         }
 
         break;
@@ -188,11 +178,6 @@ void PWMpage::draw_input(int character) {
 
 void PWMpage::draw_reset(void) {
 
-    this->cmd_buffer_index = 0;
-    this->pwm_cmd_state = ENTER_PIN;
-    TextCtl::cursor_pos(START_ROW, 0);
-    TextCtl::clear_below_line();
-    UARTprintf("Enter pin to control: ");
 
 } // End PWMpage::draw_reset
 

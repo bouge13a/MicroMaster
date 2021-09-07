@@ -20,7 +20,6 @@ typedef enum {
 }pwm_input_errs_e;
 
 typedef enum {
-    ENTER_PIN,
     ENTER_DUTY_CYCLE,
     ENTER_FREQUENCY,
     ENTER_STATE,
@@ -37,15 +36,17 @@ private :
                          uint32_t pin_index,
                          bool on);
 
+    void print_menu(uint32_t index);
+
     pwm_pins_t* pwm_info;
     pwm_cmd_states_e pwm_cmd_state;
 
     uint8_t* cmd_buffer;
     uint32_t cmd_buffer_index;
 
-    uint32_t pin_buffer;
-    uint32_t duty_cycle_buffer;
-    uint32_t period_buffer;
+    volatile uint32_t pin_buffer;
+    volatile uint32_t duty_cycle_buffer;
+    volatile uint32_t period_buffer;
 
     void draw_page(void);
     void draw_data(void);

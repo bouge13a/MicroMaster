@@ -246,10 +246,6 @@ void UartCmd::draw_input(int character) {
 
         } else if (character == '\r') {
 
-//            if (this->char_string_index % 2 == 1) {
-//                this->char_string[this->char_string_index+1] = '\0';
-//            }
-
             for (uint32_t index=0; index<this->char_string_index; index += 2) {
                 UARTCharPut(UART1_BASE, ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );
             }

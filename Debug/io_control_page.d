@@ -91,6 +91,8 @@ io_control_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/i
 io_control_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 io_control_page.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 io_control_page.obj: ../text_controls.hpp
+io_control_page.obj: ../driverlib/interrupt.h
+io_control_page.obj: ../driverlib/inc/hw_ints.h
 
 ../io_control_page.cpp: 
 ../io_control_page.hpp: 
@@ -183,3 +185,5 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
 ../text_controls.hpp: 
+../driverlib/interrupt.h: 
+../driverlib/inc/hw_ints.h: 

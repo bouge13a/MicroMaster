@@ -108,7 +108,7 @@ AdcTask::AdcTask(void) {
     ADCIntEnable(ADC0_BASE, 0);
 
     // Enable the interrupt for ADC0 sequence 0 on the processor (NVIC).
-    IntEnable(INT_ADC0SS0);
+    IntDisable(INT_ADC0SS0);
 
 } // End AdcTask::AdcTask
 

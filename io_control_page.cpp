@@ -8,6 +8,8 @@
 #include "io_control_page.hpp"
 #include <uartstdio.h>
 #include "text_controls.hpp"
+#include "driverlib/interrupt.h"
+#include "driverlib/inc/hw_ints.h"
 
 static const uint32_t START_ROW = 6;
 
@@ -41,6 +43,9 @@ IoCtlPage::IoCtlPage(GpoObj* gpo_obj,
 } // End IoCtlPage::IoCtlPage
 
 void IoCtlPage::draw_page(void) {
+
+    // Enable the interrupt for ADC0 sequence 0 on the processor (NVIC).
+    IntEnable(INT_ADC0SS0);
 
     uint32_t print_index = 0;
 
@@ -175,4 +180,6 @@ void IoCtlPage::draw_help(void) {
 
 void IoCtlPage::draw_reset(void) {
 
+    // Enable the interrupt for ADC0 sequence 0 on the processor (NVIC).
+    IntDisable(INT_ADC0SS0);
 }

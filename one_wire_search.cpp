@@ -38,9 +38,16 @@ static const uint8_t ALARM_SEARCH_CMD = 0xEC;
 
 static const uint32_t SIZE_OF_ROM_ID = 64;
 
-static volatile unsigned char crc8;
+static volatile unsigned char crc8 = 0;
 
-static unsigned char dscrc_table[] = {
+typedef struct {
+    const uint8_t family_code;
+    const char* description;
+}device_code_t;
+
+
+
+static const unsigned char dscrc_table[] = {
         0, 94,188,226, 97, 63,221,131,194,156,126, 32,163,253, 31, 65,
       157,195, 33,127,252,162, 64, 30, 95,  1,227,189, 62, 96,130,220,
        35,125,159,193, 66, 28,254,160,225,191, 93,  3,128,222, 60, 98,
@@ -65,7 +72,7 @@ unsigned char OneWireSearch::crc_check(unsigned char value) {
     return crc8;
 }
 
-static void timer2_int_handler(void) {
+static void timer3_int_handler(void) {
 
     BaseType_t xHigherPriorityTaskWoken, xResult;
 
@@ -116,7 +123,7 @@ OneWireSearch::OneWireSearch(GpoObj* gpo_obj,
 
     IntEnable(INT_TIMER3A);
 
-    TimerIntRegister(TIMER3_BASE, TIMER_A, timer2_int_handler);
+    TimerIntRegister(TIMER3_BASE, TIMER_A, timer3_int_handler);
     IntPrioritySet(INT_TIMER3A, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
 
     this->one_wire_pin = this->gpo_obj->get_config("one wire");
@@ -148,17 +155,19 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
         switch(this_ptr->ow_search_state) {
         case OW_SEARCH_IDLE :
 
-            this->error_flag = false;
-
             xQueueReceive(this_ptr->one_wire_q, &this_ptr->search_type, portMAX_DELAY);
 
             if( 0 == this_ptr->gpo_obj->get(this_ptr->one_wire_pin)) {
                 this_ptr->one_wire_cmd->logger->set_error(this_ptr->one_wire_cmd->pullup_err);
                 this_ptr->ow_search_state = OW_SEARCH_FINISH;
+                if(this_ptr->on_screen) {
+                    UARTprintf("\r\nError: Line state low, check pull up resistor.\r\n");
+                }
                 this->error_flag = true;
                 break;
             }
 
+            this_ptr->error_flag = false;
             crc8 = 0;
             this_ptr->last_zero = 0;
 
@@ -176,7 +185,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
                 this_ptr->one_wire_cmd->logger->set_error(this_ptr->one_wire_cmd->no_resp_err);
                 this_ptr->ow_search_state = OW_SEARCH_FINISH;
-                this->error_flag = true;
+                this_ptr->error_flag = true;
 
             } else {
 
@@ -302,6 +311,9 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
                     this_ptr->ow_search_state = OW_SEARCH_FINISH;
                     this_ptr->last_device_flag = true;
+                    if(this_ptr->on_screen) {
+                        UARTprintf("\r\nNo devices participated in search\r\n");
+                    }
                     break;
 
                 // if bit id and cmp bit id = 0, there are both zeros and ones
@@ -309,7 +321,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
                     if(this_ptr->id_bit_number < this_ptr->last_descrepancy) {
 
-                        this_ptr->search_direction = (this_ptr->rom_ids[this_ptr->rom_id_idx] >> (this_ptr->id_bit_number-1)) & 1;
+                        this_ptr->search_direction = (this_ptr->rom_ids[this_ptr->rom_id_idx-1] >> (this_ptr->id_bit_number-1)) & 1;
 
                     } else {
 
@@ -375,6 +387,8 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                     break;
                 }
 
+                crc8 = 0;
+
                 for(uint32_t index=0; index<8; index++) {
                     crc_check((uint8_t)((this_ptr->rom_ids[this_ptr->rom_id_idx] >> (index*8)) & 0xff));
                 }
@@ -390,6 +404,9 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                     }
                     this->search_result = true;
                 } else {
+                    if(this_ptr->on_screen) {
+                        UARTprintf("\r\nError: Checksum failed\r\n");
+                    }
                     this_ptr->id_bit_number = 1;
                     this_ptr->bit_counter = 0;
                     this_ptr->ow_search_state = OW_SEARCH_FINISH;
@@ -410,7 +427,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 this_ptr->last_device_flag = false;
                 this_ptr->rom_id_idx = 0;
                 this_ptr->ow_search_state = OW_SEARCH_IDLE;
-                UARTprintf("\r\nSearch Ended");
+                memset(rom_ids, 0, sizeof(uint64_t)*10);
                 break;
             }
 
@@ -425,14 +442,20 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
             this_ptr->last_descrepancy = 0;
             this_ptr->last_family_discrepancy = 0;
 
+            if(this_ptr->on_screen) {
+                UARTprintf("\r\nFound %d devices:\r\n", this_ptr->rom_id_idx+1);
+            }
+
             for (uint32_t index=0; index<=this_ptr->rom_id_idx; index++) {
+                UARTprintf("Device %d address : \r\n", index);
                 for(uint32_t inner_index=0; inner_index<8; inner_index++) {
                     UARTprintf("0x%02x ", (uint8_t)(this_ptr->rom_ids[index] >> (inner_index*8)) & 0xff);
                 }
+                UARTprintf("\r\n");
             }
 
 
-            memset(rom_ids, 0, sizeof(8*10));
+            memset(rom_ids, 0, sizeof(uint64_t)*10);
 
             this_ptr->rom_id_idx = 0;
 
@@ -458,7 +481,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 void OneWireSearch::set_timer(uint32_t useconds) {
 
     TimerDisable(TIMER3_BASE, TIMER_A);
-    TimerLoadSet(TIMER3_BASE, TIMER_A, useconds*48);
+    TimerLoadSet(TIMER3_BASE, TIMER_A, useconds*80);
     TimerIntEnable(TIMER3_BASE, TIMER_TIMA_TIMEOUT);
     TimerEnable(TIMER3_BASE, TIMER_A);
 
@@ -485,7 +508,7 @@ void OneWireSearch::draw_reset(void) {
     this->last_descrepancy = 0;
     this->last_family_discrepancy = 0;
     this->last_device_flag = false;
-    this->rom_id_idx = 1;
+    this->rom_id_idx = 0;
 }
 
 void OneWireSearch::draw_help(void) {

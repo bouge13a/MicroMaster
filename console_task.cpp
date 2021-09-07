@@ -12,7 +12,9 @@
 #include "uartstdio.h"
 
 // Width of the Menu bar
-static const uint32_t MENU_BAR_WIDTH = 70;
+static const uint32_t MENU_BAR_WIDTH = 78;
+static const uint32_t SECOND_COL     = 35;
+static const uint32_t START_ROW      = 7;
 
 ConsolePage::ConsolePage(const char* name,
                          uint32_t refresh_rate,
@@ -182,6 +184,7 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
             } else {
 
                 // Escape key was pressed
+                this_ptr->pages[this_ptr->page_index]->draw_reset();
                 this_ptr->pages[page_index]->on_screen = false;
                 this_ptr->page_index = 0;
                 this_ptr->start_draw_menu(this_ptr);
@@ -210,7 +213,16 @@ void ConsoleTask::draw_page(void) {
    uint32_t index = 0;
    char letter = 'a';
 
+   UARTprintf("Welcome to MicroMaster\r\n");
+   UARTprintf("Press a letter to travel to a page, or tab to scroll through pages");
+
    for(index=0; index < this->pages.size(); index++) {
+
+       if(index > this->pages.size()/2 - 1) {
+           TextCtl::cursor_pos(START_ROW + index - this->pages.size()/2, SECOND_COL);
+       } else {
+           TextCtl::cursor_pos(START_ROW + index, 0);
+       }
        UARTprintf("%c : %s\n\r", letter++, this->pages[index]->name );
    }
 }

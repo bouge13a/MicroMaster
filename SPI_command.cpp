@@ -62,7 +62,7 @@ void spi_set_mode(uint32_t index) {
 
     SSIDisable(SSI0_BASE);
     SSIConfigSetExpClk(SSI0_BASE,
-                       16000000,
+                       SysCtlClockGet(),
                        spi_mode,
                        SSI_MODE_MASTER,
                        spi_speed,
@@ -127,7 +127,7 @@ SpiCmdTask::SpiCmdTask(void) : ConsolePage("SPI Command",
                    GPIO_PIN_2);
 
     SSIConfigSetExpClk(SSI0_BASE,
-                       16000000,
+                       SysCtlClockGet(),
                        SSI_FRF_MOTO_MODE_0,
                        SSI_MODE_MASTER,
                        1000000,

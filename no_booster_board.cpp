@@ -65,8 +65,6 @@ NoBoosterPack::NoBoosterPack(void) {
 
     ErrorLogger* error_logger = ErrorLogger::get_instance();
 
-    //TestTask* test_task = new TestTask();
-
     GpoObj* gpo_obj = new GpoObj();
 
     GpiObj* gpi_obj = new GpiObj();
@@ -158,7 +156,6 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(pwm_page);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
-    //console_task->add_page(test_task);
 
 
 } // End init_no_booster_board

@@ -23,18 +23,10 @@
 
 int main(void) {
 
-    // Enable lazy stacking for interrupt handlers.  This allows floating-point
-    // instructions to be used within interrupt handlers, but at the expense of
-    // extra stack usage.
+    // initialize tiva-c @ 80mhz
     MAP_FPUEnable();
     MAP_FPULazyStackingEnable();
-
-
-    // Set the system clock to 50 MHz
-    SysCtlClockSet(SYSCTL_SYSDIV_4 |
-                       SYSCTL_USE_PLL |
-                       SYSCTL_OSC_MAIN |
-                       SYSCTL_XTAL_16MHZ);
+    MAP_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
 
     NoBoosterPack* no_booster = new NoBoosterPack();
 

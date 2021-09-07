@@ -32,8 +32,8 @@ static const uint32_t IDLE_TIME_US = 65;
 static const uint32_t AFTER_RESET_WAIT_US = 480;
 static const uint32_t START_BIT_TIME_US = 65;
 static const uint32_t RELEASE_TIME_US = 40;
-static const uint32_t INTER_BIT_TIME_US = 5;
-static const uint32_t INTER_BYTE_TIME_US = 500;
+static const uint32_t INTER_BIT_TIME_US = 15;
+static const uint32_t INTER_BYTE_TIME_US = 200;
 
 static void timer0_int_handler(void) {
 
@@ -182,7 +182,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
 
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
 
-                    SysCtlDelay(START_BIT_TIME_US);
+                    SysCtlDelay(65);
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
                     if(1 == ((this_ptr->one_wire_msg->tx_bytes[this_ptr->one_wire_msg->bytes_txed] >> (this_ptr->bit_counter)) & 0x0001)) {
@@ -190,6 +190,7 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
                     } else {
                         this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
                     }
+
                     this_ptr->set_timer(RELEASE_TIME_US);
 
                 } else if (this_ptr->one_wire_write_state == ONE_WIRE_STOP) {
@@ -233,8 +234,6 @@ void OneWireCmd::task(OneWireCmd* this_ptr) {
                     SysCtlDelay(START_BIT_TIME_US);
 
                     this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 1);
-
-                    //SysCtlDelay(5);
 
                     this_ptr->one_wire_write_state = ONE_WIRE_STOP;
                     this_ptr->one_wire_msg->rx_bytes[this_ptr->one_wire_msg->bytes_rxed] |= this_ptr->gpo_obj->get(one_wire_pin) << (this->bit_counter);
@@ -329,7 +328,7 @@ void OneWireCmd::print_errors(OneWireCmd* this_ptr) {
 void OneWireCmd::set_timer(uint32_t useconds) {
 
     TimerDisable(TIMER0_BASE, TIMER_A);
-    TimerLoadSet(TIMER0_BASE, TIMER_A, useconds*48);
+    TimerLoadSet(TIMER0_BASE, TIMER_A, useconds*80);
     TimerIntEnable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
     TimerEnable(TIMER0_BASE, TIMER_A);
 

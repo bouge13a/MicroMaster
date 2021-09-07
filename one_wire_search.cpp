@@ -157,19 +157,20 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
 
             xQueueReceive(this_ptr->one_wire_q, &this_ptr->search_type, portMAX_DELAY);
 
+            this_ptr->error_flag = false;
+            this->search_result = false;
+            crc8 = 0;
+            this_ptr->last_zero = 0;
+
             if( 0 == this_ptr->gpo_obj->get(this_ptr->one_wire_pin)) {
                 this_ptr->one_wire_cmd->logger->set_error(this_ptr->one_wire_cmd->pullup_err);
-                this_ptr->ow_search_state = OW_SEARCH_FINISH;
+                this_ptr->ow_search_state = OW_SEARCH_IDLE;
                 if(this_ptr->on_screen) {
                     UARTprintf("\r\nError: Line state low, check pull up resistor.\r\n");
                 }
                 this->error_flag = true;
                 break;
             }
-
-            this_ptr->error_flag = false;
-            crc8 = 0;
-            this_ptr->last_zero = 0;
 
             this_ptr->gpo_obj->set(this_ptr->one_wire_pin, 0);
             this_ptr->set_timer(RESET_PULSE_TIME_US);
@@ -427,6 +428,7 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 this_ptr->last_device_flag = false;
                 this_ptr->rom_id_idx = 0;
                 this_ptr->ow_search_state = OW_SEARCH_IDLE;
+                this_ptr->error_flag = false;
                 memset(rom_ids, 0, sizeof(uint64_t)*10);
                 break;
             }
@@ -488,6 +490,8 @@ void OneWireSearch::set_timer(uint32_t useconds) {
 } // End OneWireCmd::set_timer
 
 void OneWireSearch::draw_page(void) {
+
+    UARTprintf("Press s to search ROM IDs or press a to do an alarm search");
 
 }
 void OneWireSearch::draw_data(void) {

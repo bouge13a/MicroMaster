@@ -9,10 +9,11 @@
 #define MENU_CONSTANTS_HPP_
 
 
-const char* i2c_speed_menu[] = {"100kbs\0",
-                                "400kbs\0"};
+const char* i2c_speed_menu[] = {"100kbs",
+                                "400kbs",
+                                "1Mbs"};
 const char* i2c_speed_name = "I2C Speed\0";
-const uint32_t i2c_speed_num = 2;
+const uint32_t i2c_speed_num = 3;
 
 
 const char* spi_mode_menu[] = {"Mode 0",

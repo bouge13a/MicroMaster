@@ -111,6 +111,7 @@ I2C_task.obj: ../driverlib/i2c.h
 I2C_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/gpio.h
 I2C_task.obj: ../driverlib/inc/hw_i2c.h
 I2C_task.obj: ../driverlib/inc/hw_memmap.h
+I2C_task.obj: ../driverlib/inc/hw_types.h
 I2C_task.obj: ../driverlib/timer.h
 I2C_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 
@@ -225,5 +226,6 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/gpio.h: 
 ../driverlib/inc/hw_i2c.h: 
 ../driverlib/inc/hw_memmap.h: 
+../driverlib/inc/hw_types.h: 
 ../driverlib/timer.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 

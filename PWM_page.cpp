@@ -27,6 +27,11 @@
 static const uint32_t START_ROW = 5;
 static const uint32_t SIZE_OF_CMD_BUFFER = 10;
 
+static const uint32_t CLK_1_FREQ = 1000;
+static const uint32_t CLK_2_FREQ = 550;
+static const uint32_t CLK_4_FREQ = 125;
+static const uint32_t CLK_8_FREQ = 1562;
+
 
 PWMpage::PWMpage(void) : ConsolePage("PWM Module",
                                      portMAX_DELAY,
@@ -76,7 +81,7 @@ void PWMpage::set_pulse_width(uint32_t duty_cycle,
 
     PWMPulseWidthSet(pwm_info->pwm_pins[pin_index]->pwm_base,
                      pwm_info->pwm_pins[pin_index]->pwm_out,
-                     period*(duty_cycle/100.0));
+                     duty_cycle);
 
     PWMOutputState(pwm_info->pwm_pins[pin_index]->pwm_base,
                    pwm_info->pwm_pins[pin_index]->pwm_out_bit,
@@ -136,12 +141,25 @@ void PWMpage::draw_input(int character) {
             UARTprintf("%c", (uint8_t)character);
             this->cmd_buffer[this->cmd_buffer_index] = '\0';
             this->period_buffer = ((SysCtlClockGet())/atoi((const char*)this->cmd_buffer));
-            this->cmd_buffer_index = 0;
 
-            set_pulse_width(this->duty_cycle_buffer,
-                            this->period_buffer,
-                            this->pin_buffer,
-                            true);
+            if (this->period_buffer > CLK_1_FREQ) {
+                SysCtlPWMClockSet(PWM_SYSCLK_DIV_1);
+
+                set_pulse_width((this->duty_cycle_buffer/100.0)*this->period_buffer,
+                                this->period_buffer,
+                                this->pin_buffer,
+                                true);
+            } else {
+
+                SysCtlPWMClockSet(PWM_SYSCLK_DIV_2);
+
+                set_pulse_width((this->duty_cycle_buffer/100.0)*this->period_buffer/2,
+                                this->period_buffer/2,
+                                this->pin_buffer,
+                                true);
+            }
+
+            this->cmd_buffer_index = 0;
 
             this->pwm_cmd_state = ENTER_STATE;
             UARTprintf("\r\n\nTurn on (y/n) : ");
@@ -153,7 +171,7 @@ void PWMpage::draw_input(int character) {
 
         if ('y' == character || 'Y' == character) {
 
-            UARTprintf("%c\r\n");
+            UARTprintf("%c\r\n", character);
             UARTprintf("Enter duty cycle (0-100) : ");
             this->pwm_cmd_state = ENTER_DUTY_CYCLE;
 
@@ -164,7 +182,7 @@ void PWMpage::draw_input(int character) {
                             this->pin_buffer,
                             false);
 
-            UARTprintf("%c\r\n");
+            UARTprintf("%c\r\n", character);
             UARTprintf("Turn on (y/n) : ");
 
         }
@@ -178,6 +196,9 @@ void PWMpage::draw_input(int character) {
 
 void PWMpage::draw_reset(void) {
 
+
+    this->cmd_buffer_index = 0;
+    this->pwm_cmd_state = ENTER_STATE;
 
 } // End PWMpage::draw_reset
 

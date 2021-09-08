@@ -169,47 +169,47 @@ void CanCommand::rx_taskfunwrapper(void* parm){
 
 void CanCommand::log_print_errors(void) {
 
-    if (CAN_STATUS_BUS_OFF == CAN_STATUS_BUS_OFF & ui32Status) {
+    if (CAN_STATUS_BUS_OFF == (CAN_STATUS_BUS_OFF & ui32Status)) {
         this->logger->set_error(this->bus_off_err);
         UARTprintf("\r\nError: %s", this->bus_off_err->info);
     }
 
-    if (CAN_STATUS_EWARN == CAN_STATUS_EWARN & ui32Status) {
+    if (CAN_STATUS_EWARN == (CAN_STATUS_EWARN & ui32Status)) {
         this->logger->set_error(this->ewarn_err);
         UARTprintf("\r\nError: %s", this->ewarn_err->info);
     }
 
-    if (CAN_STATUS_EPASS == CAN_STATUS_EPASS & ui32Status) {
+    if (CAN_STATUS_EPASS == (CAN_STATUS_EPASS & ui32Status)) {
         this->logger->set_error(this->epass_err);
         UARTprintf("\r\nError: %s", this->epass_err->info);
     }
 
-    if (CAN_STATUS_LEC_STUFF == CAN_STATUS_LEC_STUFF & ui32Status) {
+    if (CAN_STATUS_LEC_STUFF == (CAN_STATUS_LEC_STUFF & ui32Status)) {
         this->logger->set_error(this->lec_stuff_err);
         UARTprintf("\r\nError: %s", this->lec_stuff_err->info);
     }
 
-    if (CAN_STATUS_LEC_FORM == CAN_STATUS_LEC_FORM & ui32Status) {
+    if (CAN_STATUS_LEC_FORM == (CAN_STATUS_LEC_FORM & ui32Status)) {
         this->logger->set_error(this->lec_form_err);
         UARTprintf("\r\nError: %s", this->lec_form_err->info);
     }
 
-    if (CAN_STATUS_LEC_ACK == CAN_STATUS_LEC_ACK & ui32Status) {
+    if (CAN_STATUS_LEC_ACK == (CAN_STATUS_LEC_ACK & ui32Status)) {
         this->logger->set_error(this->lec_ack_err);
         UARTprintf("\r\nError: %s", this->lec_ack_err->info);
     }
 
-    if (CAN_STATUS_LEC_BIT1 == CAN_STATUS_LEC_BIT1 & ui32Status) {
+    if (CAN_STATUS_LEC_BIT1 == (CAN_STATUS_LEC_BIT1 & ui32Status)) {
         this->logger->set_error(this->lec_bit1_err);
         UARTprintf("\r\nError: %s", this->lec_bit1_err->info);
     }
 
-    if (CAN_STATUS_LEC_BIT0 == CAN_STATUS_LEC_BIT0 & ui32Status) {
+    if (CAN_STATUS_LEC_BIT0 == (CAN_STATUS_LEC_BIT0 & ui32Status)) {
         this->logger->set_error(this->lec_bit0_err);
         UARTprintf("\r\nError: %s", this->lec_bit0_err->info);
     }
 
-    if (CAN_STATUS_LEC_CRC == CAN_STATUS_LEC_CRC & ui32Status) {
+    if (CAN_STATUS_LEC_CRC == (CAN_STATUS_LEC_CRC & ui32Status)) {
         this->logger->set_error(this->lec_crc_err);
         UARTprintf("\r\nError: %s", this->lec_crc_err->info);
     }

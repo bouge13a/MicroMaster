@@ -45,7 +45,73 @@ typedef struct {
     const char* description;
 }device_code_t;
 
+static device_code_t device_codes[] = {
+    {0x1, "DS1990A, DS1990R, DS2401, DS2411 Serial number"},
+    {0x2, "DS1991 1152b Secure memory"},
+    {0x4, "DS2404 EconoRAM time chip"},
+    {0x5, "DS2405 Addressable switch"},
+    {0x6, "DS1993 4Kb Memory button"},
+    {0x8, "DS1992 1kb memory button"},
+    {0xA, "DS1995 16kb memory button"},
+    {0xB, "DS1985,DS2505 16kb add-only memory"},
+    {0xC, "DS1996 64kb memory button"},
+    {0xF, "DS1986, DS2506 64kb add-only memory"},
+    {0x10, "DS18S20 temperature sensor"},
+    {0x12, "DS2406, DS2407 dual addressable switch"},
+    {0x14, "DS1971, DS2430A 256b EEPROM"},
+    {0x16, "DS1954, DS1957 coprocessor ibutton"},
+    {0x18, "DS1962, DS1963S 4kb monetary device with SHA"},
+    {0x1A, "DS1963L 4kb monetary device"},
+    {0x1B, "DS2436 battery ID/monitor"},
+    {0x1C, "DS28E04-100 4kb EEPROM with PIO"},
+    {0x1D, "DS2423 4kb 1Wire RAM with counter"},
+    {0x1E, "DS2437 smart battery monitor IC"},
+    {0x1F, "DS2409 microlan coupler"},
+    {0x20, "DS2450 quad ADC"},
+    {0x21, "DS1921G, DS1921H, DS1921Z thermochron loggers"},
+    {0x22, "DS1822 econo digital thermometer"},
+    {0x23, "DS1973, DS2433 4kb EEPROM"},
+    {0x24, "DS2415 time chip"},
+    {0x26, "DS2438 smart battery monitor"},
+    {0x27, "DS2417 time chp"},
+    {0x28, "DS18B20 temperature sensor"},
+    {0x29, "DS2408 8-channel switch"},
+    {0x2C, "DS2890 digital potentiometer"},
+    {0x2D, "DS1972, DS2431 1024b memory"},
+    {0x2E, "DS2770 battery monitor/charge controller"},
+    {0x30, "DS2760 precision li+ battery monitor"},
+    {0x31, "DS2720 single cell li+ protection IC"},
+    {0x32, "DS2780 fuel gauge IC"},
+    {0x33, "DS1961S, DS2432 1kb memory with SHA"},
+    {0x34, "DS2703 sha battery authentication"},
+    {0x35, "DS2755 fuel gauge"},
+    {0x36, "DS2740 coulomb counter"},
+    {0x37, "DS1977 32kb memory"},
+    {0x3D, "DS2781 fuel gauge IC"},
+    {0x3A, "DS2413 two-channel switch"},
+    {0x3B, "DS1825, MAX31826, MAX31850 temperature sensor, TC reader"},
+    {0x41, "DS1923, DS1922E, DS1922L, DS1922T hygrochrons"},
+    {0xF0, "MoaT custom microcontroller slave"},
+    {0x42, "DS28EA00 digital thermometer with sequence detect"},
+    {0x43, "DS28EC20 20kb memory"},
+    {0x44, "DS28E10 sha1 authenticator"},
+    {0x51, "DS2751 battery fuel gauge"},
+    {0x7E, "EDS00xx EDS sensor adapter"},
+    {0x81, "USBID, DS1420 ID"},
+    {0x82, "DS1425 ID and pw protected RAM"},
+    {0xA0, "mRS001 N/A"},
+    {0xA1, "mVM0011 N/A"},
+    {0xA2, "mCM001 N/A"},
+    {0xA6, "mTS017 N/A"},
+    {0xB1, "mTC001 N/A"},
+    {0xB2, "mAM001 N/A"},
+    {0xB3, "mTC002, DS2432 N/A"},
+    {0xEE, "mTC002 N/A"},
+    {0xEF, "Moisture Hub N/A"},
+    {0xFC, "BAE0910, BAE0911 N/A"},
+    {0xFF, "Swart LCD N/A"},
 
+};
 
 static const unsigned char dscrc_table[] = {
         0, 94,188,226, 97, 63,221,131,194,156,126, 32,163,253, 31, 65,
@@ -453,9 +519,20 @@ void OneWireSearch::task(OneWireSearch* this_ptr) {
                 for(uint32_t inner_index=0; inner_index<8; inner_index++) {
                     UARTprintf("0x%02x ", (uint8_t)(this_ptr->rom_ids[index] >> (inner_index*8)) & 0xff);
                 }
-                UARTprintf("\r\n");
-            }
 
+                bool device_flag = false;
+
+                for(uint32_t inner_index=0; inner_index<64; inner_index++) {
+                    if(device_codes[inner_index].family_code == (this_ptr->rom_ids[index] & 0xff)) {
+                        UARTprintf("\r\n %s\r\n", device_codes[inner_index].description);
+                        device_flag = true;
+                    }
+                }
+
+                if(device_flag == false) {
+                     UARTprintf("\r\n Unknown Device\r\n");
+                }
+            }
 
             memset(rom_ids, 0, sizeof(uint64_t)*10);
 

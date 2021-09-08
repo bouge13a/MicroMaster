@@ -28,9 +28,9 @@ static const uint32_t START_ROW = 5;
 static const uint32_t SIZE_OF_CMD_BUFFER = 10;
 
 static const uint32_t CLK_1_FREQ = 1000;
-static const uint32_t CLK_2_FREQ = 550;
-static const uint32_t CLK_4_FREQ = 125;
-static const uint32_t CLK_8_FREQ = 1562;
+//static const uint32_t CLK_2_FREQ = 550;
+//static const uint32_t CLK_4_FREQ = 125;
+//static const uint32_t CLK_8_FREQ = 1562;
 
 
 PWMpage::PWMpage(void) : ConsolePage("PWM Module",

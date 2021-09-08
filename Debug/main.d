@@ -16,6 +16,7 @@ main.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine
 main.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_stdint.h
 main.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h
 main.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h
+main.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/initialization.hpp
 main.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h
 main.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h
 main.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h
@@ -36,7 +37,6 @@ main.obj: ../driverlib/fpu.h
 main.obj: ../driverlib/rom_map.h
 main.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h
 main.obj: ../driverlib/interrupt.h
-main.obj: ../no_booster_board.hpp
 
 ../main.cpp: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdint.h: 
@@ -54,6 +54,7 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_types.h:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_stdint.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/assert.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/initialization.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stddef.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h: 
@@ -74,4 +75,3 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/debug.h:
 ../driverlib/rom_map.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h: 
 ../driverlib/interrupt.h: 
-../no_booster_board.hpp: 

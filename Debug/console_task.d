@@ -83,6 +83,7 @@ console_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/incl
 console_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h
 console_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h
 console_task.obj: ../text_controls.hpp
+console_task.obj: ../initialization.hpp
 console_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/UART_to_USB.hpp
 console_task.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 console_task.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
@@ -170,6 +171,7 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/task.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h: 
 ../text_controls.hpp: 
+../initialization.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/UART_to_USB.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 

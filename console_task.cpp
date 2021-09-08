@@ -6,6 +6,7 @@
  */
 #include "console_task.hpp"
 #include "text_controls.hpp"
+#include "initialization.hpp"
 
 #include <assert.h>
 #include <UART_to_USB.hpp>
@@ -31,9 +32,11 @@ ConsoleTask::ConsoleTask (QueueHandle_t uart_rx_queue) : ConsolePage ("Home Page
                                                                       portMAX_DELAY,
                                                                       false) {
 
+    this->pages.reserve(26);
+
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Console",                                    /* Text name for the task. */
-                120,                                          /* Stack size in words, not bytes. */
+                200,                                          /* Stack size in words, not bytes. */
                 this,                                         /* Parameter passed into the task. */
                 3,                                            /* Priority at which the task is created. */
                 &this->task_handle );                         /* Used to pass out the created task's handle. */
@@ -59,6 +62,14 @@ void ConsoleTask::add_page(ConsolePage* page) {
 void ConsoleTask::taskfunwrapper(void* parm){
     (static_cast<ConsoleTask*>(parm))->task((ConsoleTask*)parm);
 } // End UartTask::taskfunwrapper
+
+void ConsoleTask::draw_start_page(void) {
+
+    TextCtl::cursor_pos(10, 30);
+    UARTprintf("MicroMaster Mini Version 0");
+    TextCtl::cursor_pos(12, 30);
+    UARTprintf("Press any key to continue");
+}
 
 void ConsoleTask::start_draw_menu(ConsoleTask* this_ptr) {
 
@@ -105,6 +116,12 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
     uint8_t rx_char = 0;
 
     xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
+
+    this_ptr->draw_start_page();
+
+    xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
+
+    new PostScheduler();
 
     TextCtl::clear_terminal();
 

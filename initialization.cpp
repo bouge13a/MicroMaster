@@ -5,6 +5,7 @@
  *      Author: steph
  */
 #include <console_uart.hpp>
+#include <initialization.hpp>
 #include <I2C_search.hpp>
 #include <stdint.h>
 #include <UART_to_USB.hpp>
@@ -15,7 +16,6 @@
 
 #include "test_task.hpp"
 #include "console_task.hpp"
-#include "no_booster_board.hpp"
 #include "I2C_task.hpp"
 #include "board_pins.hpp"
 #include "error_logger.hpp"
@@ -39,19 +39,26 @@
 #include "CAN_command.hpp"
 #include "CAN_sniffer.hpp"
 
-NoBoosterPack::NoBoosterPack(void) {
+static ConsoleTask* console_task = NULL;
+
+PreScheduler::PreScheduler(void) {
 
     QueueHandle_t uart_rx_queue = xQueueCreate(100, sizeof(uint8_t));
     QueueHandle_t uart_tx_queue = xQueueCreate(100, sizeof(uint8_t));
-
-    QueueHandle_t can_rx_q = xQueueCreate(2, sizeof(tCANMsgObject*));
 
     set_uart_tx_q(uart_tx_queue);
 
     UART_to_USB* uart_to_usb = new UART_to_USB(uart_rx_queue,
                                                uart_tx_queue);
 
-    ConsoleTask* console_task = new ConsoleTask(uart_rx_queue);
+    console_task = new ConsoleTask(uart_rx_queue);
+
+
+} // End init_no_booster_board
+
+PostScheduler::PostScheduler(void) {
+
+    QueueHandle_t can_rx_q = xQueueCreate(2, sizeof(tCANMsgObject*));
 
     I2cTask* i2c_cmd_task = new I2cTask(&i2c0);
 
@@ -158,4 +165,5 @@ NoBoosterPack::NoBoosterPack(void) {
     console_task->add_page(task_manager);
 
 
-} // End init_no_booster_board
+
+}

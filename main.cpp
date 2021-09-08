@@ -7,6 +7,7 @@
 
 #include <stdint.h>
 #include <assert.h>
+#include <initialization.hpp>
 
 
 #include "FreeRTOS.h"
@@ -19,7 +20,6 @@
 #include "sysctl.h"
 #include "driverlib/interrupt.h"
 
-#include "no_booster_board.hpp"
 
 int main(void) {
 
@@ -28,7 +28,7 @@ int main(void) {
     MAP_FPULazyStackingEnable();
     MAP_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
 
-    NoBoosterPack* no_booster = new NoBoosterPack();
+    PreScheduler* prescheduler = new PreScheduler();
 
 
     // Enable processor interrupts.

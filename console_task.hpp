@@ -64,6 +64,7 @@ extern "C" {
         TaskHandle_t task_handle;
 
         void start_draw_menu(ConsoleTask* this_ptr);
+        void draw_start_page(void);
 
         QueueHandle_t uart_rx_q;
 

@@ -144,7 +144,10 @@ PostScheduler::PostScheduler(void) {
                                         uart_mode_menu,
                                         uart_mode_name));
 
-
+    menu_page->add_menu_row(new MenuRow(pwm_mode_num,
+                                        set_pwm_mode,
+                                        pwm_mode_menu,
+                                        pwm_mode_name));
 
     console_task->add_page(menu_page);
     console_task->add_page(io_control_page);

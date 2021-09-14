@@ -59,11 +59,11 @@ void I2cMonitorTask::task(I2cMonitorTask* this_ptr) {
         for (uint32_t index=0; index<this_ptr->i2c_monitor_msgs.size(); index++) {
             if (this_ptr->i2c_monitor_msgs[index]->active) {
                 this_ptr->i2c0->add_i2c_msg(this_ptr->i2c_monitor_msgs[index]);
-                vTaskDelay(1);
+                vTaskDelay(50);
             }
         }
 
-        vTaskDelay(200);
+        vTaskDelay(0);
 
     }
 

@@ -35,6 +35,7 @@ main.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queu
 main.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/debug.h
 main.obj: ../driverlib/fpu.h
 main.obj: ../driverlib/rom_map.h
+main.obj: ../driverlib/pwm.h
 main.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h
 main.obj: ../driverlib/interrupt.h
 
@@ -73,5 +74,6 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/debug.h: 
 ../driverlib/fpu.h: 
 ../driverlib/rom_map.h: 
+../driverlib/pwm.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h: 
 ../driverlib/interrupt.h: 

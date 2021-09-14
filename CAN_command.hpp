@@ -20,7 +20,7 @@
 
 typedef enum {
     CAN_RX_MESSAGE_OBJ = 1,
-    CAN_TX_MESSAGE_OBJ,
+    CAN_TX_MESSAGE_OBJ = 2,
 }can_msg_obj_e;
 
 typedef enum {

@@ -127,10 +127,6 @@ void UartStreamer::task(UartStreamer* this_ptr) {
 
                 if('\r' == character) {
                     UARTprintf("\n\r");
-                } else if (character < ' ') {
-                    TextCtl::text_color(TextCtl::cyan_text);
-                    UARTprintf("[%d]", character);
-                    TextCtl::text_color(TextCtl::white_text);
                 } else {
                     UARTprintf("%c", character);
                 }

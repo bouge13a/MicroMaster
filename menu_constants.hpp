@@ -64,6 +64,9 @@ const char* pullup_en_menu[] = {"On",
 const char* pullup_en_name = "I2C Pullups";
 const uint32_t pullup_en_num = 2;
 
-
+const char* pwm_mode_menu[] = {"Signal",
+                                "Servo"};
+const char* pwm_mode_name = "PWM Mode";
+const uint32_t pwm_mode_num = 2;
 
 #endif /* MENU_CONSTANTS_HPP_ */

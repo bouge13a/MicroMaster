@@ -17,6 +17,7 @@
 #include "debug.h"
 #include "driverlib/fpu.h"
 #include "driverlib/rom_map.h"
+#include "driverlib/pwm.h"
 #include "sysctl.h"
 #include "driverlib/interrupt.h"
 
@@ -29,7 +30,6 @@ int main(void) {
     MAP_SysCtlClockSet(SYSCTL_SYSDIV_2_5 | SYSCTL_USE_PLL | SYSCTL_XTAL_16MHZ | SYSCTL_OSC_MAIN);
 
     PreScheduler* prescheduler = new PreScheduler();
-
 
     // Enable processor interrupts.
     IntMasterEnable();

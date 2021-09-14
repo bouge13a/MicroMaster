@@ -136,6 +136,7 @@ I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
     this->data_ack_err = logger->create_error("I2C0", "No ack from data");
     this->arb_lost_err = logger->create_error("I2C0", "Arbitration lost");
     this->clk_tout_err = logger->create_error("I2C0", "Clock timeout");
+    this->clk_tout_err = logger->create_error("I2C0", "Line state low");
 
 } // End I2cTask::I2cTask
 
@@ -169,6 +170,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (BOTH_LINES_UP != I2CMasterLineStateGet(this_ptr->config->base)) {
                 this_ptr->i2c_state = I2C_FINISH;
                 this_ptr->i2c_msg->errors = PULL_UP_ERR;
+                this_ptr->logger->set_error(this_ptr->pull_up_err);
                 break;
             }
 

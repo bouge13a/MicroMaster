@@ -130,6 +130,7 @@ extern "C" {
         error_t* data_ack_err;
         error_t* arb_lost_err;
         error_t* clk_tout_err;
+        error_t* pull_up_err;
 
         void draw_page(void);
         void draw_data(void);

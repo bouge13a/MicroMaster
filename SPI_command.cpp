@@ -8,6 +8,7 @@
 
 #include "SPI_command.hpp"
 #include "uartstdio.h"
+#include "text_controls.hpp"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -405,6 +406,15 @@ void SpiCmdTask::draw_input(int character) {
         break;
 
     case SPI_GET_SPEED :
+
+        if (character == 127) {
+            if(this->byte_buffer_index > 0) {
+                this->byte_buffer_index--;
+                UARTprintf("\b");
+                TextCtl::clear_in_line();
+                return;
+            }
+        }
 
         if ((character >= '0') && (character <= '9')) {
 

@@ -80,7 +80,7 @@ void ConsoleTask::start_draw_menu(ConsoleTask* this_ptr) {
 
     // Place the cursor in the middle of the menu bar
     // minus half the number of console pages
-    TextCtl::cursor_pos(0, MENU_BAR_WIDTH/2);
+    TextCtl::cursor_pos(0, MENU_BAR_WIDTH/2 - this_ptr->pages.size()/2);
 
     //draw the rest of the asterisks
     for(idx=0; idx<this_ptr->pages.size(); idx++){
@@ -97,7 +97,7 @@ void ConsoleTask::start_draw_menu(ConsoleTask* this_ptr) {
     }
 
     // Set the cursor position to the next line and print name
-    TextCtl::cursor_pos(2, MENU_BAR_WIDTH/2);
+    TextCtl::cursor_pos(2, MENU_BAR_WIDTH/2 - this_ptr->pages.size()/2);
     UARTprintf("%s", this_ptr->pages[this_ptr->page_index]->name);
 
     // set the cursor position to next line and print menu bar
@@ -160,6 +160,13 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
             UARTprintf("Press ESC to return to homepage\r\n\n");
             this_ptr->pages[page_index]->on_screen = false;
             this_ptr->pages[page_index]->draw_help();
+
+            xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
+
+            this_ptr->pages[page_index]->draw_reset();
+            this_ptr->start_draw_menu(this_ptr);
+            this_ptr->pages[this_ptr->page_index]->draw_page();
+
 
 
         } else if ((this_ptr->page_index == 0) && (rx_char >= 'a' && (((int32_t)this_ptr->pages.size() - (int32_t)(rx_char-'a') >=0 )))) {

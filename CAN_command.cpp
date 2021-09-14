@@ -38,7 +38,7 @@ static void CANIntHandler(void) {
     // Read the CAN interrupt status to find the cause of the interrupt
     ui32Status = CANIntStatus(CAN0_BASE, CAN_INT_STS_CAUSE);
 
-    if(ui32Status == CAN_INT_INTID_STATUS) {
+    if(ui32Status == (ui32Status & CAN_INT_INTID_STATUS)) {
 
         ui32Status = CANStatusGet(CAN0_BASE, CAN_STS_CONTROL);
         error_flag = true;
@@ -99,7 +99,7 @@ CanCommand::CanCommand(QueueHandle_t can_rx_q) : ConsolePage("CAN Command",
     SysCtlPeripheralEnable(SYSCTL_PERIPH_CAN0);
 
     CANInit(CAN0_BASE);
-    CANBitRateSet(CAN0_BASE, SysCtlClockGet(), 500000);
+    CANBitRateSet(CAN0_BASE, SysCtlClockGet(), 100000);
 
     CANIntRegister(CAN0_BASE, CANIntHandler); // if using dynamic vectors
 
@@ -229,6 +229,7 @@ void CanCommand::tx_task(CanCommand* this_ptr) {
         if (this_ptr->on_screen) {
             if(error_flag) {
                 this_ptr->log_print_errors();
+                error_flag = false;
             } else {
                 UARTprintf("\r\nMessage transmitted successfully");
                 UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
@@ -249,6 +250,8 @@ void CanCommand::rx_task(CanCommand* this_ptr) {
         CANMessageGet(CAN0_BASE, CAN_RX_MESSAGE_OBJ, &this_ptr->can_rx_msg, 0);
 
         xQueueSend(this_ptr->can_rx_q, &this_ptr->can_rx_msg, 0);
+
+        error_flag = false;
 
         vTaskDelay(0);
     }

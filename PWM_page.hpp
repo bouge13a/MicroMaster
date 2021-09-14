@@ -25,6 +25,13 @@ typedef enum {
     ENTER_STATE,
 }pwm_cmd_states_e;
 
+typedef enum {
+    PWM_SIGNAL_MODE,
+    PWM_SERVO_MODE,
+}pwm_modes_e;
+
+void set_pwm_mode(uint32_t index);
+
 class PWMpage : public ConsolePage {
 public:
     PWMpage(void);
@@ -38,6 +45,8 @@ private :
 
     void print_menu(uint32_t index);
 
+    void draw_servo_duty(uint32_t angle);
+
     pwm_pins_t* pwm_info;
     pwm_cmd_states_e pwm_cmd_state;
 
@@ -47,6 +56,9 @@ private :
     volatile uint32_t pin_buffer;
     volatile uint32_t duty_cycle_buffer;
     volatile uint32_t period_buffer;
+
+    int32_t servo_duty_cycle;
+
 
     void draw_page(void);
     void draw_data(void);

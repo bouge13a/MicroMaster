@@ -388,6 +388,15 @@ void OneWireCmd::draw_input(int character) {
             UARTprintf("Enter number of TX bytes : ");
         }
 
+        if (character == 127) {
+            if(this->byte_buffer_index > 0) {
+                this->byte_buffer_index--;
+                UARTprintf("\b");
+                TextCtl::clear_in_line();
+                return;
+            }
+        }
+
         break;
     case ENTER_TX_BYTES :
 
@@ -443,6 +452,15 @@ void OneWireCmd::draw_input(int character) {
             this->byte_buffer_index = 0;
             UARTprintf("\r\nError: Maximum of 2 digits\r\n");
             UARTprintf("Enter number of TX bytes : ");
+        }
+
+        if (character == 127) {
+            if(this->byte_buffer_index > 0) {
+                this->byte_buffer_index--;
+                UARTprintf("\b");
+                TextCtl::clear_in_line();
+                return;
+            }
         }
 
         break;

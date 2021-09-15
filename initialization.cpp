@@ -38,6 +38,7 @@
 #include "one_wire_search.hpp"
 #include "CAN_command.hpp"
 #include "CAN_sniffer.hpp"
+#include "I2C_sniffer.hpp"
 
 static ConsoleTask* console_task = NULL;
 
@@ -104,6 +105,8 @@ PostScheduler::PostScheduler(void) {
     CanSniffer* can_sniffer = new CanSniffer(can_rx_q,
                                              can_command);
 
+    I2cSniffer* i2c_sniff = new I2cSniffer(gpi_obj);
+
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
                                         power_on_menu,
@@ -155,6 +158,7 @@ PostScheduler::PostScheduler(void) {
     console_task->add_page(i2c_scripter_task);
     console_task->add_page(i2c_cmd_task);
     console_task->add_page(i2c_monitor_task);
+    console_task->add_page(i2c_sniff);
     console_task->add_page(spi_command);
     console_task->add_page(spi_monitor);
     console_task->add_page(uart_cmd);

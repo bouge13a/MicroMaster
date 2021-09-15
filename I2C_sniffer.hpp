@@ -1,7 +1,7 @@
 /*
  * I2C_sniffer.hpp
  *
- *  Created on: Sep 7, 2021
+ *  Created on: Sep 14, 2021
  *      Author: steph
  */
 
@@ -14,19 +14,27 @@
 #include "queue.h"
 
 #include "console_task.hpp"
-#include "GPOs.hpp"
+#include "GPIs.hpp"
 
 
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+typedef enum {
+    I2CS_STOP_CONDITION,
+    I2CS_GET_DATA,
+    I2CS_DETERMINE_CONDITION,
+    I2CS_DETERMINE_STOP,
+    I2CS_REPEATED_START,
+}i2c_sniff_states_e;
 
     class I2cSniffer : public ConsolePage {
     public:
-        I2cSniffer(GpoObj* gpo_obj);
+        I2cSniffer(GpiObj* gpo_obj);
     private :
+
+        void task(I2cSniffer* this_ptr);
+        static void taskfunwrapper(void* parm);
+
+        uint32_t rx_char;
+
         void draw_page(void);
         void draw_data(void);
         void draw_input(int character);
@@ -34,9 +42,8 @@ extern "C" {
         void draw_reset(void);
     };
 
-#ifdef __cplusplus
-}
-#endif
+
+
 
 
 

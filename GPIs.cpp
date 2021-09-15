@@ -31,7 +31,7 @@ GpiObj::GpiObj(void) {
 
             MAP_SysCtlPeripheralEnable(gpi_info->gpis[idx]->peripheral);
 
-            if (this->gpi_info->gpis[idx]->port != GPIO_PORTD_BASE) {
+            if (this->gpi_info->gpis[idx]->port == GPIO_PORTE_AHB_BASE) {
                 SysCtlGPIOAHBEnable(this->gpi_info->gpis[idx]->peripheral);
             }
 
@@ -51,7 +51,7 @@ GpiObj::GpiObj(void) {
             MAP_GPIOPadConfigSet(this->gpi_info->gpis[idx]->port,
                                  this->gpi_info->gpis[idx]->pin,
                                  GPIO_STRENGTH_2MA,
-                                 GPIO_PIN_TYPE_STD_WPD);
+                                 GPIO_PIN_TYPE_STD);
         }
     }
 

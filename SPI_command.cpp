@@ -183,6 +183,18 @@ bool SpiCmdTask::add_spi_msg(SpiMsg* spi_msg) {
 
 }
 
+uint32_t SpiCmdTask::get_speed(void) {
+    return spi_speed;
+}
+
+uint32_t SpiCmdTask::get_mode(void) {
+    return spi_mode;
+}
+
+uint32_t SpiCmdTask::get_data_width(void) {
+    return spi_data_width;
+}
+
 void SpiCmdTask::task(SpiCmdTask* this_ptr) {
 
     while(1) {

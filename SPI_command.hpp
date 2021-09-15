@@ -84,6 +84,10 @@ extern "C" {
         bool add_spi_msg(SpiMsg* spi_msg);
         void reset_monitor_index(void);
         std::vector<SpiMsg*>* get_vector(void);
+        uint32_t get_speed(void);
+        uint32_t get_mode(void);
+        uint32_t get_data_width(void);
+
     private :
         void task(SpiCmdTask* this_ptr);
         static void taskfunwrapper(void* parm);

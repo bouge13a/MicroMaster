@@ -5,8 +5,8 @@
  *      Author: steph
  */
 
-#ifndef I2C_SNIFFER_HPP_
-#define I2C_SNIFFER_HPP_
+#ifndef I2C_SEARCH_HPP_
+#define I2C_SEARCH_HPP_
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -48,4 +48,4 @@ extern "C" {
 
 
 
-#endif /* I2C_SNIFFER_HPP_ */
+#endif /* I2C_SEARCH_HPP_ */

@@ -19,6 +19,7 @@ CPP_SRCS += \
 ../PWM_page.cpp \
 ../SPI_command.cpp \
 ../SPI_monitor.cpp \
+../SPI_sniffer.cpp \
 ../UART_command.cpp \
 ../UART_streamer.cpp \
 ../UART_to_USB.cpp \
@@ -66,6 +67,7 @@ OBJS += \
 ./PWM_page.obj \
 ./SPI_command.obj \
 ./SPI_monitor.obj \
+./SPI_sniffer.obj \
 ./UART_command.obj \
 ./UART_streamer.obj \
 ./UART_to_USB.obj \
@@ -102,6 +104,7 @@ CPP_DEPS += \
 ./PWM_page.d \
 ./SPI_command.d \
 ./SPI_monitor.d \
+./SPI_sniffer.d \
 ./UART_command.d \
 ./UART_streamer.d \
 ./UART_to_USB.d \
@@ -134,6 +137,7 @@ OBJS__QUOTED += \
 "PWM_page.obj" \
 "SPI_command.obj" \
 "SPI_monitor.obj" \
+"SPI_sniffer.obj" \
 "UART_command.obj" \
 "UART_streamer.obj" \
 "UART_to_USB.obj" \
@@ -176,6 +180,7 @@ CPP_DEPS__QUOTED += \
 "PWM_page.d" \
 "SPI_command.d" \
 "SPI_monitor.d" \
+"SPI_sniffer.d" \
 "UART_command.d" \
 "UART_streamer.d" \
 "UART_to_USB.d" \
@@ -208,6 +213,7 @@ CPP_SRCS__QUOTED += \
 "../PWM_page.cpp" \
 "../SPI_command.cpp" \
 "../SPI_monitor.cpp" \
+"../SPI_sniffer.cpp" \
 "../UART_command.cpp" \
 "../UART_streamer.cpp" \
 "../UART_to_USB.cpp" \

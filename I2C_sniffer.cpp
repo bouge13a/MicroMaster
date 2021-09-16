@@ -73,9 +73,9 @@ static void scl_int_handler(void) {
         if (bit_counter < 8) {
 
             if(gpo_object->get(data_pin)) {
-                byte_buffer |= 1 << bit_counter;
+                byte_buffer |= (1 << (7 - bit_counter));
             } else {
-                byte_buffer &= ~(1 << bit_counter);
+                byte_buffer &= ~(1 << (7- bit_counter));
             }
 
             bit_counter++;
@@ -91,6 +91,7 @@ static void scl_int_handler(void) {
             }
 
             bit_counter=0;
+            byte_buffer = 0;
 
             i2c_sniff_state = I2CS_DETERMINE_CONDITION;
 
@@ -116,7 +117,9 @@ static void scl_int_handler(void) {
     case I2CS_DETERMINE_STOP :
 
         if(start_bit) {
-            byte_buffer |= 1;
+            byte_buffer |= (1 << 7);
+        } else {
+            byte_buffer &= ~(1<<7);
         }
 
         bit_counter++;
@@ -165,10 +168,21 @@ static void data_int_handler(void) {
 
     case I2CS_DETERMINE_CONDITION :
 
-        i2c_sniff_state = I2CS_STOP_CONDITION;
+        i2c_sniff_state = I2CS_READ_BYTE;
 
         GPIOIntTypeSet(data_pin->port, data_pin->pin, GPIO_FALLING_EDGE);
 
+        break;
+
+    case I2CS_READ_BYTE :
+
+        i2c_sniff_state = I2CS_GET_DATA;
+
+        GPIOIntDisable(data_pin->port, data_pin->pin);
+
+        GPIOIntDisable(scl_pin->port, scl_pin->pin);
+        GPIOIntTypeSet(scl_pin->port, scl_pin->pin, GPIO_RISING_EDGE);
+        GPIOIntEnable(scl_pin->port, scl_pin->pin);
         break;
 
     case I2CS_REPEATED_START :

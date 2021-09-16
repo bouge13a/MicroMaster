@@ -23,6 +23,7 @@ typedef enum {
     I2CS_DETERMINE_CONDITION,
     I2CS_DETERMINE_STOP,
     I2CS_REPEATED_START,
+    I2CS_READ_BYTE,
 }i2c_sniff_states_e;
 
     class I2cSniffer : public ConsolePage {

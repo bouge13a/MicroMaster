@@ -32,7 +32,7 @@ static gpio_pin_t gpi_1 = {
     .name       = "GPI 1",
     .pin        = GPIO_PIN_4,
     .peripheral = SYSCTL_PERIPH_GPIOF,
-    .port       = GPIO_PORTF_BASE,
+    .port       = GPIO_PORTF_AHB_BASE,
     .direction  = GPIO_DIR_MODE_IN,
     .displayed  = true,
 };

@@ -31,7 +31,7 @@ GpiObj::GpiObj(void) {
 
             MAP_SysCtlPeripheralEnable(gpi_info->gpis[idx]->peripheral);
 
-            if (this->gpi_info->gpis[idx]->port == GPIO_PORTE_AHB_BASE) {
+            if ((this->gpi_info->gpis[idx]->port == GPIO_PORTE_AHB_BASE) || (this->gpi_info->gpis[idx]->port == GPIO_PORTF_AHB_BASE)) {
                 SysCtlGPIOAHBEnable(this->gpi_info->gpis[idx]->peripheral);
             }
 

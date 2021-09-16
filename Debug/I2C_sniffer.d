@@ -97,6 +97,8 @@ I2C_sniffer.obj: ../driverlib/rom_map.h
 I2C_sniffer.obj: ../driverlib/sysctl.h
 I2C_sniffer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 I2C_sniffer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
+I2C_sniffer.obj: ../driverlib/i2c.h
+I2C_sniffer.obj: ../driverlib/inc/hw_i2c.h
 
 ../I2C_sniffer.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/I2C_sniffer.hpp: 
@@ -195,3 +197,5 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/board_pin_defs.hpp:
 ../driverlib/sysctl.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
+../driverlib/i2c.h: 
+../driverlib/inc/hw_i2c.h: 

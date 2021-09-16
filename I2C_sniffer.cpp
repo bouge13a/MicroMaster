@@ -29,6 +29,9 @@
 #include "driverlib/sysctl.h"
 #include "uartstdio.h"
 
+#include "driverlib/i2c.h"
+#include "driverlib/inc/hw_i2c.h"
+
 static GpiObj* gpo_object;
 
 static gpio_pin_t* scl_pin;
@@ -52,155 +55,59 @@ static const uint32_t I2CS_NACK_CHAR = 259;
 static uint32_t status_d = 0;
 static uint32_t status_f = 0;
 
+static volatile bool end_of_tx = false;
+
 static void scl_int_handler(void) {
 
-    status_f = GPIOIntStatus(scl_pin->port, false);
     GPIOIntClear(scl_pin->port, scl_pin->pin);
 
-    if (scl_pin->pin != status_f & scl_pin->pin) {
-        return;
-    }
+    if (bit_counter < 8) {
 
-    switch(i2c_sniff_state) {
-    case I2CS_STOP_CONDITION :
-
-        i2c_sniff_state = I2CS_GET_DATA;
-
-        break;
-
-    case I2CS_GET_DATA :
-
-        if (bit_counter < 8) {
-
-            if(gpo_object->get(data_pin)) {
-                byte_buffer |= (1 << (7 - bit_counter));
-            } else {
-                byte_buffer &= ~(1 << (7- bit_counter));
-            }
-
-            bit_counter++;
-
-        } else if (bit_counter == 8) {
-
-            xQueueSendFromISR(i2c_sniff_q, &byte_buffer, 0);
-
-            if(gpo_object->get(data_pin)) {
-                xQueueSendFromISR(i2c_sniff_q, &I2CS_NACK_CHAR, 0);
-            } else {
-                xQueueSendFromISR(i2c_sniff_q, &I2CS_NACK_CHAR, 0);
-            }
-
-            bit_counter=0;
-            byte_buffer = 0;
-
-            i2c_sniff_state = I2CS_DETERMINE_CONDITION;
-
-            GPIOIntTypeSet(data_pin->port, data_pin->pin, GPIO_RISING_EDGE);
-
-            GPIOIntEnable(data_pin->port, data_pin->pin);
-
-
-        }
-
-
-        break;
-    case I2CS_DETERMINE_CONDITION :
-
-        GPIOIntTypeSet(data_pin->port, data_pin->pin, GPIO_RISING_EDGE);
-
-        start_bit = gpo_object->get(data_pin);
-
-        i2c_sniff_state = I2CS_DETERMINE_STOP;
-
-        break;
-
-    case I2CS_DETERMINE_STOP :
-
-        if(start_bit) {
-            byte_buffer |= (1 << 7);
+        if(gpo_object->get(data_pin)) {
+            byte_buffer |= (1 << (7 - bit_counter));
         } else {
-            byte_buffer &= ~(1<<7);
+            byte_buffer &= ~(1 << (7 - bit_counter));
         }
 
         bit_counter++;
 
-        GPIOIntDisable(data_pin->port, data_pin->pin);
+    } else if (bit_counter == 8) {
 
-        i2c_sniff_state = I2CS_GET_DATA;
+        xQueueSendFromISR(i2c_sniff_q, &byte_buffer, 0);
 
-        break;
-    case I2CS_REPEATED_START :
-        break;
-    default :
-        break;
-    }
+        if(gpo_object->get(data_pin)) {
+            xQueueSendFromISR(i2c_sniff_q, &I2CS_NACK_CHAR, 0);
+        } else {
+            xQueueSendFromISR(i2c_sniff_q, &I2CS_ACK_CHAR, 0);
+        }
+
+        bit_counter = 0;
+        //byte_buffer = 0;
+
+   }
 
 }
 
 
-static void data_int_handler(void) {
+static void i2c_slave_handler(void) {
 
-    status_d = GPIOIntStatus(data_pin->port, false);
-    GPIOIntClear(data_pin->port, data_pin->pin);
+    status_d = I2CSlaveIntStatusEx(I2C0_BASE, false);
 
-    if (data_pin->pin != status_d & data_pin->pin ) {
-        return;
-    }
+    I2CSlaveIntClearEx(I2C0_BASE, status_d);
 
-    switch(i2c_sniff_state) {
-    case I2CS_STOP_CONDITION :
-
+    if (I2C_SLAVE_INT_START == (status_d & I2C_SLAVE_INT_START)) {
+//        GPIOIntEnable(scl_pin->port, scl_pin->pin);
+        end_of_tx = false;
         xQueueSendFromISR(i2c_sniff_q, &I2CS_START_CHAR, 0);
-
-        GPIOIntDisable(scl_pin->port, scl_pin->pin);
-        GPIOIntTypeSet(scl_pin->port, scl_pin->pin, GPIO_RISING_EDGE);
-        GPIOIntEnable(scl_pin->port, scl_pin->pin);
-
-        GPIOIntDisable(data_pin->port, data_pin->pin);
-
-        i2c_sniff_state = I2CS_GET_DATA;
-
-        break;
-    case I2CS_GET_DATA :
-
-
-        break;
-
-    case I2CS_DETERMINE_CONDITION :
-
-        i2c_sniff_state = I2CS_READ_BYTE;
-
-        GPIOIntTypeSet(data_pin->port, data_pin->pin, GPIO_FALLING_EDGE);
-
-        break;
-
-    case I2CS_READ_BYTE :
-
-        i2c_sniff_state = I2CS_GET_DATA;
-
-        GPIOIntDisable(data_pin->port, data_pin->pin);
-
-        GPIOIntDisable(scl_pin->port, scl_pin->pin);
-        GPIOIntTypeSet(scl_pin->port, scl_pin->pin, GPIO_RISING_EDGE);
-        GPIOIntEnable(scl_pin->port, scl_pin->pin);
-        break;
-
-    case I2CS_REPEATED_START :
-
-        i2c_sniff_state = I2CS_STOP_CONDITION;
-
-        break;
-
-    case I2CS_DETERMINE_STOP :
-
+        bit_counter = 0;
+    } else if (I2C_SLAVE_INT_STOP == (status_d & I2C_SLAVE_INT_STOP)) {
+//        GPIOIntDisable(scl_pin->port, scl_pin->pin);
+        end_of_tx = true;
         xQueueSendFromISR(i2c_sniff_q, &I2CS_STOP_CHAR, 0);
+        bit_counter = 0;
 
-        GPIOIntDisable(scl_pin->port, scl_pin->pin);
-
-        i2c_sniff_state = I2CS_STOP_CONDITION;
-        break;
-    default :
-        break;
+    } else {
+        bit_counter = 0;
     }
 
 }
@@ -228,16 +135,29 @@ I2cSniffer::I2cSniffer(GpiObj* gpo_obj) : ConsolePage("I2C Sniffer",
     GPIOIntRegister(scl_pin->port, scl_int_handler);
     GPIOIntTypeSet(scl_pin->port, scl_pin->pin, GPIO_RISING_EDGE);
 
-    GPIOIntDisable(data_pin->port, data_pin->pin);
-    GPIOIntClear(data_pin->port, data_pin->pin);
-    GPIOIntRegister(data_pin->port, data_int_handler);
-    GPIOIntTypeSet(data_pin->port, data_pin->pin, GPIO_FALLING_EDGE);
-
-    IntPrioritySet(INT_GPIOD, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
     IntPrioritySet(INT_GPIOF, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
 
     IntEnable(INT_GPIOF);
-    IntEnable(INT_GPIOD);
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C0);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+
+    GPIOPinConfigure(GPIO_PB2_I2C0SCL);
+    GPIOPinConfigure(GPIO_PB3_I2C0SDA);
+
+    GPIOPinTypeI2CSCL(GPIO_PORTB_BASE, GPIO_PIN_2);
+    GPIOPinTypeI2C(GPIO_PORTB_BASE, GPIO_PIN_3);
+
+    I2CIntRegister(I2C0_BASE, i2c_slave_handler);
+
+    IntPrioritySet(INT_I2C0, configMAX_SYSCALL_INTERRUPT_PRIORITY+2);
+
+    IntEnable(INT_I2C0);
+    I2CSlaveEnable(I2C0_BASE);
+
+//    I2CSlaveInit(I2C0_BASE, 0x00);
+//
+//    I2CSlaveDisable(I2C0_BASE);
 
 } // End I2cSniffer
 
@@ -276,11 +196,9 @@ void I2cSniffer::task(I2cSniffer* this_ptr) {
 
 void I2cSniffer::draw_page(void) {
 
+    I2CSlaveIntEnableEx(I2C0_BASE, I2C_SLAVE_INT_START | I2C_SLAVE_INT_STOP );
+
     GPIOIntEnable(scl_pin->port, scl_pin->pin);
-    GPIOIntTypeSet(data_pin->port, data_pin->pin, GPIO_FALLING_EDGE);
-    GPIOIntEnable(data_pin->port, data_pin->pin);
-
-
 }
 void I2cSniffer::draw_data(void) {
 
@@ -292,14 +210,10 @@ void I2cSniffer::draw_input(int character) {
 void I2cSniffer::draw_reset(void) {
 
     GPIOIntDisable(scl_pin->port, scl_pin->pin);
-    GPIOIntDisable(data_pin->port, data_pin->pin);
-
-    GPIOIntTypeSet(data_pin->port, data_pin->pin, GPIO_FALLING_EDGE);
-    GPIOIntTypeSet(scl_pin->port, scl_pin->pin, GPIO_FALLING_EDGE);
-
-
     i2c_sniff_state = I2CS_STOP_CONDITION;
     bit_counter = 0;
+
+    I2CSlaveIntDisableEx(I2C0_BASE, I2C_SLAVE_INT_START | I2C_SLAVE_INT_STOP);
 
 }
 

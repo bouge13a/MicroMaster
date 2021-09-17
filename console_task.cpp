@@ -242,8 +242,8 @@ void ConsoleTask::draw_page(void) {
 
    for(index=0; index < this->pages.size(); index++) {
 
-       if(index > this->pages.size()/2 - 1) {
-           TextCtl::cursor_pos(START_ROW + index - this->pages.size()/2, SECOND_COL);
+       if(index > this->pages.size()/2) {
+           TextCtl::cursor_pos(START_ROW + index - this->pages.size()/2 - 1, SECOND_COL);
        } else {
            TextCtl::cursor_pos(START_ROW + index, 0);
        }

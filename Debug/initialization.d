@@ -89,16 +89,16 @@ initialization.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/inclu
 initialization.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h
 initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/board_pin_defs.hpp
 initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/error_logger.hpp
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/pins_I2C.hpp
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_i2c.h
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/gpio.h
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/i2c.h
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/pin_map.h
+initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h
 initialization.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/UART_to_USB.hpp
 initialization.obj: ../test_task.hpp
-initialization.obj: ../board_pins.hpp
-initialization.obj: ../driverlib/inc/hw_i2c.h
-initialization.obj: ../driverlib/inc/hw_memmap.h
-initialization.obj: ../driverlib/inc/hw_types.h
-initialization.obj: ../driverlib/gpio.h
-initialization.obj: ../driverlib/i2c.h
-initialization.obj: ../driverlib/pin_map.h
-initialization.obj: ../driverlib/sysctl.h
 initialization.obj: ../I2C_monitor.hpp
 initialization.obj: ../task_manager.hpp
 initialization.obj: ../I2C_scripter.hpp
@@ -211,16 +211,16 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/libcxx/stdbool.h:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/board_pin_defs.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/error_logger.hpp: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/pins_I2C.hpp: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_i2c.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/gpio.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/i2c.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/pin_map.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/UART_to_USB.hpp: 
 ../test_task.hpp: 
-../board_pins.hpp: 
-../driverlib/inc/hw_i2c.h: 
-../driverlib/inc/hw_memmap.h: 
-../driverlib/inc/hw_types.h: 
-../driverlib/gpio.h: 
-../driverlib/i2c.h: 
-../driverlib/pin_map.h: 
-../driverlib/sysctl.h: 
 ../I2C_monitor.hpp: 
 ../task_manager.hpp: 
 ../I2C_scripter.hpp: 

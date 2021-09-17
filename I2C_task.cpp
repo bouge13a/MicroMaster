@@ -16,6 +16,8 @@
 #include "driverlib/inc/hw_memmap.h"
 #include "driverlib/inc/hw_types.h"
 #include "driverlib/timer.h"
+#include "driverlib/interrupt.h"
+#include "inc/hw_ints.h"
 
 #include "uartstdio.h"
 
@@ -27,8 +29,37 @@ static const uint32_t BOTH_LINES_UP = 0x3;
 
 static volatile bool error_flag = false;
 static volatile i2c_errors_e i2c_error_status = NONE;
+static SemaphoreHandle_t nine_clk_semphr = NULL;
+
+static uint32_t last_cs_idx = 0;
+
+static void timer2_int_handler(void) {
+
+    BaseType_t xHigherPriorityTaskWoken, xResult;
+
+    // xHigherPriorityTaskWoken must be initialised to pdFALSE.
+    xHigherPriorityTaskWoken = pdFALSE;
+
+    TimerIntClear(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
+
+    TimerIntDisable(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
+
+    xResult = xSemaphoreGiveFromISR( nine_clk_semphr, &xHigherPriorityTaskWoken );
+
+    // Was the message posted successfully?
+    if( xResult != pdFAIL ) {
+        /* If xHigherPriorityTaskWoken is now set to pdTRUE then a context
+        switch should be requested.  The macro used is port specific and will
+        be either portYIELD_FROM_ISR() or portEND_SWITCHING_ISR() - refer to
+        the documentation page for the port being used. */
+        portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+    }
+
+} // End void timer2_int_handler
 
 void set_i2c_clock_speed(uint32_t index) {
+
+    last_cs_idx = index;
 
     if (0 == index) {
 
@@ -105,15 +136,25 @@ I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER1);
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER1));
 
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER2);
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER2));
+
     TimerClockSourceSet(TIMER1_BASE, TIMER_CLOCK_SYSTEM);
-
     TimerDisable(TIMER1_BASE, TIMER_BOTH);
-
     TimerConfigure(TIMER1_BASE, TIMER_CFG_PERIODIC);
-
     TimerEnable(TIMER1_BASE, TIMER_BOTH);
 
+    TimerClockSourceSet(TIMER2_BASE, TIMER_CLOCK_SYSTEM);
+    TimerDisable(TIMER2_BASE, TIMER_A);
+    TimerConfigure(TIMER2_BASE, TIMER_CFG_ONE_SHOT);
+    IntEnable(INT_TIMER2A);
+    TimerIntRegister(TIMER2_BASE, TIMER_A, timer2_int_handler);
+    IntPrioritySet(INT_TIMER2A, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
+
     this->i2c_msg_queue = xQueueCreate(20, sizeof(I2cMsg*));
+
+    nine_clk_semphr = xSemaphoreCreateBinary();
+    this->nine_clk_count = 0;
 
     this->i2c_cmd_state = GET_MONITOR_STATUS;
     this->byte_buffer_index = 0;
@@ -139,6 +180,16 @@ I2cTask::I2cTask(i2c_config_t* config) : ConsolePage("I2C Command",
     this->clk_tout_err = logger->create_error("I2C0", "Line state low");
 
 } // End I2cTask::I2cTask
+
+void I2cTask::set_timer(uint32_t useconds) {
+
+    TimerDisable(TIMER2_BASE, TIMER_A);
+    TimerLoadSet(TIMER2_BASE, TIMER_A, useconds*80);
+    TimerIntEnable(TIMER2_BASE, TIMER_TIMA_TIMEOUT);
+    TimerEnable(TIMER2_BASE, TIMER_A);
+
+} // End OneWireCmd::set_timer
+
 
 bool I2cTask::add_i2c_msg(I2cMsg* i2c_msg_ptr) {
 
@@ -230,7 +281,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                this_ptr->i2c_state = I2C_FINISH;
+                this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -266,7 +317,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                this_ptr->i2c_state = I2C_FINISH;
+                this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -295,7 +346,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                this_ptr->i2c_state = I2C_FINISH;
+                this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -326,7 +377,15 @@ void I2cTask::task(I2cTask* this_ptr) {
 
             message_time = SysCtlClockGet() - TimerValueGet(TIMER1_BASE, TIMER_A);
 
-            log_errors(this_ptr);
+            if (log_errors(this_ptr)) {
+                this_ptr->i2c_state = I2C_NINE_CLOCK;
+                break;
+            }
+
+            this_ptr->i2c_state = I2C_PRINT;
+            break;
+
+        case I2C_PRINT:
 
             if ((this_ptr->on_screen) && (false == this_ptr->i2c_msg->monitored)) {
 
@@ -350,6 +409,59 @@ void I2cTask::task(I2cTask* this_ptr) {
             this_ptr->i2c_msg->state = i2c_finished;
 
             this_ptr->i2c_state = I2C_IDLE;
+            break;
+
+        case I2C_NINE_CLOCK :
+
+            if(this_ptr->nine_clk_count == 0) {
+                SysCtlPeripheralDisable(this_ptr->config->i2c_peripheral);
+
+                GPIODirModeSet(this_ptr->config->gpio_base,
+                                   this_ptr->config->gpio_scl_pin,
+                                   GPIO_DIR_MODE_OUT);
+
+                GPIOPadConfigSet(this_ptr->config->gpio_base,
+                                     this_ptr->config->gpio_scl_pin,
+                                     GPIO_STRENGTH_12MA,
+                                     GPIO_PIN_TYPE_OD);
+
+                GPIOPinTypeGPIOOutputOD(this_ptr->config->gpio_base,
+                                        this_ptr->config->gpio_scl_pin);
+            }
+
+            if (this_ptr->nine_clk_count < 9*2) {
+
+                GPIOPinWrite(config->gpio_base,
+                             config->gpio_scl_pin,
+                             (this_ptr->nine_clk_count % 2) == 0 ? 0 : config->gpio_scl_pin ) ;
+
+
+                this_ptr->nine_clk_count++;
+
+                this_ptr->set_timer(1);
+
+                xSemaphoreTake( nine_clk_semphr, portMAX_DELAY);
+
+            } else {
+
+                SysCtlPeripheralEnable(this_ptr->config->i2c_peripheral);
+                while(!SysCtlPeripheralReady(this_ptr->config->i2c_peripheral));
+
+                GPIOPinConfigure(this_ptr->config->i2c_scl_pin);
+                GPIOPinConfigure(this_ptr->config->i2c_data_pin);
+
+                GPIOPinTypeI2CSCL(this_ptr->config->gpio_base, config->gpio_scl_pin);
+                GPIOPinTypeI2C(this_ptr->config->gpio_base, config->gpio_data_pin);
+
+                set_i2c_clock_speed(last_cs_idx);
+
+                I2CMasterTimeoutSet(this_ptr->config->base, 0x7d);
+
+                this_ptr->nine_clk_count = 0;
+
+                this_ptr->i2c_state = I2C_PRINT;
+
+            }
 
             break;
 

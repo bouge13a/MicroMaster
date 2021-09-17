@@ -1057,8 +1057,8 @@ UART_to_USB::UART_to_USB(QueueHandle_t uart_rx_que,
     // on the bus.
     USBDCDCInit(0, &g_sCDCDevice);
 
-    MAP_IntPrioritySet(INT_UART0, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
-    MAP_IntPrioritySet(INT_USB0, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
+    MAP_IntPrioritySet(INT_UART0, configMAX_SYSCALL_INTERRUPT_PRIORITY+3);
+    MAP_IntPrioritySet(INT_USB0, configMAX_SYSCALL_INTERRUPT_PRIORITY+3);
 
 
     // Enable interrupts now that the application is ready to start.

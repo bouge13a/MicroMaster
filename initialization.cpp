@@ -7,6 +7,7 @@
 #include <console_uart.hpp>
 #include <initialization.hpp>
 #include <I2C_search.hpp>
+#include <pins_I2C.hpp>
 #include <stdint.h>
 #include <UART_to_USB.hpp>
 
@@ -17,7 +18,6 @@
 #include "test_task.hpp"
 #include "console_task.hpp"
 #include "I2C_task.hpp"
-#include "board_pins.hpp"
 #include "error_logger.hpp"
 #include "I2C_monitor.hpp"
 #include "task_manager.hpp"

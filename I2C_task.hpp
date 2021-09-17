@@ -37,7 +37,8 @@ typedef enum {
     I2C_RECEIVE_START,
     I2C_RECEIVE,
     I2C_FINISH,
-    I2C_ERROR,
+    I2C_PRINT,
+    I2C_NINE_CLOCK,
 }i2c_state_e;
 
 typedef enum {
@@ -105,6 +106,9 @@ extern "C" {
         static void taskfunwrapper(void* parm);
         TaskHandle_t task_handle;
 
+        void set_timer(uint32_t useconds);
+
+        uint32_t nine_clk_count;
 
         bool log_errors(I2cTask* this_ptr);
         void print_errors(I2cTask* this_ptr);

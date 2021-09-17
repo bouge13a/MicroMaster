@@ -5,8 +5,8 @@
  *      Author: steph
  */
 
-#ifndef BOARD_PINS_HPP_
-#define BOARD_PINS_HPP_
+#ifndef PINS_I2C_HPP_
+#define PINS_I2C_HPP_
 
 #include "driverlib/inc/hw_i2c.h"
 #include "driverlib/inc/hw_memmap.h"
@@ -31,4 +31,4 @@ static i2c_config_t i2c0 = {
 };
 
 
-#endif /* BOARD_PINS_HPP_ */
+#endif /* PINS_I2C_HPP_ */

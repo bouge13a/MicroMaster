@@ -14,7 +14,7 @@
 
 static const uint32_t MSG_ID_COL = 0;
 static const uint32_t MSG_DATA_COL = 20;
-static const uint32_t START_ROW = 5;
+static const uint32_t START_ROW = 6;
 
 void CanSniffer::taskfunwrapper(void* parm){
     (static_cast<CanSniffer*>(parm))->task((CanSniffer*)parm);
@@ -47,12 +47,14 @@ void CanSniffer::task(CanSniffer* this_ptr) {
 
         xQueueReceive(this_ptr->can_rx_q, &this_ptr->can_rx_msg, portMAX_DELAY);
 
-        TextCtl::cursor_pos(START_ROW + this_ptr->msg_idx, MSG_ID_COL);
+        TextCtl::cursor_pos(START_ROW + this_ptr->msg_idx + 1, MSG_ID_COL);
         UARTprintf("0x%04x", this_ptr->can_rx_msg->ui32MsgID);
-        TextCtl::cursor_pos(START_ROW + this_ptr->msg_idx, MSG_DATA_COL);
+        TextCtl::cursor_pos(START_ROW + this_ptr->msg_idx + 1, MSG_DATA_COL);
         for(uint32_t idx=0; idx < this_ptr->can_rx_msg->ui32MsgLen; idx++) {
             UARTprintf("0x%02x ", this_ptr->can_rx_msg->pui8MsgData[idx]);
         }
+
+        this_ptr->msg_idx++;
     }
 } // End CanSniffer::task
 

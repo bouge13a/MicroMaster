@@ -19,8 +19,8 @@
 #include "error_logger.hpp"
 
 typedef enum {
-    CAN_RX_MESSAGE_OBJ = 1,
-    CAN_TX_MESSAGE_OBJ = 2,
+    CAN_TX_MESSAGE_OBJ = 1,
+    CAN_RX_MESSAGE_OBJ = 2,
 }can_msg_obj_e;
 
 typedef enum {
@@ -40,6 +40,7 @@ extern "C" {
         CanCommand(QueueHandle_t can_rx_q);
         void log_print_errors(void);
         void send_last_message(void);
+        bool add_can_msg(tCANMsgObject* can_tx_msg_p);
     private :
         void tx_task(CanCommand* this_ptr);
         static void tx_taskfunwrapper(void* parm);
@@ -47,13 +48,15 @@ extern "C" {
         void rx_task(CanCommand* this_ptr);
         static void rx_taskfunwrapper(void* parm);
 
+        void send_can_message(CanCommand* this_ptr, tCANMsgObject* can_rx_msg_p);
+
         QueueHandle_t can_tx_q;
         QueueHandle_t can_rx_q;
 
         tCANMsgObject can_tx_msg;
         tCANMsgObject can_rx_msg;
 
-        tCANMsgObject can_tx_msg_p;
+        tCANMsgObject* can_tx_msg_p;
 
         can_cmd_states_e can_cmd_state;
         uint32_t byte_buffer_idx;

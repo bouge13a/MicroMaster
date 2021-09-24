@@ -91,6 +91,8 @@ CanCommand::CanCommand(QueueHandle_t can_rx_q) : ConsolePage("CAN Command",
 
     can_rx_semphr = xSemaphoreCreateBinary();
 
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+
     GPIOPinConfigure(GPIO_PB4_CAN0RX);
     GPIOPinConfigure(GPIO_PB5_CAN0TX);
 
@@ -98,8 +100,10 @@ CanCommand::CanCommand(QueueHandle_t can_rx_q) : ConsolePage("CAN Command",
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_CAN0);
 
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_CAN0));
+
     CANInit(CAN0_BASE);
-    CANBitRateSet(CAN0_BASE, SysCtlClockGet(), 100000);
+    CANBitRateSet(CAN0_BASE, 80000000, 500000);
 
     CANIntRegister(CAN0_BASE, CANIntHandler); // if using dynamic vectors
 
@@ -158,6 +162,11 @@ void CanCommand::send_last_message(void) {
     }
 
 } // End CanCommand::send_last_message
+
+bool CanCommand::add_can_msg(tCANMsgObject* can_tx_msg_p) {
+
+    return xQueueSend(this->can_tx_q, &can_tx_msg_p, 0);
+}
 
 void CanCommand::tx_taskfunwrapper(void* parm){
     (static_cast<CanCommand*>(parm))->tx_task((CanCommand*)parm);
@@ -222,7 +231,7 @@ void CanCommand::tx_task(CanCommand* this_ptr) {
 
         xQueueReceive(this_ptr->can_tx_q, &this_ptr->can_tx_msg_p, portMAX_DELAY);
 
-        CANMessageSet(CAN0_BASE, CAN_TX_MESSAGE_OBJ, &this_ptr->can_tx_msg, MSG_OBJ_TYPE_TX);
+        CANMessageSet(CAN0_BASE, CAN_TX_MESSAGE_OBJ, this_ptr->can_tx_msg_p, MSG_OBJ_TYPE_TX);
 
         vTaskDelay(10);
 
@@ -232,8 +241,10 @@ void CanCommand::tx_task(CanCommand* this_ptr) {
                 error_flag = false;
             } else {
                 UARTprintf("\r\nMessage transmitted successfully");
-                UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
+
             }
+
+            UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
         }
 
         vTaskDelay(0);
@@ -241,15 +252,19 @@ void CanCommand::tx_task(CanCommand* this_ptr) {
 
 } // End AdcTask::task
 
+void CanCommand::send_can_message(CanCommand* this_ptr, tCANMsgObject* can_rx_msg_p) {
+    xQueueSend(this_ptr->can_rx_q, &can_rx_msg_p, 0);
+}
+
 void CanCommand::rx_task(CanCommand* this_ptr) {
 
     while(1){
 
         xSemaphoreTake(can_rx_semphr, portMAX_DELAY);
 
-        CANMessageGet(CAN0_BASE, CAN_RX_MESSAGE_OBJ, &this_ptr->can_rx_msg, 0);
+        CANMessageGet(CAN0_BASE, CAN_RX_MESSAGE_OBJ, &this_ptr->can_rx_msg, true);
 
-        xQueueSend(this_ptr->can_rx_q, &this_ptr->can_rx_msg, 0);
+        send_can_message(this_ptr, &this_ptr->can_rx_msg);
 
         error_flag = false;
 
@@ -357,7 +372,7 @@ void CanCommand::draw_input(int character) {
 
     case CAN_CMD_SEND :
         if (' ' == character) {
-            xQueueSend(this->can_tx_q, &this->can_tx_msg, 5);
+            add_can_msg(&this->can_tx_msg);
             this->msg_rdy_flag = true;
         } else if ('s' == character) {
             UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");

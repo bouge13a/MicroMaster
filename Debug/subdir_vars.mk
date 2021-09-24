@@ -31,6 +31,7 @@ CPP_SRCS += \
 ../main.cpp \
 ../memory_functions.cpp \
 ../menu_page.cpp \
+../number_converter.cpp \
 ../one_wire_command.cpp \
 ../one_wire_search.cpp \
 ../task_manager.cpp \
@@ -81,6 +82,7 @@ OBJS += \
 ./main.obj \
 ./memory_functions.obj \
 ./menu_page.obj \
+./number_converter.obj \
 ./one_wire_command.obj \
 ./one_wire_search.obj \
 ./task_manager.obj \
@@ -116,6 +118,7 @@ CPP_DEPS += \
 ./main.d \
 ./memory_functions.d \
 ./menu_page.d \
+./number_converter.d \
 ./one_wire_command.d \
 ./one_wire_search.d \
 ./task_manager.d \
@@ -151,6 +154,7 @@ OBJS__QUOTED += \
 "main.obj" \
 "memory_functions.obj" \
 "menu_page.obj" \
+"number_converter.obj" \
 "one_wire_command.obj" \
 "one_wire_search.obj" \
 "task_manager.obj" \
@@ -192,6 +196,7 @@ CPP_DEPS__QUOTED += \
 "main.d" \
 "memory_functions.d" \
 "menu_page.d" \
+"number_converter.d" \
 "one_wire_command.d" \
 "one_wire_search.d" \
 "task_manager.d" \
@@ -225,6 +230,7 @@ CPP_SRCS__QUOTED += \
 "../main.cpp" \
 "../memory_functions.cpp" \
 "../menu_page.cpp" \
+"../number_converter.cpp" \
 "../one_wire_command.cpp" \
 "../one_wire_search.cpp" \
 "../task_manager.cpp" \

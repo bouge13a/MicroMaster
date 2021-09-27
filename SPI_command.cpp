@@ -18,6 +18,7 @@
 #include "driverlib/pin_map.h"
 #include "driverlib/ssi.h"
 #include "driverlib/sysctl.h"
+#include "utils.hpp"
 
 static const uint32_t SPI_TX_Q_NUM = 20;
 static const uint32_t SPI_RX_Q_NUM = 20;
@@ -364,19 +365,6 @@ bool SpiCmdTask::log_errors(SpiCmdTask* this_ptr) {
         return false;
     }
 } // End SpiCmdTask::log_errors
-
-uint32_t SpiCmdTask::ascii_to_hex(uint8_t character) {
-
-    if (character >= '0' && character <='9') {
-        return character - '0';
-    }
-
-    if ((character >= 'a' && character <= 'f') || (character >= 'A' && character <= 'F')) {
-        return character - 'a' + 10;
-    }
-
-    return 0;
-} // End SpiCmdTask::ascii_to_hex
 
 void SpiCmdTask::draw_page(void) {
 

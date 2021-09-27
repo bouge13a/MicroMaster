@@ -86,6 +86,7 @@ number_converter.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/
 number_converter.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 number_converter.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 number_converter.obj: ../text_controls.hpp
+number_converter.obj: ../utils.hpp
 
 ../number_converter.cpp: 
 ../number_converter.hpp: 
@@ -173,3 +174,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
 ../text_controls.hpp: 
+../utils.hpp: 

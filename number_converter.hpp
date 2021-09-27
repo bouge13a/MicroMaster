@@ -16,7 +16,13 @@ public:
 
 private :
     void draw_menu(uint32_t index);
+    void draw_numbers(uint32_t number);
+
     uint32_t menu_index;
+    uint32_t byte_buffer_idx;
+    uint32_t num_buffer;
+    char* bin_string;
+    char* byte_buffer;
 
     void draw_page(void);
     void draw_data(void);

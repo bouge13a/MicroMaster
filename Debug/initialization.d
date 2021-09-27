@@ -121,6 +121,7 @@ initialization.obj: ../CAN_command.hpp
 initialization.obj: ../driverlib/can.h
 initialization.obj: ../CAN_sniffer.hpp
 initialization.obj: ../I2C_sniffer.hpp
+initialization.obj: ../number_converter.hpp
 
 ../initialization.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -243,3 +244,4 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h:
 ../driverlib/can.h: 
 ../CAN_sniffer.hpp: 
 ../I2C_sniffer.hpp: 
+../number_converter.hpp: 

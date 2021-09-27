@@ -29,6 +29,9 @@ static SemaphoreHandle_t can_rx_semphr;
 
 static const uint32_t SIZE_OF_RX_MSG_DATA = 8;
 
+static const uint32_t MAX_FREQ = 1000000;
+static const uint32_t MIN_FREQ = 1000;
+
 static void CANIntHandler(void) {
 
     BaseType_t xHigherPriorityTaskWoken, xResult;
@@ -146,12 +149,14 @@ CanCommand::CanCommand(QueueHandle_t can_rx_q) : ConsolePage("CAN Command",
     this->lec_bit0_err    = this->logger->create_error("CAN0", "The bus remained at a bit level of 0");
     this->lec_crc_err     = this->logger->create_error("CAN0", "A CRC error has occurred");
 
-    this->can_cmd_state = CAN_CMD_ID;
+    this->can_cmd_state = CAN_CMD_SPEED;
     this->byte_buffer = 0;
     this->byte_buffer_idx = 0;
     this->byte_counter = 0;
 
     this->msg_rdy_flag = false;
+
+    this->speed_buffer = new uint8_t[10];
 
 } // End TestTask
 
@@ -288,7 +293,7 @@ static uint32_t ascii_to_hex(uint8_t character) {
 
 void CanCommand::draw_page(void) {
 
-    UARTprintf("Enter 29 bit CAN ID : 0x");
+    UARTprintf("Enter CAN bus speed (1000-1000000Hz) : ");
 
 }
 void CanCommand::draw_data(void) {
@@ -297,6 +302,50 @@ void CanCommand::draw_data(void) {
 void CanCommand::draw_input(int character) {
 
     switch (this->can_cmd_state) {
+    case CAN_CMD_SPEED :
+
+        if (character == 127) {
+            if(this->byte_buffer_idx > 0) {
+                this->byte_buffer_idx--;
+                UARTprintf("\b");
+                TextCtl::clear_in_line();
+                return;
+            }
+        }
+
+        if ((character >= '0') && (character <= '9')) {
+
+            this->speed_buffer[this->byte_buffer_idx] = (uint8_t)character;
+            this->byte_buffer_idx++;
+            UARTprintf("%c", (uint8_t)character);
+        } else if (character == '\r') {
+            UARTprintf("%c", (uint8_t)character);
+            this->speed_buffer[this->byte_buffer_idx] = '\0';
+
+            if(atoi((const char*)this->speed_buffer) > MAX_FREQ) {
+                this->byte_buffer_idx = 0;
+                UARTprintf("\r\nError: freqency must be less than 1MHz\r\n");
+                UARTprintf("Enter CAN bus speed (1000-1000000Hz) : ");
+                break;
+            }
+
+            if(atoi((const char*)this->speed_buffer) < MIN_FREQ) {
+                this->byte_buffer_idx = 0;
+                UARTprintf("\r\nError: freqency must be greater than 1KHz\r\n");
+                UARTprintf("Enter CAN bus speed (1000-1000000Hz) : ");
+                break;
+            }
+
+            CANBitRateSet(CAN0_BASE, 80000000, atoi((const char*)this->speed_buffer));
+
+            this->byte_buffer_idx = 0;
+            this->can_cmd_state = CAN_CMD_ID;
+
+            UARTprintf("\r\nEnter 29 bit CAN ID : 0x");
+        }
+
+
+        break;
     case CAN_CMD_ID :
         if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
             if (this->byte_buffer_idx == 0) {

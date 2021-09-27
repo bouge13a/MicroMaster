@@ -39,6 +39,7 @@
 #include "CAN_command.hpp"
 #include "CAN_sniffer.hpp"
 #include "I2C_sniffer.hpp"
+#include "number_converter.hpp"
 
 static ConsoleTask* console_task = NULL;
 
@@ -107,6 +108,8 @@ PostScheduler::PostScheduler(void) {
 
     I2cSniffer* i2c_sniff = new I2cSniffer(gpi_obj);
 
+    NumConverter* num_converter = new NumConverter();
+
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
                                         power_on_menu,
@@ -168,6 +171,7 @@ PostScheduler::PostScheduler(void) {
     console_task->add_page(can_command);
     console_task->add_page(can_sniffer);
     console_task->add_page(pwm_page);
+    console_task->add_page(num_converter);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
 

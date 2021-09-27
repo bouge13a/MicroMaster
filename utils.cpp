@@ -5,6 +5,7 @@
  *      Author: steph
  */
 #include <utils.hpp>
+#include <math.h>
 
 void int_to_bin_string(uint32_t integer, uint8_t* bin_string) {
 
@@ -26,3 +27,39 @@ void int_to_bin_string(uint32_t integer, uint8_t* bin_string) {
 
 } // End int_to_bin_string
 
+uint32_t ascii_to_hex(uint8_t character) {
+
+    if (character >= '0' && character <='9') {
+        return character - '0';
+    }
+
+    if ((character >= 'a' && character <= 'f') || (character >= 'A' && character <= 'F')) {
+        return character - 'a' + 10;
+    }
+
+    return 0;
+} // End SpiCmdTask::ascii_to_hex
+
+uint32_t octalToDecimal(int octalNum){
+  int decimalNum = 0, i = 0;
+  while(octalNum != 0){
+    decimalNum += (octalNum%10) * pow(8,i);
+    ++i;
+    octalNum/=10;
+    }
+  i = 1;
+  return decimalNum;
+}
+
+int decimalToOctal(int decimalNumber)
+{
+    int rem, i = 1, octalNumber = 0;
+    while (decimalNumber != 0)
+    {
+        rem = decimalNumber % 8;
+        decimalNumber /= 8;
+        octalNumber += rem * i;
+        i *= 10;
+    }
+    return octalNumber;
+}

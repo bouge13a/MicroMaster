@@ -95,7 +95,6 @@ extern "C" {
         uint32_t test;
 
         bool log_errors(SpiCmdTask* this_ptr);
-        uint32_t ascii_to_hex(uint8_t character);
         void print_errors(SpiCmdTask* this_ptr);
 
         QueueHandle_t spi_tx_queue;

@@ -62,6 +62,7 @@ extern "C" {
         uint32_t byte_buffer_idx;
         uint8_t byte_buffer;
         uint32_t byte_counter;
+        uint8_t* speed_buffer;
 
         bool msg_rdy_flag;
 

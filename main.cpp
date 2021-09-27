@@ -9,7 +9,6 @@
 #include <assert.h>
 #include <initialization.hpp>
 
-
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"

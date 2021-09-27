@@ -92,6 +92,7 @@ SPI_command.obj: ../driverlib/gpio.h
 SPI_command.obj: ../driverlib/pin_map.h
 SPI_command.obj: ../driverlib/ssi.h
 SPI_command.obj: ../driverlib/sysctl.h
+SPI_command.obj: ../utils.hpp
 
 ../SPI_command.cpp: 
 ../SPI_command.hpp: 
@@ -185,3 +186,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_memmap.h:
 ../driverlib/pin_map.h: 
 ../driverlib/ssi.h: 
 ../driverlib/sysctl.h: 
+../utils.hpp: 

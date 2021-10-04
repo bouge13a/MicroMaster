@@ -49,6 +49,7 @@ typedef enum {
 }i2c_msg_state_e;
 
 typedef enum {
+    search_msg,
     command_msg,
     normal_msg,
 }i2c_msg_type_t;

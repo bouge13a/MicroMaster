@@ -34,7 +34,7 @@ I2cSnifferTask::I2cSnifferTask(I2cTask* i2c) : ConsolePage("I2C Search",
 
     this-> start_semphr = xSemaphoreCreateBinary();
 
-    this->i2c_msg = new I2cMsg(normal_msg);
+    this->i2c_msg = new I2cMsg(search_msg);
 
 } // End I2cSnifferTask::I2cSnifferTask
 

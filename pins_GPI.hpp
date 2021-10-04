@@ -11,7 +11,7 @@
 
 #include "board_pin_defs.hpp"
 
-#include <stdint.h>
+#include <stdint.h>`
 #include <stdbool.h>
 #include "driverlib/inc/hw_memmap.h"
 #include "driverlib/debug.h"

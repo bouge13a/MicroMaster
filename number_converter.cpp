@@ -10,6 +10,7 @@
 #include "text_controls.hpp"
 #include "utils.hpp"
 #include <string.h>
+#include <assert.h>
 
 static const uint32_t MENU_SPACING = 12;
 static const uint32_t MENU_START_ROW = 6;
@@ -77,7 +78,7 @@ void NumConverter::draw_numbers(uint32_t number) {
 
     TextCtl::cursor_pos(MENU_START_ROW+1, 3*MENU_SPACING);
     for (uint32_t index=0; index<sizeof(uint32_t); index++) {
-        int_to_bin_string((number >> (8*index)) & 0x000000ff, (uint8_t*)this->bin_string);
+        int_to_bin_string((number >> (8*(3 - index))) & 0x000000ff, (uint8_t*)this->bin_string);
         UARTprintf("0b%s ", this->bin_string);
     }
 
@@ -104,14 +105,27 @@ void NumConverter::draw_data(void) {
 void NumConverter::draw_input(int character) {
 
     if (character == 127) {
-        if(this->byte_buffer_idx > 0) {
-            this->byte_buffer_idx--;
-            this->byte_buffer[this->byte_buffer_idx]=0;
-            draw_numbers(atoi(this->byte_buffer));
-            UARTprintf("\b");
-            TextCtl::clear_in_line();
+
+            memset(this->byte_buffer, 0, 10);
+            this->num_buffer = 0;
+            this->byte_buffer_idx = 0;
+
+            switch (this->menu_index) {
+            case 0 :
+                draw_numbers(atoi(this->byte_buffer));
+                break;
+            case 1 :
+            case 2 :
+            case 3 :
+                draw_numbers(this->num_buffer);
+                break;
+            default :
+                break;
+            }
+
+            TextCtl::clear_line();
             return;
-        }
+
     }
 
     switch (character) {
@@ -149,7 +163,7 @@ void NumConverter::draw_input(int character) {
 
     switch(this->menu_index) {
     case 0 :
-        if (character >= '0' && character <= '9') {
+        if ((character >= '0') && (character <= '9') && (atoi(this->byte_buffer) < 4294967296)) {
 
             UARTprintf("%c", character);
             this->byte_buffer[this->byte_buffer_idx] = (char)character;
@@ -160,7 +174,7 @@ void NumConverter::draw_input(int character) {
 
         break;
     case 1 :
-        if ((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')){
+        if (((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')) && (this->byte_buffer_idx <= 16)){
 
                 this->num_buffer <<= 4;
                 this->num_buffer |= (ascii_to_hex(character));
@@ -172,7 +186,7 @@ void NumConverter::draw_input(int character) {
 
         break;
     case 2 :
-        if (character >= '0' && character <= '8') {
+        if ((character >= '0') && (character <= '8') && (this->byte_buffer_idx <= 16)) {
 
             UARTprintf("%c", character);
             this->num_buffer |= ascii_to_hex(character) << (4*this->byte_buffer_idx);
@@ -183,19 +197,22 @@ void NumConverter::draw_input(int character) {
 
         break;
     case 3:
-        if (character == '0') {
+        if ((character == '0') && (this->byte_buffer_idx < 32)) {
             this->num_buffer = this->num_buffer << 1;
             UARTprintf("%c", character);
             this->byte_buffer_idx++;
             draw_numbers(this->num_buffer);
         }
 
-        if (character == '1') {
+        if ((character == '1') && (this->byte_buffer_idx < 32)) {
             this->num_buffer |= (1 << this->byte_buffer_idx);
             UARTprintf("%c", character);
             this->byte_buffer_idx++;
             draw_numbers(this->num_buffer);
         }
+
+    default :
+        assert(0);
 
         break;
     }
@@ -206,10 +223,12 @@ void NumConverter::draw_reset(void) {
 
     this->byte_buffer_idx = 0;
     this->num_buffer = 0;
-
+    memset(this->byte_buffer, 0, 10);
     this->draw_numbers(0);
     this->menu_index = 0;
     this->draw_menu(0);
+    TextCtl::cursor_pos(MENU_START_ROW+5, 0);
+    TextCtl::clear_line();
 }
 
 void NumConverter::draw_help(void) {

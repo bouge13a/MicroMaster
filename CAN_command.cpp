@@ -249,7 +249,7 @@ void CanCommand::tx_task(CanCommand* this_ptr) {
 
             }
 
-            UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
+            UARTprintf("\r\n\nEnter CAN bus speed (1000-1000000Hz) : ");
         }
 
         vTaskDelay(0);
@@ -424,10 +424,11 @@ void CanCommand::draw_input(int character) {
             add_can_msg(&this->can_tx_msg);
             this->msg_rdy_flag = true;
         } else if ('s' == character) {
-            UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
             this->msg_rdy_flag = true;
+            UARTprintf("\r\n\nEnter CAN bus speed (1000-1000000Hz) : ");
         }
-        this->can_cmd_state = CAN_CMD_ID;
+
+        this->can_cmd_state = CAN_CMD_SPEED;
         break;
 
     default :
@@ -442,7 +443,7 @@ void CanCommand::draw_reset(void) {
 
     this->byte_buffer_idx = 0;
     this->byte_counter = 0;
-    this->can_cmd_state = CAN_CMD_ID;
+    this->can_cmd_state = CAN_CMD_SPEED;
     UARTprintf("\r\n\nEnter 29 bit CAN ID : 0x");
 
 }

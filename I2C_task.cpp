@@ -523,20 +523,30 @@ bool I2cTask::log_errors(I2cTask* this_ptr) {
 
     // THE ORDER OF THESE IF STATEMENTS MATTER!!!
 
+
     if( I2C_MASTER_ERR_DATA_ACK  == (status &  I2C_MASTER_ERR_DATA_ACK )) {
-        this_ptr->logger->set_error(data_ack_err);
+        if (this_ptr->i2c_msg->type != search_msg) {
+            this_ptr->logger->set_error(data_ack_err);
+        }
         this_ptr->i2c_msg->errors = DATA_NACK_ERR;
     }
+
 
     if(I2C_MASTER_ERR_CLK_TOUT == (status & I2C_MASTER_ERR_CLK_TOUT)) {
         this_ptr->logger->set_error(clk_tout_err);
         this_ptr->i2c_msg->errors = TIMEOUT_ERR;
     }
 
+
     if(I2C_MASTER_ERR_ADDR_ACK == (status & I2C_MASTER_ERR_ADDR_ACK)) {
-        this_ptr->logger->set_error(addr_ack_err);
+
+        if (this_ptr->i2c_msg->type != search_msg) {
+            this_ptr->logger->set_error(addr_ack_err);
+        }
+
         this_ptr->i2c_msg->errors = ADDR_NACK_ERR;
     }
+
 
     if(I2C_MASTER_ERR_ARB_LOST == (status & I2C_MASTER_ERR_ARB_LOST)) {
         this_ptr->logger->set_error(arb_lost_err);

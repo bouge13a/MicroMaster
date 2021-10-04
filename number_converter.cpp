@@ -68,13 +68,13 @@ void NumConverter::draw_numbers(uint32_t number) {
 
     TextCtl::cursor_pos(MENU_START_ROW+1, 0*MENU_SPACING);
     TextCtl::clear_line();
-    UARTprintf("%d", number);
+    UARTprintf("%u", number);
 
     TextCtl::cursor_pos(MENU_START_ROW+1, 1*MENU_SPACING);
     UARTprintf("0x%x", number);
 
     TextCtl::cursor_pos(MENU_START_ROW+1, 2*MENU_SPACING);
-    UARTprintf("0%d", decimalToOctal(number));
+    UARTprintf("0%u", decimalToOctal(number));
 
     TextCtl::cursor_pos(MENU_START_ROW+1, 3*MENU_SPACING);
     for (uint32_t index=0; index<sizeof(uint32_t); index++) {
@@ -141,6 +141,7 @@ void NumConverter::draw_input(int character) {
         memset(this->byte_buffer, 0, 10);
         draw_numbers(atoi(this->byte_buffer));
         TextCtl::cursor_pos(MENU_START_ROW+5, 0);
+        TextCtl::clear_line();
         this->byte_buffer_idx = 0;
         this->num_buffer = 0;
 
@@ -153,6 +154,7 @@ void NumConverter::draw_input(int character) {
         memset(this->byte_buffer, 0, 10);
         draw_numbers(atoi(this->byte_buffer));
         TextCtl::cursor_pos(MENU_START_ROW+5, 0);
+        TextCtl::clear_line();
         this->byte_buffer_idx = 0;
         this->num_buffer = 0;
 
@@ -174,13 +176,14 @@ void NumConverter::draw_input(int character) {
 
         break;
     case 1 :
-        if (((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')) && (this->byte_buffer_idx <= 16)){
+        if (((character >= '0' && character <= '9') || (character >= 'a' && character <= 'f')) && (this->byte_buffer_idx <= 8)){
 
                 this->num_buffer <<= 4;
                 this->num_buffer |= (ascii_to_hex(character));
                 UARTprintf("%c", character);
-                draw_numbers(this->num_buffer);
                 this->byte_buffer_idx++;
+                draw_numbers(this->num_buffer);
+
 
         }
 
@@ -212,8 +215,6 @@ void NumConverter::draw_input(int character) {
         }
 
     default :
-        assert(0);
-
         break;
     }
 

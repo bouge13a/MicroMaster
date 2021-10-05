@@ -62,11 +62,12 @@ extern "C" {
     private:
         static void taskfunwrapper(void* parm);
         void task(ConsoleTask* this_ptr);
-        TaskHandle_t task_handle;
+        void ftdi_task(ConsoleTask* this_ptr);
 
         void draw_ps_menu(uint32_t index);
         void start_draw_menu(ConsoleTask* this_ptr);
         uint32_t draw_start_page(ConsoleTask* this_ptr);
+
 
         QueueHandle_t uart_rx_q;
 

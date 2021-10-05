@@ -40,6 +40,7 @@
 #include "CAN_sniffer.hpp"
 #include "I2C_sniffer.hpp"
 #include "number_converter.hpp"
+#include "FTDI_emulator.hpp"
 
 static ConsoleTask* console_task = NULL;
 static uint32_t power_idx = 0;
@@ -172,6 +173,10 @@ PostScheduler::PostScheduler(void) {
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
 
+}
 
+FtdiProgram::FtdiProgram(void) {
+
+    FtdiEmulator* ftdi_emulator = new FtdiEmulator();
 
 }

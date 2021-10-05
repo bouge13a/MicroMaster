@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../ADC_task.cpp \
 ../CAN_command.cpp \
 ../CAN_sniffer.cpp \
+../FTDI_emulator.cpp \
 ../GPIs.cpp \
 ../GPOs.cpp \
 ../I2C_monitor.cpp \
@@ -58,6 +59,7 @@ OBJS += \
 ./ADC_task.obj \
 ./CAN_command.obj \
 ./CAN_sniffer.obj \
+./FTDI_emulator.obj \
 ./GPIs.obj \
 ./GPOs.obj \
 ./I2C_monitor.obj \
@@ -96,6 +98,7 @@ CPP_DEPS += \
 ./ADC_task.d \
 ./CAN_command.d \
 ./CAN_sniffer.d \
+./FTDI_emulator.d \
 ./GPIs.d \
 ./GPOs.d \
 ./I2C_monitor.d \
@@ -130,6 +133,7 @@ OBJS__QUOTED += \
 "ADC_task.obj" \
 "CAN_command.obj" \
 "CAN_sniffer.obj" \
+"FTDI_emulator.obj" \
 "GPIs.obj" \
 "GPOs.obj" \
 "I2C_monitor.obj" \
@@ -174,6 +178,7 @@ CPP_DEPS__QUOTED += \
 "ADC_task.d" \
 "CAN_command.d" \
 "CAN_sniffer.d" \
+"FTDI_emulator.d" \
 "GPIs.d" \
 "GPOs.d" \
 "I2C_monitor.d" \
@@ -208,6 +213,7 @@ CPP_SRCS__QUOTED += \
 "../ADC_task.cpp" \
 "../CAN_command.cpp" \
 "../CAN_sniffer.cpp" \
+"../FTDI_emulator.cpp" \
 "../GPIs.cpp" \
 "../GPOs.cpp" \
 "../I2C_monitor.cpp" \

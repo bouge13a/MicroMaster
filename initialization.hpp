@@ -21,5 +21,10 @@ public:
     PostScheduler(void);
 };
 
+class FtdiProgram {
+public:
+    FtdiProgram(void);
+};
+
 
 #endif /* INITIALIZATION_HPP_ */

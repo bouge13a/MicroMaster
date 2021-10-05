@@ -155,6 +155,7 @@ void UartStreamer::draw_page(void) {
 void UartStreamer::draw_data(void) {
 
 }
+
 void UartStreamer::draw_input(int character) {
 
     if (' ' == character) {

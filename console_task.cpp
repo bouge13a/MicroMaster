@@ -8,6 +8,9 @@
 #include "text_controls.hpp"
 #include "initialization.hpp"
 
+#include "inc/hw_memmap.h"
+#include "driverlib/uart.h"
+
 #include <assert.h>
 #include <UART_to_USB.hpp>
 #include "uartstdio.h"
@@ -19,7 +22,10 @@ static const uint32_t START_ROW      = 7;
 
 static const uint32_t PS_MENU_SPACING = 15;
 static const uint32_t PS_MENU_COL  = 25;
-static const uint32_t PS_MENU_ROW  = 20;
+static const uint32_t PS_MENU_ROW  = 15;
+
+static const uint32_t PRE_MENU_COL = 30;
+static const uint32_t PRE_MENU_ROW = 17;
 
 
 static const uint32_t PS_NUM = 3;
@@ -53,9 +59,8 @@ ConsoleTask::ConsoleTask (QueueHandle_t uart_rx_queue,
                 200,                                          /* Stack size in words, not bytes. */
                 this,                                         /* Parameter passed into the task. */
                 3,                                            /* Priority at which the task is created. */
-                &this->task_handle );                         /* Used to pass out the created task's handle. */
+                NULL );                         /* Used to pass out the created task's handle. */
 
-    assert(this->task_handle);
     assert(uart_rx_queue);
 
     this->uart_rx_q = uart_rx_queue;
@@ -106,10 +111,16 @@ uint32_t ConsoleTask::draw_start_page(ConsoleTask* this_ptr) {
     uint8_t rx_char=0;
     uint32_t menu_index = 0;
 
+    TextCtl::clear_terminal();
+
     TextCtl::cursor_pos(10, 30);
     UARTprintf("MicroMaster Mini Version 0");
     TextCtl::cursor_pos(12, 30);
     UARTprintf("Press any key to continue");
+    TextCtl::cursor_pos(PRE_MENU_ROW, PRE_MENU_COL);
+    UARTprintf("a : Main Program");
+    TextCtl::cursor_pos(PRE_MENU_ROW+1, PRE_MENU_COL);
+    UARTprintf("b : FTDI Emulator");
 
     this_ptr->draw_ps_menu(0);
 
@@ -152,7 +163,8 @@ uint32_t ConsoleTask::draw_start_page(ConsoleTask* this_ptr) {
 
             }
         } else {
-            return menu_index;
+            *this_ptr->power_idx = menu_index;
+            return rx_char;
         }
     }
 }
@@ -198,13 +210,42 @@ void ConsoleTask::start_draw_menu(ConsoleTask* this_ptr) {
 
 } // End draw_menu
 
+void ConsoleTask::ftdi_task(ConsoleTask* this_ptr) {
+
+    uint8_t rx_char = 0;
+
+    FtdiProgram* ftdi_program = new FtdiProgram();
+
+    TextCtl::clear_terminal();
+    TextCtl::cursor_pos(0, 0);
+
+    while(1) {
+
+        xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
+
+        UARTCharPutNonBlocking(UART1_BASE, rx_char);
+    }
+}
+
 void ConsoleTask::task(ConsoleTask* this_ptr) {
 
     uint8_t rx_char = 0;
 
     xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
 
-    *this_ptr->power_idx = this_ptr->draw_start_page(this_ptr);
+    rx_char = this_ptr->draw_start_page(this_ptr);
+
+    switch(rx_char) {
+    case 'a':
+    case 'A':
+        break;
+    case 'b':
+    case 'B':
+        this_ptr->ftdi_task(this_ptr);
+        break;
+    default :
+        break;
+    }
 
     new PostScheduler();
 

@@ -114,16 +114,21 @@ void UartCmd::send_message(void) {
         UARTprintf("\r\n");
     }
 
-    for (uint32_t index=0; index<this->last_char_string_index; index += 2) {
-        UARTCharPut(UART1_BASE, ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );
+    if (this->msg_type == UART_GET_STRING) {
 
-        if (this->msg_type == UART_GET_STRING) {
+        for (uint32_t index=0; index<this->last_char_string_index; index++) {
+
+            UARTCharPut(UART1_BASE, this->char_string[index] );
 
             if(0 == index) {
                 UARTprintf("TX: %s", this->char_string);
             }
+        }
+    } else if (this->msg_type == UART_GET_HEX) {
 
-        } else if (this->msg_type == UART_GET_HEX) {
+        for (uint32_t index=0; index<this->last_char_string_index; index += 2) {
+
+            UARTCharPut(UART1_BASE, ascii_to_hex(this->char_string[index+1]) | (ascii_to_hex(this->char_string[index]) << 4) );
 
             if(0 == index) {
                 UARTprintf("TX : 0x%x", ascii_to_hex(this->char_string[index+1]) | ascii_to_hex(this->char_string[index]) << 4 );

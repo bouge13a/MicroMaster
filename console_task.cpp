@@ -17,6 +17,18 @@ static const uint32_t MENU_BAR_WIDTH = 78;
 static const uint32_t SECOND_COL     = 35;
 static const uint32_t START_ROW      = 7;
 
+static const uint32_t PS_MENU_SPACING = 15;
+static const uint32_t PS_MENU_COL  = 25;
+static const uint32_t PS_MENU_ROW  = 20;
+
+
+static const uint32_t PS_NUM = 3;
+static const char* ps_menu[] = {
+                              "3v3",
+                              "5v",
+                              "2v8",
+};
+
 ConsolePage::ConsolePage(const char* name,
                          uint32_t refresh_rate,
                          const bool write_to_page)
@@ -28,11 +40,13 @@ ConsolePage::ConsolePage(const char* name,
 
 } // End ConsolePage::ConsolePage
 
-ConsoleTask::ConsoleTask (QueueHandle_t uart_rx_queue) : ConsolePage ("Home Page",
-                                                                      portMAX_DELAY,
-                                                                      false) {
+ConsoleTask::ConsoleTask (QueueHandle_t uart_rx_queue,
+                          uint32_t* power_idx) : ConsolePage ("Home Page",
+                                                              portMAX_DELAY,
+                                                              false) {
 
     this->pages.reserve(26);
+    this->power_idx = power_idx;
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Console",                                    /* Text name for the task. */
@@ -63,13 +77,86 @@ void ConsoleTask::taskfunwrapper(void* parm){
     (static_cast<ConsoleTask*>(parm))->task((ConsoleTask*)parm);
 } // End UartTask::taskfunwrapper
 
-void ConsoleTask::draw_start_page(void) {
+void ConsoleTask::draw_ps_menu(uint32_t index) {
+
+    TextCtl::text_color(TextCtl::black_text);
+
+    for(uint32_t loop_idx=0; loop_idx<PS_NUM; loop_idx++) {
+
+        TextCtl::bgd_color(TextCtl::white_bgd);
+
+        if(loop_idx == index) {
+            TextCtl::bgd_color(TextCtl::blue_bgd);
+        }
+
+        TextCtl::cursor_pos(PS_MENU_ROW, PS_MENU_COL + loop_idx*PS_MENU_SPACING);
+        UARTprintf("%s", ps_menu[loop_idx]);
+
+
+    }
+
+    TextCtl::bgd_color(TextCtl::black_bgd);
+    TextCtl::text_color(TextCtl::white_text);
+
+} // End ConsoleTask::draw_ps_menu
+
+
+uint32_t ConsoleTask::draw_start_page(ConsoleTask* this_ptr) {
+
+    uint8_t rx_char=0;
+    uint32_t menu_index = 0;
 
     TextCtl::cursor_pos(10, 30);
     UARTprintf("MicroMaster Mini Version 0");
     TextCtl::cursor_pos(12, 30);
     UARTprintf("Press any key to continue");
+
+    this_ptr->draw_ps_menu(0);
+
+    while(1) {
+
+        xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
+
+        if (ArrowKeys::ESCAPE == rx_char) {
+
+            if ('[' == get_char()) {
+                // Control sequence detected
+                // Perform the control sequence
+                switch(get_char()) {
+                case 'C':
+                    menu_index = (menu_index+1) % PS_NUM;
+                    this_ptr->draw_ps_menu(menu_index);
+                    break;
+
+                case 'D':
+
+                    if (menu_index <= 0) {
+                        menu_index = PS_NUM - 1;
+                    } else {
+                        menu_index--;
+                    }
+
+                    this_ptr->draw_ps_menu(menu_index);
+
+                    break;
+
+                default:
+                    break;
+
+                }
+
+            } else {
+
+                // Escape key was pressed
+
+
+            }
+        } else {
+            return menu_index;
+        }
+    }
 }
+
 
 void ConsoleTask::start_draw_menu(ConsoleTask* this_ptr) {
 
@@ -117,9 +204,7 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
 
     xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
 
-    this_ptr->draw_start_page();
-
-    xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
+    *this_ptr->power_idx = this_ptr->draw_start_page(this_ptr);
 
     new PostScheduler();
 

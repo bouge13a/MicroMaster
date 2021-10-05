@@ -53,16 +53,11 @@ const char* power_on_name = "Power Supply";
 const uint32_t power_on_num = 2;
 
 
-const char* power_select_menu[] = {"3V3",
-                                   "5V",
-                                   "1V8"};
-const char* power_select_name = "Power Select";
-const uint32_t power_select_num = 3;
-
 const char* pullup_en_menu[] = {"On",
                                 "Off"};
 const char* pullup_en_name = "I2C Pullups";
 const uint32_t pullup_en_num = 2;
+
 
 const char* pwm_mode_menu[] = {"Signal",
                                 "Servo"};

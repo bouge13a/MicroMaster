@@ -54,7 +54,8 @@ extern "C" {
 
     class ConsoleTask : public ConsolePage {
     public:
-        ConsoleTask(QueueHandle_t uart_rx_queue);
+        ConsoleTask(QueueHandle_t uart_rx_queue,
+                    uint32_t* power_idx);
 
         void add_page(ConsolePage* page);
 
@@ -63,13 +64,15 @@ extern "C" {
         void task(ConsoleTask* this_ptr);
         TaskHandle_t task_handle;
 
+        void draw_ps_menu(uint32_t index);
         void start_draw_menu(ConsoleTask* this_ptr);
-        void draw_start_page(void);
+        uint32_t draw_start_page(ConsoleTask* this_ptr);
 
         QueueHandle_t uart_rx_q;
 
         uint32_t page_index;
         uint32_t last_page_index;
+        uint32_t* power_idx;
 
         std::vector<ConsolePage*> pages;
 

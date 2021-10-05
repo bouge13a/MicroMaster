@@ -42,6 +42,7 @@
 #include "number_converter.hpp"
 
 static ConsoleTask* console_task = NULL;
+static uint32_t power_idx = 0;
 
 PreScheduler::PreScheduler(void) {
 
@@ -53,7 +54,8 @@ PreScheduler::PreScheduler(void) {
     UART_to_USB* uart_to_usb = new UART_to_USB(uart_rx_queue,
                                                uart_tx_queue);
 
-    console_task = new ConsoleTask(uart_rx_queue);
+    console_task = new ConsoleTask(uart_rx_queue,
+                                   &power_idx);
 
 
 } // End init_no_booster_board
@@ -74,7 +76,7 @@ PostScheduler::PostScheduler(void) {
 
     ErrorLogger* error_logger = ErrorLogger::get_instance();
 
-    GpoObj* gpo_obj = new GpoObj();
+    GpoObj* gpo_obj = new GpoObj(power_idx);
 
     GpiObj* gpi_obj = new GpiObj();
 
@@ -114,11 +116,6 @@ PostScheduler::PostScheduler(void) {
                                         set_power_supplies,
                                         power_on_menu,
                                         power_on_name));
-
-    menu_page->add_menu_row(new MenuRow(power_select_num,
-                                        sel_power_supply,
-                                        power_select_menu,
-                                        power_select_name));
 
     menu_page->add_menu_row(new MenuRow(pullup_en_num,
                                         set_pullup_en,

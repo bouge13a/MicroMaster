@@ -19,10 +19,6 @@
 #include "SPI_command.hpp"
 
 
-typedef enum {
-
-};
-
 #ifdef __cplusplus
 extern "C" {
 #endif

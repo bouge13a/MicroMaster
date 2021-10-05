@@ -44,7 +44,7 @@ void set_power_supplies(uint32_t index) {
 
 } // End set_power_supplies
 
-void sel_power_supply(uint32_t index) {
+static void sel_power_supply(uint32_t index) {
 
     switch(index) {
     case 0 :
@@ -85,7 +85,7 @@ void set_pullup_en(uint32_t index) {
 
 } // End set_pullup_en
 
-GpoObj::GpoObj(void) {
+GpoObj::GpoObj(uint32_t power_idx) {
 
     this->gpo_info = &board_gpo_info;
 
@@ -131,9 +131,11 @@ GpoObj::GpoObj(void) {
     }
 
     gpo_obj->set(psel_1v8_pin, 0);
-    gpo_obj->set(psel_3v3_pin, 1);
+    gpo_obj->set(psel_3v3_pin, 0);
     gpo_obj->set(psel_5v_pin, 0);
     gpo_obj->set(pullup_en_pin, 1);
+
+    sel_power_supply(power_idx);
 
 } // End GpoObj::GpoObj
 

@@ -183,8 +183,6 @@ void NumConverter::draw_input(int character) {
                 UARTprintf("%c", character);
                 this->byte_buffer_idx++;
                 draw_numbers(this->num_buffer);
-
-
         }
 
         break;

@@ -17,7 +17,7 @@ void set_pullup_en(uint32_t index);
 
 class GpoObj {
 public:
-    GpoObj(void);
+    GpoObj(uint32_t power_idx);
     gpio_pin_t* get_config(const char* name);
     void set(gpio_pin_t* config, uint32_t value);
     uint32_t get(gpio_pin_t* config);

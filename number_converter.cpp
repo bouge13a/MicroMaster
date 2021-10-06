@@ -165,7 +165,7 @@ void NumConverter::draw_input(int character) {
 
     switch(this->menu_index) {
     case 0 :
-        if ((character >= '0') && (character <= '9') && (atoi(this->byte_buffer) < 4294967296)) {
+        if ((character >= '0') && (character <= '9') && (atoll(this->byte_buffer) < 4294967296)) {
 
             UARTprintf("%c", character);
             this->byte_buffer[this->byte_buffer_idx] = (char)character;
@@ -190,9 +190,9 @@ void NumConverter::draw_input(int character) {
         if ((character >= '0') && (character <= '8') && (this->byte_buffer_idx <= 16)) {
 
             UARTprintf("%c", character);
-            this->num_buffer |= ascii_to_hex(character) << (4*this->byte_buffer_idx);
+            this->num_buffer |= (character - '0') << (3*this->byte_buffer_idx);
             this->byte_buffer_idx++;
-            draw_numbers(octalToDecimal(this->num_buffer));
+            draw_numbers(this->num_buffer);
 
         }
 
@@ -206,7 +206,7 @@ void NumConverter::draw_input(int character) {
         }
 
         if ((character == '1') && (this->byte_buffer_idx < 32)) {
-            this->num_buffer |= (1 << this->byte_buffer_idx);
+            this->num_buffer = (this->num_buffer << 1) | 1;
             UARTprintf("%c", character);
             this->byte_buffer_idx++;
             draw_numbers(this->num_buffer);

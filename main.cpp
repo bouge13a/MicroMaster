@@ -21,7 +21,7 @@
 #include "driverlib/interrupt.h"
 
 
-    int main(void) {
+int main(void) {
 
     // initialize tiva-c @ 80mhz
     MAP_FPUEnable();

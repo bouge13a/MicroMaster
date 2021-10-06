@@ -14,10 +14,8 @@
 #include "queue.h"
 
 #include "console_task.hpp"
-#include "GPOs.hpp"
 
 #include "SPI_command.hpp"
-
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +25,14 @@ extern "C" {
     public:
         SpiSniffer(SpiCmdTask* spi_cmd);
     private :
+        void tx_task(SpiSniffer* this_ptr);
+        static void tx_taskfunwrapper(void* parm);
+
+        void rx_task(SpiSniffer* this_ptr);
+        static void rx_taskfunwrapper(void* parm);
+
+        void init_spi_sniffer(void);
+
         SpiCmdTask* spi_cmd;
 
         void draw_page(void);
@@ -34,6 +40,7 @@ extern "C" {
         void draw_input(int character);
         void draw_help(void);
         void draw_reset(void);
+
     };
 
 #ifdef __cplusplus

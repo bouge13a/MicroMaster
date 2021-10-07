@@ -160,6 +160,8 @@ void UartStreamer::draw_input(int character) {
 
     if (' ' == character) {
         this->uart_cmd->send_message();
+    } else {
+        this->send_bell();
     }
 
 }

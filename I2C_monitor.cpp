@@ -194,6 +194,8 @@ void I2cMonitorTask::draw_input(int character) {
             TextCtl::cursor_pos(START_ROW + index, DATA_COL);
             TextCtl::clear_in_line();
         }
+
+        return;
     }
 
     switch (character) {
@@ -226,6 +228,9 @@ void I2cMonitorTask::draw_input(int character) {
         this->print_format_row(this->format_index);
         break;
     default :
+        if (character != 0) {
+            this->send_bell();
+        }
         break;
     }
 } // End I2cMonitorTask::draw_input

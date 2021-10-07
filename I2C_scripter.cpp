@@ -136,6 +136,8 @@ void I2cScripterTask::draw_input(int character) {
             this->buffer_state = GET_NIBBLE_0;
             UARTprintf("%c", character);
             this->i2c_msg->num_tx_bytes = 0;
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -168,6 +170,8 @@ void I2cScripterTask::draw_input(int character) {
                 this->buffer_idx = 0;
 
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -203,6 +207,8 @@ void I2cScripterTask::draw_input(int character) {
                 this->buffer_idx = 0;
 
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -220,6 +226,10 @@ void I2cScripterTask::draw_input(int character) {
             this->i2c_msg->num_tx_bytes = this->buffer_idx-1;
             this->buffer_idx = 0;
             xSemaphoreGive(this->send_semphr);
+
+        } else {
+
+            this->send_bell();
 
         }
         break;

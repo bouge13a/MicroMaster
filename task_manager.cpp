@@ -97,6 +97,8 @@ void TaskManager::draw_data(void) {
 
 void TaskManager::draw_input(int character) {
 
+    this->send_bell();
+
 } // End TaskManager::draw_input
 
 void TaskManager::draw_help(void) {

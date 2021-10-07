@@ -108,6 +108,8 @@ void I2cSnifferTask::draw_input(int character) {
 
     if (' ' == character) {
         xSemaphoreGive(this->start_semphr);
+    } else {
+        this->send_bell();
     }
 }
 

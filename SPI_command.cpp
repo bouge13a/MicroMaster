@@ -633,6 +633,8 @@ void SpiCmdTask::draw_input(int character) {
                     UARTprintf("\nEnter number of RX bytes: ");
                 }
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -649,6 +651,8 @@ void SpiCmdTask::draw_input(int character) {
             UARTprintf("%c", character);
             UARTprintf("\nPress Spacebar to send:\n\r");
             this->cmd_state = SPI_SEND_MSG;
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -664,6 +668,8 @@ void SpiCmdTask::draw_input(int character) {
                 this->add_spi_msg(this->spi_monitor_msgs[this->spi_monitor_index]);
                 this->spi_monitor_index++;
                 this->monitored = false;
+            } else {
+                this->send_bell();
             }
         } else {
             if (' ' == character) {
@@ -671,6 +677,8 @@ void SpiCmdTask::draw_input(int character) {
                 this->cmd_state = SPI_GET_MONITOR_STATUS;
                 this->monitored = false;
 
+            } else {
+                this->send_bell();
             }
         }
 

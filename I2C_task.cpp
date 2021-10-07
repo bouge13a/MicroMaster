@@ -606,6 +606,8 @@ void I2cTask::draw_input(int character) {
             UARTprintf("%c\r\n", character);
             UARTprintf("Error: too many monitored messages\r\n");
             UARTprintf("Monitor register? y/n : ");
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -634,6 +636,10 @@ void I2cTask::draw_input(int character) {
                 this->i2c_cmd_state = GET_NUM_TX_BYTES;
                 this->byte_buffer_index = 0;
             }
+        } else {
+
+            this->send_bell();
+
         }
         break;
     case GET_NUM_TX_BYTES :
@@ -648,6 +654,8 @@ void I2cTask::draw_input(int character) {
             UARTprintf("%c", character);
             UARTprintf("\nbyte 1 : 0x");
             this->i2c_cmd_state = GET_TX_BYTES;
+        } else {
+            this->send_bell();
         }
         break;
     case GET_TX_BYTES :
@@ -713,6 +721,8 @@ void I2cTask::draw_input(int character) {
                     UARTprintf("\nEnter number of rx bytes: ");
                 }
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -729,6 +739,8 @@ void I2cTask::draw_input(int character) {
             UARTprintf("%c", character);
             UARTprintf("\nPress Spacebar to send:\n\r");
             this->i2c_cmd_state = SEND_I2C_MSG;
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -745,6 +757,8 @@ void I2cTask::draw_input(int character) {
                 this->monitored = false;
 
 
+            } else {
+                this->send_bell();
             }
         } else {
             if (' ' == character) {
@@ -752,6 +766,8 @@ void I2cTask::draw_input(int character) {
                 this->i2c_cmd_state = GET_MONITOR_STATUS;
                 this->monitored = false;
 
+            } else {
+                this->send_bell();
             }
         }
         break;

@@ -204,7 +204,7 @@ void I2cSniffer::draw_data(void) {
 
 }
 void I2cSniffer::draw_input(int character) {
-
+    this->send_bell();
 }
 
 void I2cSniffer::draw_reset(void) {

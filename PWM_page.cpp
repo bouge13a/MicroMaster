@@ -211,6 +211,8 @@ void PWMpage::draw_input(int character) {
                 this->cmd_buffer_index = 0;
                 this->pwm_cmd_state = ENTER_FREQUENCY;
                 UARTprintf("Enter frequency (Hz) : ");
+            } else {
+                this->send_bell();
             }
 
             break;
@@ -244,6 +246,8 @@ void PWMpage::draw_input(int character) {
                 this->pwm_cmd_state = ENTER_STATE;
                 UARTprintf("\r\n\nTurn on (y/n) : ");
 
+            } else {
+                this->send_bell();
             }
 
             break;
@@ -265,6 +269,8 @@ void PWMpage::draw_input(int character) {
                 UARTprintf("%c\r\n", character);
                 UARTprintf("Turn on (y/n) : ");
 
+            } else {
+                this->send_bell();
             }
 
             break;
@@ -308,6 +314,7 @@ void PWMpage::draw_input(int character) {
 
             break;
         default :
+            this->send_bell();
             break;
         }
 

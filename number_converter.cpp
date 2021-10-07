@@ -145,7 +145,7 @@ void NumConverter::draw_input(int character) {
         this->byte_buffer_idx = 0;
         this->num_buffer = 0;
 
-        break;
+        return;
     case ArrowKeys::RIGHT :
 
         this->menu_index = (this->menu_index + 1) % 4;
@@ -158,7 +158,7 @@ void NumConverter::draw_input(int character) {
         this->byte_buffer_idx = 0;
         this->num_buffer = 0;
 
-        break;
+        return;
     default :
         break;
     }
@@ -172,6 +172,8 @@ void NumConverter::draw_input(int character) {
             this->byte_buffer_idx++;
             draw_numbers(atoi(this->byte_buffer));
 
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -183,6 +185,8 @@ void NumConverter::draw_input(int character) {
                 UARTprintf("%c", character);
                 this->byte_buffer_idx++;
                 draw_numbers(this->num_buffer);
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -194,6 +198,8 @@ void NumConverter::draw_input(int character) {
             this->byte_buffer_idx++;
             draw_numbers(this->num_buffer);
 
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -203,13 +209,13 @@ void NumConverter::draw_input(int character) {
             UARTprintf("%c", character);
             this->byte_buffer_idx++;
             draw_numbers(this->num_buffer);
-        }
-
-        if ((character == '1') && (this->byte_buffer_idx < 32)) {
+        } else if ((character == '1') && (this->byte_buffer_idx < 32)) {
             this->num_buffer = (this->num_buffer << 1) | 1;
             UARTprintf("%c", character);
             this->byte_buffer_idx++;
             draw_numbers(this->num_buffer);
+        } else {
+            this->send_bell();
         }
 
     default :

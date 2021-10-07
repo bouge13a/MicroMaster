@@ -115,6 +115,8 @@ void ErrorLogger::draw_input(int character){
 
         TextCtl::cursor_pos(START_ROW+1, 0);
         TextCtl::clear_below_line();
+    } else if (character != 0){
+        this->send_bell();
     }
 
 } // End logger_drawinput

@@ -186,6 +186,8 @@ void UartCmd::draw_input(int character) {
             this->char_string_index = 0;
             this->cmd_state = UART_GET_FORMAT;
             UARTprintf("\r\nEnter format (t for text, h for hex) : ");
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -200,6 +202,8 @@ void UartCmd::draw_input(int character) {
             this->cmd_state = UART_GET_HEX;
             UARTprintf("h\r\nEnter hex : 0x");
             this->msg_type = UART_GET_HEX;
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -261,6 +265,8 @@ void UartCmd::draw_input(int character) {
             UARTprintf("\r\nMessage transmitted");
             UARTprintf("\r\nEnter speed (300 - 115200 Hz) : ");
 
+        } else {
+            this->send_bell();
         }
         break;
 

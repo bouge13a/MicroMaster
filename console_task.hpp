@@ -44,6 +44,8 @@ extern "C" {
         virtual void draw_help(void)           = 0;
         virtual void draw_reset(void)          = 0;
 
+        void send_bell(void);
+
         const char* name;
         const uint32_t refresh_rate;
         bool on_screen;

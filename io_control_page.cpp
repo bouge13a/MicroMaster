@@ -168,9 +168,14 @@ void IoCtlPage::draw_input(int character) {
 
         break;
     default :
+        if (character != 0) {
+            this->send_bell();
+        }
         break;
 
     }
+
+
 
 } // End IoCtlPage::draw_input
 

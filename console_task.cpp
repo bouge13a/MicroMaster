@@ -44,7 +44,15 @@ ConsolePage::ConsolePage(const char* name,
 
     this->on_screen = false;
 
+
+
 } // End ConsolePage::ConsolePage
+
+void ConsolePage::send_bell(void) {
+
+    UARTprintf("\a");
+
+} // End ConsolePage::send_bell
 
 ConsoleTask::ConsoleTask (QueueHandle_t uart_rx_queue,
                           uint32_t* power_idx) : ConsolePage ("Home Page",
@@ -382,6 +390,8 @@ void ConsoleTask::draw_data(void) {
 }
 
 void ConsoleTask::draw_input(int character) {
+
+    this->send_bell();
 
 }
 

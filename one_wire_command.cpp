@@ -386,15 +386,15 @@ void OneWireCmd::draw_input(int character) {
             this->byte_buffer_index = 0;
             UARTprintf("\r\nError: Maximum of 2 digits\r\n");
             UARTprintf("Enter number of TX bytes : ");
-        }
-
-        if (character == 127) {
+        } else if (character == 127) {
             if(this->byte_buffer_index > 0) {
                 this->byte_buffer_index--;
                 UARTprintf("\b");
                 TextCtl::clear_in_line();
                 return;
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -424,6 +424,8 @@ void OneWireCmd::draw_input(int character) {
                 this->byte_buffer_index = 0;
                 UARTprintf("\nEnter number of rx bytes: ");
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -452,15 +454,15 @@ void OneWireCmd::draw_input(int character) {
             this->byte_buffer_index = 0;
             UARTprintf("\r\nError: Maximum of 2 digits\r\n");
             UARTprintf("Enter number of TX bytes : ");
-        }
-
-        if (character == 127) {
+        } else if (character == 127) {
             if(this->byte_buffer_index > 0) {
                 this->byte_buffer_index--;
                 UARTprintf("\b");
                 TextCtl::clear_in_line();
                 return;
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -469,6 +471,8 @@ void OneWireCmd::draw_input(int character) {
         if (character == ' ') {
             this->add_msg(one_wire_cmd_msg);
             this->one_wire_cmd_state = ENTER_NUM_TX_BYTES;
+        } else {
+            this->send_bell();
         }
 
         break;

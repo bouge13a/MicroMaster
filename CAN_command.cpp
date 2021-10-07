@@ -342,6 +342,8 @@ void CanCommand::draw_input(int character) {
             this->can_cmd_state = CAN_CMD_ID;
 
             UARTprintf("\r\nEnter 29 bit CAN ID : 0x");
+        } else {
+            this->send_bell();
         }
 
 
@@ -370,6 +372,8 @@ void CanCommand::draw_input(int character) {
 
                 }
             }
+        } else {
+            this->send_bell();
         }
         break;
 
@@ -382,6 +386,8 @@ void CanCommand::draw_input(int character) {
             UARTprintf("\r\nbyte 1 : 0x");
             this->can_cmd_state = CAN_CMD_TX_BYTES;
 
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -415,6 +421,8 @@ void CanCommand::draw_input(int character) {
                 this->byte_buffer_idx = 0;
                 UARTprintf("\n\rPress space-bar to send message or s to save message : ");
             }
+        } else {
+            this->send_bell();
         }
 
         break;
@@ -426,6 +434,8 @@ void CanCommand::draw_input(int character) {
         } else if ('s' == character) {
             this->msg_rdy_flag = true;
             UARTprintf("\r\n\nEnter CAN bus speed (1000-1000000Hz) : ");
+        } else {
+            this->send_bell();
         }
 
         this->can_cmd_state = CAN_CMD_SPEED;

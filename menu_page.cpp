@@ -138,6 +138,7 @@ void MenuOptions::draw_input(int character) {
         this->menu_rows[this->menu_index]->callback(this->menu_rows[this->menu_index]->column_index);
         break;
     default :
+        this->send_bell();
         break;
     }
 

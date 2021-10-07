@@ -580,6 +580,8 @@ void OneWireSearch::draw_input(int character) {
         xQueueSend(this->one_wire_q, &SEARCH_ROM_CMD, 0);
     } else if ('a' == character) {
         xQueueSend(this->one_wire_q, &ALARM_SEARCH_CMD, 0);
+    } else {
+        this->send_bell();
     }
 
 }

@@ -42,9 +42,10 @@ const uint32_t uart_stop_bit_num = 2;
 
 
 const char* uart_mode_menu[] = {"Text",
-                                "Byte"};
+                                "Byte",
+                                "MIDI"};
 const char* uart_mode_name = "UART Stream";
-const uint32_t uart_mode_num = 2;
+const uint32_t uart_mode_num = 3;
 
 
 const char* power_on_menu[] = {"Off",

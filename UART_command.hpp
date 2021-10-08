@@ -22,6 +22,8 @@ typedef enum {
     UART_GET_HEX,
 }uart_cmd_state_e;
 
+
+
 void uart_set_parity(uint32_t index);
 void uart_set_stop_bits(uint32_t index);
 
@@ -30,6 +32,7 @@ public:
     UartCmd(void);
     void send_message(void);
 private :
+
 
     char* char_string;
     uint32_t char_string_index;

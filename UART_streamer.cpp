@@ -33,6 +33,9 @@ void set_uart_stream_mode(uint32_t index) {
     case 1 :
         uart_stream_mode = UART_BYTE_MODE;
         break;
+    case 2 :
+        uart_stream_mode = UART_MIDI_MODE;
+        break;
     default :
         assert(0);
         break;
@@ -105,6 +108,7 @@ UartStreamer::UartStreamer(UartCmd* uart_cmd)  : ConsolePage("UART Streamer",
     // Register the interrupt
     UARTIntRegister(UART1_BASE, UART1_int_handler);
 
+    this->midi_byte = MIDI_BYTE_0;
 
 } // End UartStreamer::UartStreamer
 
@@ -137,6 +141,37 @@ void UartStreamer::task(UartStreamer* this_ptr) {
                 UARTprintf("0x%x\r\n", character);
 
                 break;
+
+            case UART_MIDI_MODE :
+
+                if(this_ptr->midi_byte == MIDI_BYTE_0) {
+
+                    if (0x80 == 0x80 & character) {
+                        this_ptr->midi_bytes.midi_bytes[0] = character;
+                        this_ptr->midi_byte = MIDI_BYTE_1;
+                    }
+
+                } else if (this_ptr->midi_byte == MIDI_BYTE_1) {
+
+                    if (0 == 0x80 & character) {
+                        this_ptr->midi_bytes.midi_bytes[1] = character;
+                        this_ptr->midi_byte = MIDI_BYTE_2;
+                    } else {
+                        this_ptr->midi_byte = MIDI_BYTE_0;
+                    }
+
+                } else if (this_ptr->midi_byte == MIDI_BYTE_2) {
+
+                    this_ptr->midi_bytes.midi_bytes[2] = character;
+                    this_ptr->midi_byte = MIDI_BYTE_0;
+
+                    this_ptr->process_midi_msg(&this_ptr->midi_bytes);
+
+                } else {
+                    assert(0);
+                }
+
+                break;
             default :
                 assert(0);
                 break;
@@ -145,6 +180,15 @@ void UartStreamer::task(UartStreamer* this_ptr) {
         }
     }
 } // End UartStreamer::task
+
+void UartStreamer::process_midi_msg(midi_msg_u* midi_msg) {
+
+    UARTprintf("Message Type: %d\r\n", midi_msg->midi_msg.message_type);
+    UARTprintf("Channel:      %d\r\n", midi_msg->midi_msg.channel);
+    UARTprintf("Key:          %d\r\n", midi_msg->midi_msg.key);
+    UARTprintf("Value:        %d\r\n\n", midi_msg->midi_msg.value);
+
+} // End UartStreamer::process_midi_msg
 
 void UartStreamer::draw_page(void) {
 

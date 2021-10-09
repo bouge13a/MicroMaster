@@ -19,12 +19,16 @@
 
 typedef enum {
     NEOPIX_IDLE,
+    NEOPIX_SEND,
+    NEOPIX_FINISH,
 }neopix_states_e;
 
 class NeopixMsg {
 public:
     NeopixMsg(void);
-
+    uint32_t num_tx_bytes;
+    uint8_t* tx_data;
+    uint32_t bytes_txed;
 };
 
 #ifdef __cplusplus
@@ -33,16 +37,16 @@ extern "C" {
 
     class NeopixelCtl : public ConsolePage {
     public:
-        NeopixelCtl(GpoObj* gpo_object);
+        NeopixelCtl(void);
     private :
         void task(NeopixelCtl* this_ptr);
         static void taskfunwrapper(void* parm);
 
+        void set_timer(uint32_t useconds);
+
         QueueHandle_t neopix_msg_q;
         neopix_states_e neopix_state;
         NeopixMsg* neopix_msg;
-        GpoObj* gpo_object;
-        gpio_pin_t* data_pin;
 
         void draw_page(void);
         void draw_data(void);

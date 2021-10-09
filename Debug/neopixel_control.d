@@ -95,6 +95,8 @@ neopixel_control.obj: ../driverlib/timer.h
 neopixel_control.obj: ../driverlib/gpio.h
 neopixel_control.obj: ../driverlib/sysctl.h
 neopixel_control.obj: ../driverlib/interrupt.h
+neopixel_control.obj: ../driverlib/ssi.h
+neopixel_control.obj: ../driverlib/pin_map.h
 neopixel_control.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h
 neopixel_control.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_timer.h
 neopixel_control.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h
@@ -195,6 +197,8 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h:
 ../driverlib/gpio.h: 
 ../driverlib/sysctl.h: 
 ../driverlib/interrupt.h: 
+../driverlib/ssi.h: 
+../driverlib/pin_map.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_timer.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h: 

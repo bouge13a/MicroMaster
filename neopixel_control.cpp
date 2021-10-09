@@ -18,6 +18,8 @@
 #include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
 #include "driverlib/interrupt.h"
+#include "driverlib/ssi.h"
+#include "driverlib/pin_map.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_timer.h"
@@ -59,11 +61,9 @@ void NeopixelCtl::taskfunwrapper(void* parm){
 } // End NeopixelCtl::taskfunwrapper
 
 
-NeopixelCtl::NeopixelCtl(GpoObj* gpo_object) : ConsolePage("NeoPixel Control",
+NeopixelCtl::NeopixelCtl(void) : ConsolePage("NeoPixel Control",
                                                      portMAX_DELAY,
                                                      false) {
-
-    this->gpo_object = gpo_object;
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Neopixel Ctl",                                     /* Text name for the task. */
@@ -76,7 +76,7 @@ NeopixelCtl::NeopixelCtl(GpoObj* gpo_object) : ConsolePage("NeoPixel Control",
 
     timer_semphr = xSemaphoreCreateBinary();
 
-    this->data_pin = gpo_object->get_config("GPO 3");
+
 
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER4);
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER4));
@@ -89,6 +89,31 @@ NeopixelCtl::NeopixelCtl(GpoObj* gpo_object) : ConsolePage("NeoPixel Control",
 
     TimerIntRegister(TIMER4_BASE, TIMER_A, timer4_int_handler);
     IntPrioritySet(INT_TIMER4A, configMAX_SYSCALL_INTERRUPT_PRIORITY+1);
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_SSI1);
+
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_SSI1));
+
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF));
+
+    GPIOPinConfigure(GPIO_PF0_SSI1RX);
+    GPIOPinConfigure(GPIO_PF1_SSI1TX);
+    GPIOPinConfigure(GPIO_PF2_SSI1CLK);
+    GPIOPinConfigure(GPIO_PF3_SSI1FSS);
+
+    GPIOPinTypeSSI(GPIO_PORTF_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 |
+                                    GPIO_PIN_3);
+
+    SSIConfigSetExpClk(SSI1_BASE,
+                       SysCtlClockGet(),
+                       SSI_FRF_MOTO_MODE_0,
+                       SSI_MODE_MASTER,
+                       2400000,
+                       8);
+
+    SSIEnable(SSI1_BASE);
 
 } // End NeopixelCtl
 
@@ -108,6 +133,14 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
             break;
 
+        case NEOPIX_SEND :
+
+            break;
+
+        case NEOPIX_FINISH :
+
+            break;
+
         default :
             assert(0);
             break;
@@ -116,6 +149,15 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
     }
 
 } // End AdcTask::task
+
+void NeopixelCtl::set_timer(uint32_t useconds) {
+
+    TimerDisable(TIMER4_BASE, TIMER_A);
+    TimerLoadSet(TIMER4_BASE, TIMER_A, useconds*80);
+    TimerIntEnable(TIMER4_BASE, TIMER_TIMA_TIMEOUT);
+    TimerEnable(TIMER4_BASE, TIMER_A);
+
+} // End OneWireCmd::set_timer
 
 void NeopixelCtl::draw_page(void) {
 

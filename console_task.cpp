@@ -15,6 +15,7 @@
 #include <UART_to_USB.hpp>
 #include "uartstdio.h"
 
+
 // Width of the Menu bar
 static const uint32_t MENU_BAR_WIDTH = 78;
 static const uint32_t SECOND_COL     = 35;
@@ -126,9 +127,11 @@ uint32_t ConsoleTask::draw_start_page(ConsoleTask* this_ptr) {
     TextCtl::cursor_pos(12, 30);
     UARTprintf("Press any key to continue");
     TextCtl::cursor_pos(PRE_MENU_ROW, PRE_MENU_COL);
-    UARTprintf("a : Main Program");
+    UARTprintf("a : Main Suite");
     TextCtl::cursor_pos(PRE_MENU_ROW+1, PRE_MENU_COL);
     UARTprintf("b : FTDI Emulator");
+    TextCtl::cursor_pos(PRE_MENU_ROW+2, PRE_MENU_COL);
+    UARTprintf("c : NeoPixel Suite");
 
     this_ptr->draw_ps_menu(0);
 
@@ -222,8 +225,6 @@ void ConsoleTask::ftdi_task(ConsoleTask* this_ptr) {
 
     uint8_t rx_char = 0;
 
-    FtdiProgram* ftdi_program = new FtdiProgram();
-
     TextCtl::clear_terminal();
     TextCtl::cursor_pos(0, 0);
 
@@ -246,16 +247,23 @@ void ConsoleTask::task(ConsoleTask* this_ptr) {
     switch(rx_char) {
     case 'a':
     case 'A':
+        new PostScheduler();
         break;
     case 'b':
     case 'B':
+        new FtdiProgram();
         this_ptr->ftdi_task(this_ptr);
         break;
+    case 'c':
+    case 'C':
+        new NeopixelSuite();
+        break;
+
     default :
         break;
     }
 
-    new PostScheduler();
+
 
     TextCtl::clear_terminal();
 

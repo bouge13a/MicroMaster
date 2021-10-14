@@ -41,6 +41,7 @@
 #include "I2C_sniffer.hpp"
 #include "number_converter.hpp"
 #include "FTDI_emulator.hpp"
+#include "neopixel_command.hpp"
 
 static ConsoleTask* console_task = NULL;
 static uint32_t power_idx = 0;
@@ -179,4 +180,11 @@ FtdiProgram::FtdiProgram(void) {
 
     FtdiEmulator* ftdi_emulator = new FtdiEmulator();
 
+}
+
+NeopixelSuite::NeopixelSuite(void) {
+
+    NeopixelCtl* neopixel_command = new NeopixelCtl();
+
+    console_task->add_page(neopixel_command);
 }

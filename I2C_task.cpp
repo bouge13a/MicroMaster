@@ -281,7 +281,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                this_ptr->i2c_state = I2C_NINE_CLOCK;
+                //this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -317,7 +317,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                this_ptr->i2c_state = I2C_NINE_CLOCK;
+                //this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -346,7 +346,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                this_ptr->i2c_state = I2C_NINE_CLOCK;
+                //this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -732,6 +732,12 @@ void I2cTask::draw_input(int character) {
         if ((character >= '0' && character <= '9')){
 
             if (this->monitored) {
+                if (character - '0' > 4) {
+                    UARTprintf("\r\nError: can only monitor 4 bytes at a time\r\n");
+                    UARTprintf("Enter number of rx bytes: ");
+                    this->send_bell();
+                    break;
+                }
                 this->i2c_monitor_msgs[this->i2c_monitor_index]->num_rx_bytes = character - '0';
             } else {
                 this->i2c_cmd_msg->num_rx_bytes = character - '0';

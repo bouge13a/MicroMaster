@@ -26,5 +26,9 @@ public:
     FtdiProgram(void);
 };
 
+class NeopixelSuite {
+public:
+    NeopixelSuite(void);
+};
 
 #endif /* INITIALIZATION_HPP_ */

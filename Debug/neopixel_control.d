@@ -101,6 +101,7 @@ neopixel_control.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib
 neopixel_control.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_timer.h
 neopixel_control.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h
 neopixel_control.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_sysctl.h
+neopixel_control.obj: ../utils.hpp
 
 ../neopixel_control.cpp: 
 ../neopixel_control.hpp: 
@@ -203,3 +204,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_ints.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_timer.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_types.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/inc/hw_sysctl.h: 
+../utils.hpp: 

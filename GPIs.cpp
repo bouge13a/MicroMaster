@@ -50,7 +50,7 @@ GpiObj::GpiObj(void) {
 
             MAP_GPIOPadConfigSet(this->gpi_info->gpis[idx]->port,
                                  this->gpi_info->gpis[idx]->pin,
-                                 GPIO_STRENGTH_2MA,
+                                 GPIO_STRENGTH_12MA,
                                  GPIO_PIN_TYPE_STD);
         }
     }

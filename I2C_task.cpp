@@ -225,7 +225,7 @@ void I2cTask::task(I2cTask* this_ptr) {
                 break;
             }
 
-            this_ptr->i2c_msg->state = i2c_processing;
+             this_ptr->i2c_msg->state = i2c_processing;
             this_ptr->i2c_msg->errors = NONE;
             this_ptr->i2c_msg->bytes_rxed = 0;
             this_ptr->i2c_msg->bytes_txed = 0;
@@ -281,7 +281,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                //this_ptr->i2c_state = I2C_NINE_CLOCK;
+                this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -317,7 +317,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                //this_ptr->i2c_state = I2C_NINE_CLOCK;
+                this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -346,7 +346,7 @@ void I2cTask::task(I2cTask* this_ptr) {
             if (I2CMasterBusy(this_ptr->config->base)) break;
 
             if(log_errors(this_ptr)){
-                //this_ptr->i2c_state = I2C_NINE_CLOCK;
+                this_ptr->i2c_state = I2C_NINE_CLOCK;
                 break;
             }
 
@@ -382,6 +382,8 @@ void I2cTask::task(I2cTask* this_ptr) {
                 break;
             }
 
+            this_ptr->i2c_msg->state = i2c_finished;
+
             this_ptr->i2c_state = I2C_PRINT;
             break;
 
@@ -413,54 +415,59 @@ void I2cTask::task(I2cTask* this_ptr) {
 
         case I2C_NINE_CLOCK :
 
-            if(this_ptr->nine_clk_count == 0) {
-                SysCtlPeripheralDisable(this_ptr->config->i2c_peripheral);
+            if (this_ptr->i2c_msg->type != search_msg) {
 
-                GPIODirModeSet(this_ptr->config->gpio_base,
-                                   this_ptr->config->gpio_scl_pin,
-                                   GPIO_DIR_MODE_OUT);
+                if(this_ptr->nine_clk_count == 0) {
+                    SysCtlPeripheralDisable(this_ptr->config->i2c_peripheral);
 
-                GPIOPadConfigSet(this_ptr->config->gpio_base,
-                                     this_ptr->config->gpio_scl_pin,
-                                     GPIO_STRENGTH_12MA,
-                                     GPIO_PIN_TYPE_OD);
+                    GPIODirModeSet(this_ptr->config->gpio_base,
+                                       this_ptr->config->gpio_scl_pin,
+                                       GPIO_DIR_MODE_OUT);
 
-                GPIOPinTypeGPIOOutputOD(this_ptr->config->gpio_base,
-                                        this_ptr->config->gpio_scl_pin);
-            }
+                    GPIOPadConfigSet(this_ptr->config->gpio_base,
+                                         this_ptr->config->gpio_scl_pin,
+                                         GPIO_STRENGTH_12MA,
+                                         GPIO_PIN_TYPE_OD);
 
-            if (this_ptr->nine_clk_count < 9*2) {
+                    GPIOPinTypeGPIOOutputOD(this_ptr->config->gpio_base,
+                                            this_ptr->config->gpio_scl_pin);
+                }
 
-                GPIOPinWrite(config->gpio_base,
-                             config->gpio_scl_pin,
-                             (this_ptr->nine_clk_count % 2) == 0 ? 0 : config->gpio_scl_pin ) ;
+                if (this_ptr->nine_clk_count < 9*2) {
+
+                    GPIOPinWrite(config->gpio_base,
+                                 config->gpio_scl_pin,
+                                 (this_ptr->nine_clk_count % 2) == 0 ? 0 : config->gpio_scl_pin ) ;
 
 
-                this_ptr->nine_clk_count++;
+                    this_ptr->nine_clk_count++;
 
-                this_ptr->set_timer(1);
+                    this_ptr->set_timer(1);
 
-                xSemaphoreTake( nine_clk_semphr, portMAX_DELAY);
+                    xSemaphoreTake( nine_clk_semphr, portMAX_DELAY);
 
+                } else {
+
+                    SysCtlPeripheralEnable(this_ptr->config->i2c_peripheral);
+                    while(!SysCtlPeripheralReady(this_ptr->config->i2c_peripheral));
+
+                    GPIOPinConfigure(this_ptr->config->i2c_scl_pin);
+                    GPIOPinConfigure(this_ptr->config->i2c_data_pin);
+
+                    GPIOPinTypeI2CSCL(this_ptr->config->gpio_base, config->gpio_scl_pin);
+                    GPIOPinTypeI2C(this_ptr->config->gpio_base, config->gpio_data_pin);
+
+                    set_i2c_clock_speed(last_cs_idx);
+
+                    I2CMasterTimeoutSet(this_ptr->config->base, 0x7d);
+
+                    this_ptr->nine_clk_count = 0;
+
+                    this_ptr->i2c_state = I2C_PRINT;
+
+                }
             } else {
-
-                SysCtlPeripheralEnable(this_ptr->config->i2c_peripheral);
-                while(!SysCtlPeripheralReady(this_ptr->config->i2c_peripheral));
-
-                GPIOPinConfigure(this_ptr->config->i2c_scl_pin);
-                GPIOPinConfigure(this_ptr->config->i2c_data_pin);
-
-                GPIOPinTypeI2CSCL(this_ptr->config->gpio_base, config->gpio_scl_pin);
-                GPIOPinTypeI2C(this_ptr->config->gpio_base, config->gpio_data_pin);
-
-                set_i2c_clock_speed(last_cs_idx);
-
-                I2CMasterTimeoutSet(this_ptr->config->base, 0x7d);
-
-                this_ptr->nine_clk_count = 0;
-
                 this_ptr->i2c_state = I2C_PRINT;
-
             }
 
             break;

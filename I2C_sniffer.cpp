@@ -71,7 +71,7 @@ static void scl_int_handler(void) {
 
         bit_counter++;
 
-    } else if (bit_counter == 8) {
+    } else {
 
         xQueueSendFromISR(i2c_sniff_q, &byte_buffer, 0);
 

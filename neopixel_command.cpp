@@ -47,6 +47,10 @@ static void timer0_int_handler(void) {
 
     TimerIntDisable(TIMER0_BASE, TIMER_TIMA_TIMEOUT);
 
+    GPIOPinWrite(GPIO_PORTF_AHB_BASE,
+                     GPIO_PIN_1,
+                     0);
+
     xResult = xSemaphoreGiveFromISR( timer_semphr, &xHigherPriorityTaskWoken );
 
     // Was the message posted successfully?
@@ -130,13 +134,15 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
             this_ptr->deinit_spi();
             this_ptr->init_gpo();
-            this_ptr->set_gpo(1);
 
-            this_ptr->set_timer(RESET_DELAY_US);
+            //this_ptr->set_timer(50);
+            //this_ptr->set_gpo(1);
 
-            xSemaphoreTake( timer_semphr, portMAX_DELAY);
+            //1xSemaphoreTake( timer_semphr, portMAX_DELAY);
 
-            this_ptr->set_gpo(0);
+            //this_ptr->set_gpo(0);
+
+            this_ptr->deinit_gpo();
 
             this_ptr->init_spi();
 
@@ -152,7 +158,7 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
             if(this_ptr->bit_counter < NUM_OF_BITS) {
 
-                SSIDataPut(SSI1_BASE, (this_ptr->neopix_msg->tx_msgs[this_ptr->neopix_msg->msgs_txed] >> this_ptr->bit_counter) & 0x01);
+                this_ptr->send_bit((this_ptr->neopix_msg->tx_msgs[this_ptr->neopix_msg->msgs_txed] >> this_ptr->bit_counter) & 0x00000001);
 
                 this_ptr->bit_counter++;
 
@@ -170,9 +176,8 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
         case NEOPIX_FINISH :
 
-            UARTprintf("\r\nEnter number of NeoPixels: ");
-
             this->neopix_state = NEOPIX_IDLE;
+            vTaskDelay(0);
 
             break;
 
@@ -181,7 +186,7 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
             break;
         }
 
-        vTaskDelay(0);
+
 
     }
 
@@ -214,7 +219,7 @@ void NeopixelCtl::init_spi(void) {
                        SysCtlClockGet(),
                        SSI_FRF_MOTO_MODE_0,
                        SSI_MODE_MASTER,
-                       240000,
+                       4800000,
                        8);
 
     SSIEnable(SSI1_BASE);
@@ -234,11 +239,13 @@ void NeopixelCtl::init_gpo(void) {
 
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_GPIOF));
 
-    GPIODirModeSet(GPIO_PORTF_BASE,
+    SysCtlGPIOAHBEnable(SYSCTL_PERIPH_GPIOF);
+
+    GPIODirModeSet(GPIO_PORTF_AHB_BASE,
                        GPIO_PIN_1,
                        GPIO_DIR_MODE_OUT);
 
-    GPIOPadConfigSet(GPIO_PORTF_BASE,
+    GPIOPadConfigSet(GPIO_PORTF_AHB_BASE,
                          GPIO_PIN_1,
                          GPIO_STRENGTH_12MA,
                          GPIO_PIN_TYPE_STD_WPD);
@@ -247,16 +254,18 @@ void NeopixelCtl::init_gpo(void) {
 
 void NeopixelCtl::deinit_gpo(void) {
 
+    SysCtlGPIOAHBDisable(SYSCTL_PERIPH_GPIOF);
+
 } // End NeopixelCtl::deinit_gpo
 
 void NeopixelCtl::set_gpo(uint32_t value) {
 
     if(value > 0) {
-        GPIOPinWrite(GPIO_PORTF_BASE,
+        GPIOPinWrite(GPIO_PORTF_AHB_BASE,
                          GPIO_PIN_1,
                          GPIO_PIN_1);
     } else {
-        GPIOPinWrite(GPIO_PORTF_BASE,
+        GPIOPinWrite(GPIO_PORTF_AHB_BASE,
                          GPIO_PIN_1,
                          0);
     }
@@ -275,9 +284,9 @@ void NeopixelCtl::set_timer(uint32_t useconds) {
 void NeopixelCtl::send_bit(uint32_t bit) {
 
     if (bit) {
-        SSIDataPut(SSI1_BASE, 0xe0);
+        SSIDataPut(SSI1_BASE, 0x7f);
     } else {
-        SSIDataPut(SSI1_BASE, 0xe0);
+        SSIDataPut(SSI1_BASE, 0x1f);
     }
 
 } // End NeopixelCtl::send_byte

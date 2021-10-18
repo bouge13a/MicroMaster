@@ -57,7 +57,7 @@ void I2cSnifferTask::task(I2cSnifferTask* this_ptr) {
             this->i2c->add_i2c_msg(this->i2c_msg);
 
             while (this->i2c_msg->state != i2c_finished) {
-                vTaskDelay(1);
+                vTaskDelay(5);
             }
 
             if (this->on_screen) {

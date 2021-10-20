@@ -41,6 +41,7 @@ extern "C" {
         void log_print_errors(void);
         void send_last_message(void);
         bool add_can_msg(tCANMsgObject* can_tx_msg_p);
+        uint32_t get_speed(void);
     private :
         void tx_task(CanCommand* this_ptr);
         static void tx_taskfunwrapper(void* parm);
@@ -63,6 +64,7 @@ extern "C" {
         uint8_t byte_buffer;
         uint32_t byte_counter;
         uint8_t* speed_buffer;
+
 
         bool msg_rdy_flag;
 

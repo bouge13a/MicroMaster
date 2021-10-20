@@ -95,6 +95,10 @@ UartCmd::UartCmd(void)  : ConsolePage("UART Command",
 
 } // End UartCmdTask::UartCmdTask
 
+uint32_t UartCmd::get_speed(void) {
+    return uart_speed;
+} // End UartCmd::get_speed
+
 static uint32_t ascii_to_hex(uint8_t character) {
 
     if (character >= '0' && character <='9') {

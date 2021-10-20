@@ -25,14 +25,15 @@
 #include "inc/hw_sysctl.h"
 
 #include "utils.hpp"
+#include "emac.h"
+
+#include <cstring>
 
 static const uint32_t NUM_OF_BITS = 24;
 static const uint32_t SIZE_OF_QUEUE = 100;
 
 static const uint32_t NUM_TX_MSGS = 99;
 static const uint32_t MAX_TX_DIGITS = 2;
-
-static const uint32_t RESET_DELAY_US = 50;
 
 static SemaphoreHandle_t timer_semphr = NULL;
 
@@ -98,6 +99,8 @@ NeopixelCtl::NeopixelCtl(void) : ConsolePage("NeoPixel Command",
     this->cmd_state = NEOPIX_CMD_GET_NUM_TX_MSGS;
     this->neopix_state = NEOPIX_IDLE;
 
+    this->init_spi();
+
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER0));
 
@@ -118,6 +121,29 @@ NeopixelCtl::NeopixelCtl(void) : ConsolePage("NeoPixel Command",
 } // End NeopixelCtl
 
 
+//bit reversal function
+static uint32_t  ReverseTheBits(uint32_t num)
+{
+    uint32_t  iLoop = 0;
+    uint32_t  tmp = 0;         //  Assign num to the tmp
+    uint32_t  iNumberLopp = (32 - 1);
+
+
+    for(; iLoop < iNumberLopp; iLoop++)
+    {
+
+       tmp |= num & 1; // putting the set bits of num
+
+       num >>= 1; //shift the tmp Right side
+
+       tmp <<= 1;  //shift the tmp left side
+
+    }
+
+
+    return tmp;
+}
+
 void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
     while(1){
@@ -132,19 +158,15 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
             this_ptr->neopix_msg->msg_state = neopix_processing;
             this_ptr->neopix_msg->msgs_txed = 0;
 
-            this_ptr->deinit_spi();
-            this_ptr->init_gpo();
+            for (uint32_t index=0; index<this->neopix_msg->num_tx_msgs; index++) {
 
-            //this_ptr->set_timer(50);
-            //this_ptr->set_gpo(1);
+                this_ptr->neopix_msg->tx_msgs[index] = ReverseTheBits(this_ptr->neopix_msg->tx_msgs[index]);
+                this_ptr->neopix_msg->tx_msgs[index] >>= 8;
+                this_ptr->neopix_msg->tx_msgs[index] = ((this_ptr->neopix_msg->tx_msgs[index] & 0x000000ff) << 16)
+                                                       | ((this_ptr->neopix_msg->tx_msgs[index] & 0x00ff0000)>>16)
+                                                       | (this_ptr->neopix_msg->tx_msgs[index] & 0x0000ff00);
+            }
 
-            //1xSemaphoreTake( timer_semphr, portMAX_DELAY);
-
-            //this_ptr->set_gpo(0);
-
-            this_ptr->deinit_gpo();
-
-            this_ptr->init_spi();
 
             this_ptr->neopix_state = NEOPIX_SEND;
 
@@ -152,32 +174,30 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
         case NEOPIX_SEND :
 
-            while(SSIBusy(SSI1_BASE)) {
-                break;
-            }
-
-            if(this_ptr->bit_counter < NUM_OF_BITS) {
+            while (this_ptr->neopix_msg->msgs_txed < this_ptr->neopix_msg->num_tx_msgs) {
 
                 this_ptr->send_bit((this_ptr->neopix_msg->tx_msgs[this_ptr->neopix_msg->msgs_txed] >> this_ptr->bit_counter) & 0x00000001);
 
                 this_ptr->bit_counter++;
 
-            } else {
+                if (this_ptr->bit_counter == NUM_OF_BITS) {
+                    this_ptr->neopix_msg->msgs_txed++;
+                    this_ptr->bit_counter = 0;
 
-                this_ptr->bit_counter = 0;
-                this_ptr->neopix_msg->msgs_txed++;
-
-                if (this_ptr->neopix_msg->msgs_txed >= this_ptr->neopix_msg->num_tx_msgs) {
-                    this_ptr->neopix_state = NEOPIX_FINISH;
                 }
             }
+
+            this_ptr->bit_counter = 0;
+
+            this_ptr->neopix_state = NEOPIX_FINISH;
 
             break;
 
         case NEOPIX_FINISH :
 
+
             this->neopix_state = NEOPIX_IDLE;
-            vTaskDelay(0);
+            vTaskDelay(1);
 
             break;
 
@@ -216,10 +236,10 @@ void NeopixelCtl::init_spi(void) {
     GPIOPinTypeSSI(GPIO_PORTF_BASE, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3);
 
     SSIConfigSetExpClk(SSI1_BASE,
-                       SysCtlClockGet(),
+                       80000000,
                        SSI_FRF_MOTO_MODE_0,
                        SSI_MODE_MASTER,
-                       4800000,
+                       6800000,
                        8);
 
     SSIEnable(SSI1_BASE);
@@ -284,9 +304,9 @@ void NeopixelCtl::set_timer(uint32_t useconds) {
 void NeopixelCtl::send_bit(uint32_t bit) {
 
     if (bit) {
-        SSIDataPut(SSI1_BASE, 0x7f);
+        SSIDataPut(SSI1_BASE, 0xfe);
     } else {
-        SSIDataPut(SSI1_BASE, 0x1f);
+        SSIDataPut(SSI1_BASE, 0xe0);
     }
 
 } // End NeopixelCtl::send_byte
@@ -306,6 +326,8 @@ void NeopixelCtl::draw_input(int character) {
     case NEOPIX_CMD_GET_NUM_TX_MSGS :
 
         if ((character >= '0' && character <= '9') && (this->byte_buffer_index < NUM_TX_MSGS)) {
+
+            memset(this->neopix_msg->tx_msgs, 0, NUM_TX_MSGS*4);
 
             this->byte_buffer[this->byte_buffer_index] = (uint8_t)character;
             this->byte_buffer_index++;

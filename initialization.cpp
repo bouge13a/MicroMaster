@@ -42,6 +42,7 @@
 #include "number_converter.hpp"
 #include "FTDI_emulator.hpp"
 #include "neopixel_command.hpp"
+#include "neopixel_rgb.hpp"
 
 static ConsoleTask* console_task = NULL;
 static uint32_t power_idx = 0;
@@ -185,6 +186,10 @@ FtdiProgram::FtdiProgram(void) {
 NeopixelSuite::NeopixelSuite(void) {
 
     NeopixelCtl* neopixel_command = new NeopixelCtl();
+    NeopixelRgb* neopixel_rgb = new NeopixelRgb(neopixel_command);
+    NumConverter* num_converter = new NumConverter();
 
     console_task->add_page(neopixel_command);
+    console_task->add_page(neopixel_rgb);
+    console_task->add_page(num_converter);
 }

@@ -32,6 +32,8 @@ static const uint32_t SIZE_OF_RX_MSG_DATA = 8;
 static const uint32_t MAX_FREQ = 1000000;
 static const uint32_t MIN_FREQ = 1000;
 
+static uint32_t speed = 500000;
+
 static void CANIntHandler(void) {
 
     BaseType_t xHigherPriorityTaskWoken, xResult;
@@ -106,7 +108,7 @@ CanCommand::CanCommand(QueueHandle_t can_rx_q) : ConsolePage("CAN Command",
     while(!SysCtlPeripheralReady(SYSCTL_PERIPH_CAN0));
 
     CANInit(CAN0_BASE);
-    CANBitRateSet(CAN0_BASE, 80000000, 500000);
+    CANBitRateSet(CAN0_BASE, 80000000, speed);
 
     CANIntRegister(CAN0_BASE, CANIntHandler); // if using dynamic vectors
 
@@ -159,6 +161,10 @@ CanCommand::CanCommand(QueueHandle_t can_rx_q) : ConsolePage("CAN Command",
     this->speed_buffer = new uint8_t[10];
 
 } // End TestTask
+
+uint32_t CanCommand::get_speed(void) {
+    return speed;
+}
 
 void CanCommand::send_last_message(void) {
 
@@ -337,6 +343,7 @@ void CanCommand::draw_input(int character) {
             }
 
             CANBitRateSet(CAN0_BASE, 80000000, atoi((const char*)this->speed_buffer));
+            speed = atoi((const char*)this->speed_buffer);
 
             this->byte_buffer_idx = 0;
             this->can_cmd_state = CAN_CMD_ID;

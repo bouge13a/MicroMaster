@@ -124,6 +124,7 @@ initialization.obj: ../I2C_sniffer.hpp
 initialization.obj: ../number_converter.hpp
 initialization.obj: ../FTDI_emulator.hpp
 initialization.obj: ../neopixel_command.hpp
+initialization.obj: ../neopixel_rgb.hpp
 
 ../initialization.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/console_uart.hpp: 
@@ -249,3 +250,4 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h:
 ../number_converter.hpp: 
 ../FTDI_emulator.hpp: 
 ../neopixel_command.hpp: 
+../neopixel_rgb.hpp: 

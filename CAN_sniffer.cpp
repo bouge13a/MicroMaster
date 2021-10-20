@@ -60,7 +60,7 @@ void CanSniffer::task(CanSniffer* this_ptr) {
 
 void CanSniffer::draw_page(void) {
 
-    UARTprintf("Press space-bar to send last message\r\n");
+    UARTprintf("Press space-bar to send last message @ %d bps\r\n", this->can_command->get_speed());
     TextCtl::set_text_mode(TextCtl::mode_underline);
     TextCtl::cursor_pos(START_ROW, MSG_ID_COL);
     UARTprintf("MSG ID");

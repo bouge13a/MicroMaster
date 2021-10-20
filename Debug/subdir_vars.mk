@@ -33,6 +33,7 @@ CPP_SRCS += \
 ../memory_functions.cpp \
 ../menu_page.cpp \
 ../neopixel_command.cpp \
+../neopixel_rgb.cpp \
 ../number_converter.cpp \
 ../one_wire_command.cpp \
 ../one_wire_search.cpp \
@@ -86,6 +87,7 @@ OBJS += \
 ./memory_functions.obj \
 ./menu_page.obj \
 ./neopixel_command.obj \
+./neopixel_rgb.obj \
 ./number_converter.obj \
 ./one_wire_command.obj \
 ./one_wire_search.obj \
@@ -124,6 +126,7 @@ CPP_DEPS += \
 ./memory_functions.d \
 ./menu_page.d \
 ./neopixel_command.d \
+./neopixel_rgb.d \
 ./number_converter.d \
 ./one_wire_command.d \
 ./one_wire_search.d \
@@ -162,6 +165,7 @@ OBJS__QUOTED += \
 "memory_functions.obj" \
 "menu_page.obj" \
 "neopixel_command.obj" \
+"neopixel_rgb.obj" \
 "number_converter.obj" \
 "one_wire_command.obj" \
 "one_wire_search.obj" \
@@ -206,6 +210,7 @@ CPP_DEPS__QUOTED += \
 "memory_functions.d" \
 "menu_page.d" \
 "neopixel_command.d" \
+"neopixel_rgb.d" \
 "number_converter.d" \
 "one_wire_command.d" \
 "one_wire_search.d" \
@@ -242,6 +247,7 @@ CPP_SRCS__QUOTED += \
 "../memory_functions.cpp" \
 "../menu_page.cpp" \
 "../neopixel_command.cpp" \
+"../neopixel_rgb.cpp" \
 "../number_converter.cpp" \
 "../one_wire_command.cpp" \
 "../one_wire_search.cpp" \

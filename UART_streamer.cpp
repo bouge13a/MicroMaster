@@ -192,7 +192,7 @@ void UartStreamer::process_midi_msg(midi_msg_u* midi_msg) {
 
 void UartStreamer::draw_page(void) {
 
-    UARTprintf("Incoming UART messages will stream\r\n");
+    UARTprintf("Incoming UART messages will stream @ %d bps\r\n", this->uart_cmd->get_speed());
     UARTprintf("Press spacebar to resend last message from UART Command\r\n\n");
 
 }

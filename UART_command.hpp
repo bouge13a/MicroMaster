@@ -31,6 +31,7 @@ class UartCmd : public ConsolePage {
 public:
     UartCmd(void);
     void send_message(void);
+    uint32_t get_speed(void);
 private :
 
 

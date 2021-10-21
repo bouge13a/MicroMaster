@@ -78,6 +78,8 @@ ConsoleTask::ConsoleTask (QueueHandle_t uart_rx_queue,
 
     this->add_page(this);
 
+    this->_this_ptr = this;
+
 } // End ConsoleTask::ConsoleTask
 
 void ConsoleTask::add_page(ConsolePage* page) {
@@ -382,14 +384,14 @@ void ConsoleTask::draw_page(void) {
    UARTprintf("Welcome to MicroMaster\r\n");
    UARTprintf("Press a letter to travel to a page, or tab to scroll through pages");
 
-   for(index=0; index < this->pages.size(); index++) {
+   for(index=0; index < _this_ptr->pages.size(); index++) {
 
-       if(index > this->pages.size()/2) {
-           TextCtl::cursor_pos(START_ROW + index - this->pages.size()/2 - 1, SECOND_COL);
+       if(index > _this_ptr->pages.size()/2) {
+           TextCtl::cursor_pos(START_ROW + index - _this_ptr->pages.size()/2 - 1, SECOND_COL);
        } else {
            TextCtl::cursor_pos(START_ROW + index, 0);
        }
-       UARTprintf("%c : %s\n\r", letter++, this->pages[index]->name );
+       UARTprintf("%c : %s\n\r", letter++, _this_ptr->pages[index]->name );
    }
 }
 

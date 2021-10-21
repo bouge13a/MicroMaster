@@ -29,7 +29,7 @@
 
 #include <cstring>
 
-static const uint32_t NUM_OF_BITS = 24;
+static const uint32_t NUM_OF_BITS = 32;
 static const uint32_t SIZE_OF_QUEUE = 100;
 
 static const uint32_t NUM_TX_MSGS = 99;
@@ -158,15 +158,19 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
             this_ptr->neopix_msg->msg_state = neopix_processing;
             this_ptr->neopix_msg->msgs_txed = 0;
 
-            for (uint32_t index=0; index<this->neopix_msg->num_tx_msgs; index++) {
 
-                this_ptr->neopix_msg->tx_msgs[index] = ReverseTheBits(this_ptr->neopix_msg->tx_msgs[index]);
-                this_ptr->neopix_msg->tx_msgs[index] >>= 8;
-                this_ptr->neopix_msg->tx_msgs[index] = ((this_ptr->neopix_msg->tx_msgs[index] & 0x000000ff) << 16)
-                                                       | ((this_ptr->neopix_msg->tx_msgs[index] & 0x00ff0000)>>16)
-                                                       | (this_ptr->neopix_msg->tx_msgs[index] & 0x0000ff00);
+            if (this->neopix_msg->msg_type == neopix_normal_msg) {
+
+                for (uint32_t index=0; index<this->neopix_msg->num_tx_msgs; index++) {
+
+                    this_ptr->neopix_msg->tx_msgs[index] = ReverseTheBits(this_ptr->neopix_msg->tx_msgs[index]);
+                    this_ptr->neopix_msg->tx_msgs[index] >>= 8;
+                    this_ptr->neopix_msg->tx_msgs[index] = ((this_ptr->neopix_msg->tx_msgs[index] & 0x000000ff) << 16)
+                                                           | ((this_ptr->neopix_msg->tx_msgs[index] & 0x00ff0000)>>16)
+                                                           | (this_ptr->neopix_msg->tx_msgs[index] & 0x0000ff00);
+                }
+
             }
-
 
             this_ptr->neopix_state = NEOPIX_SEND;
 
@@ -174,16 +178,28 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
         case NEOPIX_SEND :
 
+//            while (this_ptr->bit_counter < this_ptr->neopix_msg->num_tx_msgs - 1) {
+//                for(uint32_t index=0; index<8; index++) {
+//                    this_ptr->send_bit(0);
+//                }
+//                this_ptr->bit_counter++;
+//            }
+
+            this_ptr->bit_counter = 0;
+
             while (this_ptr->neopix_msg->msgs_txed < this_ptr->neopix_msg->num_tx_msgs) {
 
-                this_ptr->send_bit((this_ptr->neopix_msg->tx_msgs[this_ptr->neopix_msg->msgs_txed] >> this_ptr->bit_counter) & 0x00000001);
+                if (this_ptr->neopix_msg->msg_type == neopix_clear_msg) {
+                    this_ptr->send_bit(0);
+                } else {
+                    this_ptr->send_bit((this_ptr->neopix_msg->tx_msgs[this_ptr->neopix_msg->msgs_txed] >> this_ptr->bit_counter) & 0x00000001);
+                }
 
                 this_ptr->bit_counter++;
 
                 if (this_ptr->bit_counter == NUM_OF_BITS) {
                     this_ptr->neopix_msg->msgs_txed++;
                     this_ptr->bit_counter = 0;
-
                 }
             }
 
@@ -239,7 +255,7 @@ void NeopixelCtl::init_spi(void) {
                        80000000,
                        SSI_FRF_MOTO_MODE_0,
                        SSI_MODE_MASTER,
-                       6800000,
+                       8000000,
                        8);
 
     SSIEnable(SSI1_BASE);
@@ -304,7 +320,7 @@ void NeopixelCtl::set_timer(uint32_t useconds) {
 void NeopixelCtl::send_bit(uint32_t bit) {
 
     if (bit) {
-        SSIDataPut(SSI1_BASE, 0xfe);
+        SSIDataPut(SSI1_BASE, 0xff);
     } else {
         SSIDataPut(SSI1_BASE, 0xe0);
     }
@@ -327,7 +343,7 @@ void NeopixelCtl::draw_input(int character) {
 
         if ((character >= '0' && character <= '9') && (this->byte_buffer_index < NUM_TX_MSGS)) {
 
-            memset(this->neopix_msg->tx_msgs, 0, NUM_TX_MSGS*4);
+            memset(this->neopix_cmd_msg->tx_msgs, 0, NUM_TX_MSGS*4);
 
             this->byte_buffer[this->byte_buffer_index] = (uint8_t)character;
             this->byte_buffer_index++;

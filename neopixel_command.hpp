@@ -32,6 +32,7 @@ typedef enum {
 typedef enum {
     neopix_command_msg,
     neopix_normal_msg,
+    neopix_clear_msg,
 }neopix_msg_types_e;
 
 typedef enum {

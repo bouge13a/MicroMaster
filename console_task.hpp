@@ -77,6 +77,8 @@ extern "C" {
         uint32_t last_page_index;
         uint32_t* power_idx;
 
+        ConsoleTask* _this_ptr;
+
         std::vector<ConsolePage*> pages;
 
         void draw_page(void);

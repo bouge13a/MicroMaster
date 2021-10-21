@@ -177,6 +177,10 @@ void NeopixelRgb::draw_input(int character) {
 
 void NeopixelRgb::draw_reset(void) {
 
+    this->green_val = 0;
+    this->red_val = 0;
+    this->blue_val = 0;
+
 }
 
 void NeopixelRgb::draw_help(void) {

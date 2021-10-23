@@ -178,15 +178,6 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
         case NEOPIX_SEND :
 
-//            while (this_ptr->bit_counter < this_ptr->neopix_msg->num_tx_msgs - 1) {
-//                for(uint32_t index=0; index<8; index++) {
-//                    this_ptr->send_bit(0);
-//                }
-//                this_ptr->bit_counter++;
-//            }
-
-            this_ptr->bit_counter = 0;
-
             while (this_ptr->neopix_msg->msgs_txed < this_ptr->neopix_msg->num_tx_msgs) {
 
                 if (this_ptr->neopix_msg->msg_type == neopix_clear_msg) {

@@ -41,6 +41,7 @@ typedef enum {
 
 typedef enum {
     RAINBOW_START,
+    RAINBOW_TO_GREEN,
     RAINBOW_GREEN,
     RAINBOW_YELLOW,
     RAINBOW_RED,

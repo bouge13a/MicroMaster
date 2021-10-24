@@ -119,9 +119,14 @@ NeopixelCtl::NeopixelCtl(void) : ConsolePage("NeoPixel Command",
     this->neopix_cmd_msg->tx_msgs = new uint32_t[NUM_TX_MSGS];
 
     this->stream_counter = 0;
+    this->msg_width = 24;
 
 } // End NeopixelCtl
 
+
+void NeopixelCtl::set_width(uint32_t width){
+    this->msg_width = width;
+}
 
 //bit reversal function
 static uint32_t  ReverseTheBits(uint32_t num)
@@ -194,7 +199,7 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
                 this_ptr->bit_counter++;
 
-                if (this_ptr->bit_counter == NUM_OF_BITS) {
+                if (this_ptr->bit_counter == this_ptr->msg_width) {
                     this_ptr->neopix_msg->msgs_txed++;
                     this_ptr->bit_counter = 0;
                 }
@@ -218,7 +223,7 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
                 this_ptr->bit_counter++;
 
-                if (this_ptr->bit_counter == NUM_OF_BITS) {
+                if (this_ptr->bit_counter == this_ptr->msg_width) {
                     this_ptr->neopix_msg->msgs_txed++;
                     this_ptr->bit_counter = 0;
                 }

@@ -62,6 +62,7 @@ extern "C" {
     public:
         NeopixelCtl(void);
         void add_msg(NeopixMsg* msg);
+        void set_width(uint32_t width);
     private :
         void task(NeopixelCtl* this_ptr);
         static void taskfunwrapper(void* parm);
@@ -87,6 +88,7 @@ extern "C" {
         uint8_t* byte_buffer;
         uint32_t msg_counter;
         uint32_t stream_counter;
+        uint32_t msg_width;
 
         void draw_page(void);
         void draw_data(void);

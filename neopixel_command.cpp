@@ -118,18 +118,20 @@ NeopixelCtl::NeopixelCtl(void) : ConsolePage("NeoPixel Command",
     this->neopix_cmd_msg = new NeopixMsg(neopix_command_msg);
     this->neopix_cmd_msg->tx_msgs = new uint32_t[NUM_TX_MSGS];
 
+    this->stream_counter = 0;
+
 } // End NeopixelCtl
 
 
 //bit reversal function
 static uint32_t  ReverseTheBits(uint32_t num)
 {
-    uint32_t  iLoop = 0;
+
     uint32_t  tmp = 0;         //  Assign num to the tmp
     uint32_t  iNumberLopp = (32 - 1);
 
 
-    for(; iLoop < iNumberLopp; iLoop++)
+    for(uint32_t iLoop = 0; iLoop < iNumberLopp; iLoop++)
     {
 
        tmp |= num & 1; // putting the set bits of num
@@ -159,9 +161,9 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
             this_ptr->neopix_msg->msgs_txed = 0;
 
 
-            if (this->neopix_msg->msg_type == neopix_normal_msg) {
+            if ((this_ptr->neopix_msg->msg_type == neopix_normal_msg) || (this_ptr->neopix_msg->msg_type == neopix_streamer_msg) || (this_ptr->neopix_msg->msg_type == neopixel_rainbow_msg)) {
 
-                for (uint32_t index=0; index<this->neopix_msg->num_tx_msgs; index++) {
+                for (uint32_t index=0; index<this_ptr->neopix_msg->num_tx_msgs; index++) {
 
                     this_ptr->neopix_msg->tx_msgs[index] = ReverseTheBits(this_ptr->neopix_msg->tx_msgs[index]);
                     this_ptr->neopix_msg->tx_msgs[index] >>= 8;
@@ -172,7 +174,11 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
             }
 
-            this_ptr->neopix_state = NEOPIX_SEND;
+            if (this_ptr->neopix_msg->msg_type == neopix_streamer_msg) {
+                this_ptr->neopix_state = NEOPIX_SEND_STREAM;
+            } else {
+                this_ptr->neopix_state = NEOPIX_SEND;
+            }
 
             break;
 
@@ -200,11 +206,51 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
             break;
 
+        case NEOPIX_SEND_STREAM :
+
+            while (this_ptr->neopix_msg->msgs_txed < this_ptr->neopix_msg->num_tx_msgs) {
+
+                if (this_ptr->neopix_msg->msg_type == neopix_clear_msg) {
+                    this_ptr->send_bit(0);
+                } else {
+                    this_ptr->send_bit((this_ptr->neopix_msg->tx_msgs[(this_ptr->neopix_msg->msgs_txed + (this_ptr->stream_counter % this_ptr->neopix_msg->num_tx_msgs)) % this_ptr->neopix_msg->num_tx_msgs] >> this_ptr->bit_counter) & 0x00000001);
+                }
+
+                this_ptr->bit_counter++;
+
+                if (this_ptr->bit_counter == NUM_OF_BITS) {
+                    this_ptr->neopix_msg->msgs_txed++;
+                    this_ptr->bit_counter = 0;
+                }
+            }
+
+            this_ptr->stream_counter++;
+
+            this_ptr->bit_counter = 0;
+
+            this_ptr->neopix_state = NEOPIX_FINISH;
+
+            break;
+
         case NEOPIX_FINISH :
 
+            if (this_ptr->neopix_msg->msg_type == neopixel_rainbow_msg) {
+
+                for (uint32_t index=0; index<this_ptr->neopix_msg->num_tx_msgs; index++) {
+
+                    this_ptr->neopix_msg->tx_msgs[index] = ReverseTheBits(this_ptr->neopix_msg->tx_msgs[index]);
+                    this_ptr->neopix_msg->tx_msgs[index] >>= 8;
+                    this_ptr->neopix_msg->tx_msgs[index] = ((this_ptr->neopix_msg->tx_msgs[index] & 0x000000ff) << 16)
+                                                           | ((this_ptr->neopix_msg->tx_msgs[index] & 0x00ff0000)>>16)
+                                                           | (this_ptr->neopix_msg->tx_msgs[index] & 0x0000ff00);
+                }
+
+            }
+
+            vTaskDelay(1);
 
             this->neopix_state = NEOPIX_IDLE;
-            vTaskDelay(1);
+
 
             break;
 
@@ -221,7 +267,7 @@ void NeopixelCtl::task(NeopixelCtl* this_ptr) {
 
 void NeopixelCtl::add_msg(NeopixMsg* msg) {
 
-    xQueueSend(this->neopix_msg_q, &msg, portMAX_DELAY);
+    xQueueSend(this->neopix_msg_q, &msg, 0);
 
 }
 

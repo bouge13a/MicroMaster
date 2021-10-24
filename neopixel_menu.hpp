@@ -26,9 +26,29 @@ typedef enum {
 typedef enum {
     OFF_MODE,
     SOLID_BLINK_MODE,
+    CHAOS_MODE,
+    STREAM_MODE,
+    MOOD_MODE,
+    RAINBOW_MODE,
 }neopix_modes_e;
 
+typedef enum {
+    NEOPIX_GREEN,
+    NEOPIX_RED,
+    NEOPIX_BLUE,
+    NEOPIX_ALL,
+}neopix_colors_e;
 
+typedef enum {
+    RAINBOW_START,
+    RAINBOW_GREEN,
+    RAINBOW_YELLOW,
+    RAINBOW_RED,
+    RAINBOW_PURPLE,
+    RAINBOW_BLUE,
+    RAINBOW_CYAN,
+    RAINBOW_FADE,
+}rainbow_states_e;
 
 
 class NeopixRow {
@@ -55,7 +75,12 @@ extern "C" {
         void task(NeopixelMenu* this_ptr);
         static void taskfunwrapper(void* parm);
 
-        void change_brightness(uint32_t* value, uint32_t brightness);
+        void change_brightness(uint32_t* value,
+                               uint32_t brightness);
+
+        void incr_color_brightness(uint32_t* value,
+                                   neopix_colors_e color,
+                                   int32_t incr);
 
         NeopixelCtl* neopix_cmd;
 
@@ -64,10 +89,18 @@ extern "C" {
 
         NeopixMsg* neopix_msg;
         NeopixMsg* neopix_clr_msg;
+        NeopixMsg* neopix_stream_msg;
+        NeopixMsg* neopix_rainbow_msg;
 
         uint32_t vert_menu_index;
 
+        rainbow_states_e rainbow_state;
+        uint32_t rainbow_counter;
+
         uint32_t* neopix_values;
+        uint8_t* brightness_values;
+        uint32_t brightness_counter;
+        neopix_dir_e brightness_counter_dir;
 
         uint32_t solid_mode_counter;
 

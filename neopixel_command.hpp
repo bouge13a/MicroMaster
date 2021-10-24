@@ -20,6 +20,7 @@
 typedef enum {
     NEOPIX_IDLE,
     NEOPIX_SEND,
+    NEOPIX_SEND_STREAM,
     NEOPIX_FINISH,
 }neopix_states_e;
 
@@ -33,6 +34,8 @@ typedef enum {
     neopix_command_msg,
     neopix_normal_msg,
     neopix_clear_msg,
+    neopix_streamer_msg,
+    neopixel_rainbow_msg,
 }neopix_msg_types_e;
 
 typedef enum {
@@ -83,6 +86,7 @@ extern "C" {
         uint32_t byte_buffer_index;
         uint8_t* byte_buffer;
         uint32_t msg_counter;
+        uint32_t stream_counter;
 
         void draw_page(void);
         void draw_data(void);

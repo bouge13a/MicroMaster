@@ -13,6 +13,8 @@
 #include "test_task.hpp"
 #include "text_controls.hpp"
 
+#include <cstdlib>
+
 
 static volatile uint32_t num_of_leds = 0;
 static volatile uint32_t brightness = 0;
@@ -23,6 +25,10 @@ static const uint32_t OPTIONS_START_COL = 15;
 static const uint32_t SIZE_OF_MENU_BAR = 50;
 
 static const uint32_t MAX_NEOPIXELS = 999;
+
+static bool neopixel_on = true;
+
+static const int32_t RAINBOW_INCR = 1;
 
 static const uint32_t WHITE  = 0x00ffffff;
 static const uint32_t GREEN  = 0x00ff0000;
@@ -35,9 +41,13 @@ static const uint32_t PURPLE = 0x0000ffff;
 static const char* options_rows[] = {
                                      "Off",
                                      "Solid",
+                                     "Chaos",
+                                     "Stream",
+                                     "Mood",
+                                     "Rainbow",
 };
 
-static const uint32_t NUM_OF_OPTIONS = 2;
+static const uint32_t NUM_OF_OPTIONS = 6;
 
 neopix_modes_e mode = OFF_MODE;
 
@@ -63,9 +73,9 @@ static void first_led_digit_row(uint32_t index, neopix_dir_e direction, bool sel
 
     if (selected){
         if (direction == NEOPIX_RIGHT_DIR) {
-            num_of_leds += 100;
+            num_of_leds += 1;
         } else if ( direction == NEOPIX_LEFT_DIR ) {
-            num_of_leds -= 100;
+            num_of_leds -= 1;
         }
     }
 }
@@ -119,9 +129,9 @@ static void third_led_digit_row(uint32_t index, neopix_dir_e direction, bool sel
 
     if (selected){
         if (direction == NEOPIX_RIGHT_DIR) {
-            num_of_leds += 1;
+            num_of_leds += 100;
         } else if ( direction == NEOPIX_LEFT_DIR ) {
-            num_of_leds -= 1;
+            num_of_leds -= 100;
         }
     }
 }
@@ -215,6 +225,8 @@ static void modes_row(uint32_t index, neopix_dir_e direction, bool selected) {
             mode = (neopix_modes_e)(mode - 1);
         }
     }
+
+    neopixel_on = true;
 }
 
 NeopixRow::NeopixRow(void (*callback)(uint32_t index, neopix_dir_e direction, bool selected),
@@ -280,16 +292,33 @@ NeopixelMenu::NeopixelMenu(NeopixelCtl* neopix_cmd) : ConsolePage("Neopixel Menu
 
     this->vert_menu_index = 0;
     this->solid_mode_counter = 0;
+    this->rainbow_counter = 0;
+    this->brightness_counter = 0;
+    this->brightness_counter_dir = NEOPIX_RIGHT_DIR;
+    this->rainbow_state = RAINBOW_START;
 
     this->neopix_values = new uint32_t[MAX_NEOPIXELS];
+    this->brightness_values = new uint8_t[MAX_NEOPIXELS];
+
+    for(uint32_t index=0; index<MAX_NEOPIXELS; index++) {
+        this->brightness_values[index] = 0;
+    }
 
     this->neopix_msg = new NeopixMsg(neopix_normal_msg);
     this->neopix_msg->tx_msgs = this->neopix_values;
     this->neopix_msg->msg_state = neopix_idle;
 
+    this->neopix_stream_msg = new NeopixMsg(neopix_streamer_msg);
+    this->neopix_stream_msg->tx_msgs = this->neopix_values;
+    this->neopix_stream_msg->msg_state = neopix_idle;
+
     this->neopix_clr_msg = new NeopixMsg(neopix_clear_msg);
     this->neopix_clr_msg->tx_msgs = this->neopix_values;
     this->neopix_clr_msg->msg_state = neopix_idle;
+
+    this->neopix_rainbow_msg = new NeopixMsg(neopixel_rainbow_msg);
+    this->neopix_rainbow_msg->tx_msgs = this->neopix_values;
+    this->neopix_rainbow_msg->msg_state = neopix_idle;
 
 } // End NeopixelMenu
 
@@ -301,10 +330,15 @@ void NeopixelMenu::task(NeopixelMenu* this_ptr) {
         switch(mode) {
         case OFF_MODE :
 
-            this_ptr->neopix_clr_msg->num_tx_msgs = num_of_leds;
-            this_ptr->neopix_cmd->add_msg(this_ptr->neopix_clr_msg);
+            if (neopixel_on) {
+                this_ptr->neopix_clr_msg->num_tx_msgs = num_of_leds;
+                this_ptr->neopix_cmd->add_msg(this_ptr->neopix_clr_msg);
+                neopixel_on = false;
+                this->rainbow_state = RAINBOW_START;
+            }
 
             break;
+
         case SOLID_BLINK_MODE :
 
             for(uint32_t index=0; index<num_of_leds; index++) {
@@ -320,6 +354,166 @@ void NeopixelMenu::task(NeopixelMenu* this_ptr) {
             vTaskDelay(1010 - 10*speed);
 
             break;
+
+        case CHAOS_MODE :
+
+            for(uint32_t index=0; index<num_of_leds; index++) {
+                this_ptr->neopix_msg->tx_msgs[index] = this_ptr->colors[rand() % this_ptr->colors.size()];
+                this_ptr->change_brightness(&this_ptr->neopix_msg->tx_msgs[index], brightness);
+            }
+
+            this_ptr->neopix_msg->num_tx_msgs = num_of_leds;
+            this_ptr->neopix_cmd->add_msg(this_ptr->neopix_msg);
+
+            vTaskDelay(1010 - 10*speed);
+
+            break;
+
+        case STREAM_MODE :
+
+            for(uint32_t index=0; index<num_of_leds; index++) {
+
+
+                this_ptr->neopix_stream_msg->tx_msgs[index] = this_ptr->colors[(index/5) % this_ptr->colors.size()];
+
+
+                this_ptr->change_brightness(&this_ptr->neopix_stream_msg->tx_msgs[index], brightness);
+
+            }
+
+            this_ptr->neopix_stream_msg->num_tx_msgs = num_of_leds;
+            this_ptr->neopix_cmd->add_msg(this_ptr->neopix_stream_msg);
+
+            vTaskDelay(1010 - 10*speed);
+
+
+            break;
+
+        case MOOD_MODE :
+
+            if (this_ptr->brightness_counter == 0) {
+                this_ptr->solid_mode_counter = (this->solid_mode_counter+1) %  this_ptr->colors.size();
+            }
+
+            for(uint32_t index=0; index<num_of_leds; index++) {
+                this_ptr->neopix_msg->tx_msgs[index] = this_ptr->colors[this_ptr->solid_mode_counter];
+            }
+
+            if (this_ptr->brightness_counter_dir == NEOPIX_RIGHT_DIR) {
+                this_ptr->brightness_counter++;
+                if (this_ptr->brightness_counter >= brightness) {
+                    this_ptr->brightness_counter_dir = NEOPIX_LEFT_DIR;
+                }
+            } else if (this_ptr->brightness_counter_dir == NEOPIX_LEFT_DIR) {
+                this_ptr->brightness_counter--;
+                if (this_ptr->brightness_counter == 0) {
+                    this_ptr->brightness_counter_dir = NEOPIX_RIGHT_DIR;
+                }
+            }
+
+            for(uint32_t index=0; index<num_of_leds; index++) {
+                this_ptr->change_brightness(&this_ptr->neopix_msg->tx_msgs[index], this_ptr->brightness_counter);
+            }
+
+            this_ptr->neopix_msg->num_tx_msgs = num_of_leds;
+            this_ptr->neopix_cmd->add_msg(this_ptr->neopix_msg);
+
+            vTaskDelay(1010 - 10*speed);
+
+            break;
+
+        case RAINBOW_MODE :
+
+            if (this_ptr->rainbow_state == RAINBOW_START) {
+                memset(this_ptr->neopix_msg->tx_msgs, 0, sizeof(uint32_t)*num_of_leds);
+                this_ptr->rainbow_state = RAINBOW_GREEN;
+            } else if (this_ptr->rainbow_state == RAINBOW_GREEN) {
+
+                if (this_ptr->rainbow_counter + RAINBOW_INCR < brightness) {
+                    this_ptr->rainbow_counter = this_ptr->rainbow_counter + RAINBOW_INCR;
+                    for (uint32_t index=0; index<num_of_leds; index++) {
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_GREEN, RAINBOW_INCR);
+                    }
+                } else {
+                    this->rainbow_state = RAINBOW_YELLOW;
+                    this_ptr->rainbow_counter = 0;
+                }
+            } else if (this_ptr->rainbow_state == RAINBOW_YELLOW) {
+
+                if (this_ptr->rainbow_counter + RAINBOW_INCR < brightness) {
+                    this_ptr->rainbow_counter = this_ptr->rainbow_counter + RAINBOW_INCR;
+                    for (uint32_t index=0; index<num_of_leds; index++) {
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_RED, RAINBOW_INCR);
+                    }
+                } else {
+                    this->rainbow_state = RAINBOW_RED;
+                    this_ptr->rainbow_counter=0;
+                }
+            } else if (this_ptr->rainbow_state == RAINBOW_RED) {
+
+                if (this_ptr->rainbow_counter + RAINBOW_INCR < brightness) {
+                    this_ptr->rainbow_counter = this_ptr->rainbow_counter + RAINBOW_INCR;
+                    for (uint32_t index=0; index<num_of_leds; index++) {
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_GREEN, -RAINBOW_INCR);
+                    }
+                } else {
+                    this->rainbow_state = RAINBOW_PURPLE;
+                    this_ptr->rainbow_counter=0;
+                }
+            } else if (this_ptr->rainbow_state == RAINBOW_PURPLE) {
+
+                if (this_ptr->rainbow_counter + RAINBOW_INCR < brightness) {
+                    this_ptr->rainbow_counter = this_ptr->rainbow_counter + RAINBOW_INCR;
+                    for (uint32_t index=0; index<num_of_leds; index++) {
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_BLUE, RAINBOW_INCR);
+                    }
+                } else {
+                    this->rainbow_state = RAINBOW_BLUE;
+                    this_ptr->rainbow_counter=0;
+                }
+            } else if (this_ptr->rainbow_state == RAINBOW_BLUE) {
+
+                if (this_ptr->rainbow_counter + RAINBOW_INCR < brightness) {
+                    this_ptr->rainbow_counter = this_ptr->rainbow_counter + RAINBOW_INCR;
+                    for (uint32_t index=0; index<num_of_leds; index++) {
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_RED, -RAINBOW_INCR);
+                    }
+                } else {
+                    this->rainbow_state = RAINBOW_CYAN;
+                    this_ptr->rainbow_counter=0;
+                }
+            } else if (this_ptr->rainbow_state == RAINBOW_CYAN) {
+
+                if (this_ptr->rainbow_counter + RAINBOW_INCR < brightness) {
+                    this_ptr->rainbow_counter = this_ptr->rainbow_counter + RAINBOW_INCR;
+                    for (uint32_t index=0; index<num_of_leds; index++) {
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_GREEN, RAINBOW_INCR);
+                    }
+                } else {
+                    this->rainbow_state = RAINBOW_FADE;
+                    this_ptr->rainbow_counter=0;
+                }
+            } else if (this_ptr->rainbow_state == RAINBOW_FADE) {
+
+                if (this_ptr->rainbow_counter + RAINBOW_INCR < brightness) {
+                    this_ptr->rainbow_counter = this_ptr->rainbow_counter + RAINBOW_INCR;
+                    for (uint32_t index=0; index<num_of_leds; index++) {
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_GREEN, -RAINBOW_INCR);
+                        this_ptr->incr_color_brightness(&this_ptr->neopix_msg->tx_msgs[index], NEOPIX_BLUE, -RAINBOW_INCR);
+                    }
+                } else {
+                    this->rainbow_state = RAINBOW_START;
+                    this_ptr->rainbow_counter=0;
+                }
+            }
+
+            this_ptr->neopix_rainbow_msg->num_tx_msgs = num_of_leds;
+            this_ptr->neopix_cmd->add_msg(this_ptr->neopix_rainbow_msg);
+
+            vTaskDelay(1010 - 10*speed);
+
+            break;
+
         default :
             assert(0);
             break;
@@ -344,14 +538,75 @@ void NeopixelMenu::change_brightness(uint32_t* value, uint32_t brightness) {
     uint32_t red_val;
     uint32_t blue_val;
 
-    green_val = (uint32_t)(((0x00ff0000 & *value) >> 16) * bright_mult) << 16;
-    red_val   = (uint32_t)(((0x0000ff00 & *value) >> 8) * bright_mult) << 8;
-    blue_val  = (uint32_t)(((0x000000ff & *value)) * bright_mult);
+    green_val = (uint32_t)((uint32_t)((0x00ff0000 & *value) >> 16) * bright_mult) << 16;
+    red_val   = (uint32_t)((uint32_t)((0x0000ff00 & *value) >> 8) * bright_mult) << 8;
+    blue_val  = (uint32_t)((uint32_t)((0x000000ff & *value)) * bright_mult);
+
 
     *value =  green_val | red_val | blue_val;
 
     return;
 }
+
+void NeopixelMenu::incr_color_brightness(uint32_t* value,
+                                        neopix_colors_e color,
+                                        int32_t incr) {
+
+
+    uint32_t green_val = (0x00ff0000 & *value) >> 16;
+    uint32_t red_val = (0x0000ff00 & *value) >> 8;
+    uint32_t blue_val = (0x000000ff & *value);
+
+    switch(color) {
+    case NEOPIX_GREEN :
+
+        if (incr > 0) {
+            if (green_val + incr < 0xff) {
+                green_val += incr;
+            }
+        } else {
+            if (green_val - incr > 0 ) {
+                green_val += incr;
+            }
+        }
+
+        break;
+    case NEOPIX_RED :
+
+        if (incr > 0) {
+            if (red_val + incr < 0xff) {
+                red_val += incr;
+            }
+        } else {
+            if (red_val - incr > 0 ) {
+                red_val += incr;
+            }
+        }
+
+        break;
+    case NEOPIX_BLUE :
+
+        if (incr > 0) {
+            if (blue_val + incr < 0xff) {
+                blue_val += incr;
+            }
+        } else {
+            if (blue_val - incr > 0 ) {
+                blue_val += incr;
+            }
+        }
+        break;
+    default :
+        assert(0);
+        break;
+
+    }
+
+    *value =  (green_val << 16) | (red_val << 8) | blue_val;
+
+    return;
+
+} // End NeopixelMenu::incr_color_brightness
 
 void NeopixelMenu::draw_page(void) {
 

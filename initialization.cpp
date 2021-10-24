@@ -191,9 +191,11 @@ NeopixelSuite::NeopixelSuite(void) {
     NeopixelMenu* neopixel_menu = new NeopixelMenu(neopixel_command);
     NeopixelRgb* neopixel_rgb = new NeopixelRgb(neopixel_command);
     NumConverter* num_converter = new NumConverter();
+    TaskManager* task_manager = new TaskManager();
 
     console_task->add_page(neopixel_command);
     console_task->add_page(neopixel_rgb);
     console_task->add_page(neopixel_menu);
     console_task->add_page(num_converter);
+    console_task->add_page(task_manager);
 }

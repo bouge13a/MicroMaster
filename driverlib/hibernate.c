@@ -222,8 +222,6 @@ HibernateDisable(void)
 //
 //*****************************************************************************
 
-#define HIBERNATE_OUT_ALT1CLK 0
-
 void
 HibernateClockConfig(uint32_t ui32Config)
 {

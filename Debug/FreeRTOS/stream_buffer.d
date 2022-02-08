@@ -14,7 +14,7 @@ FreeRTOS/stream_buffer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.L
 FreeRTOS/stream_buffer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/string.h
 FreeRTOS/stream_buffer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h
 FreeRTOS/stream_buffer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h
-FreeRTOS/stream_buffer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOSConfig.h
+FreeRTOS/stream_buffer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/source/FreeRTOSConfig.h
 FreeRTOS/stream_buffer.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdlib.h
 FreeRTOS/stream_buffer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/projdefs.h
 FreeRTOS/stream_buffer.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/portable.h
@@ -39,7 +39,7 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/string.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h: 
-C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOSConfig.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/source/FreeRTOSConfig.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdlib.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/projdefs.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/portable.h: 

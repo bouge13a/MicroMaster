@@ -10,46 +10,6 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./ADC_task.obj" \
-"./CAN_command.obj" \
-"./CAN_sniffer.obj" \
-"./FTDI_emulator.obj" \
-"./GPIs.obj" \
-"./GPOs.obj" \
-"./I2C_monitor.obj" \
-"./I2C_scripter.obj" \
-"./I2C_search.obj" \
-"./I2C_sniffer.obj" \
-"./I2C_task.obj" \
-"./PWM_page.obj" \
-"./SPI_command.obj" \
-"./SPI_monitor.obj" \
-"./SPI_sniffer.obj" \
-"./UART_command.obj" \
-"./UART_streamer.obj" \
-"./UART_to_USB.obj" \
-"./console_task.obj" \
-"./console_uart.obj" \
-"./error_logger.obj" \
-"./heap_4.obj" \
-"./hooks.obj" \
-"./initialization.obj" \
-"./io_control_page.obj" \
-"./main.obj" \
-"./memory_functions.obj" \
-"./menu_page.obj" \
-"./neopixel_command.obj" \
-"./neopixel_menu.obj" \
-"./neopixel_rgb.obj" \
-"./number_converter.obj" \
-"./one_wire_command.obj" \
-"./one_wire_search.obj" \
-"./task_manager.obj" \
-"./test_task.obj" \
-"./text_controls.obj" \
-"./tm4c123gh6pm_startup_ccs.obj" \
-"./usb_serial_structs.obj" \
-"./utils.obj" \
 "./FreeRTOS/croutine.obj" \
 "./FreeRTOS/event_groups.obj" \
 "./FreeRTOS/list.obj" \
@@ -91,9 +51,49 @@ ORDERED_OBJS += \
 "./driverlib/udma.obj" \
 "./driverlib/usb.obj" \
 "./driverlib/watchdog.obj" \
+"./source/ADC_task.obj" \
+"./source/CAN_command.obj" \
+"./source/CAN_sniffer.obj" \
+"./source/FTDI_emulator.obj" \
+"./source/GPIs.obj" \
+"./source/GPOs.obj" \
+"./source/I2C_monitor.obj" \
+"./source/I2C_scripter.obj" \
+"./source/I2C_search.obj" \
+"./source/I2C_sniffer.obj" \
+"./source/I2C_task.obj" \
+"./source/PWM_page.obj" \
+"./source/SPI_command.obj" \
+"./source/SPI_monitor.obj" \
+"./source/SPI_sniffer.obj" \
+"./source/UART_command.obj" \
+"./source/UART_streamer.obj" \
+"./source/UART_to_USB.obj" \
+"./source/console_task.obj" \
+"./source/console_uart.obj" \
+"./source/error_logger.obj" \
+"./source/heap_4.obj" \
+"./source/hooks.obj" \
+"./source/initialization.obj" \
+"./source/io_control_page.obj" \
+"./source/main.obj" \
+"./source/memory_functions.obj" \
+"./source/menu_page.obj" \
+"./source/neopixel_command.obj" \
+"./source/neopixel_menu.obj" \
+"./source/neopixel_rgb.obj" \
+"./source/number_converter.obj" \
+"./source/one_wire_command.obj" \
+"./source/one_wire_search.obj" \
+"./source/task_manager.obj" \
+"./source/test_task.obj" \
+"./source/text_controls.obj" \
+"./source/tm4c123gh6pm_startup_ccs.obj" \
+"./source/usb_serial_structs.obj" \
+"./source/utils.obj" \
 "./utils/uartstdio.obj" \
 "./utils/ustdlib.obj" \
-"../tm4c123gh6pm.cmd" \
+"../source/tm4c123gh6pm.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
 -l"C:/ti/TivaWare_C_Series-2.2.0.295/usblib/ccs/Debug/usblib.lib" \
@@ -105,15 +105,15 @@ RMDIR := RMDIR /S/Q
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include subdir_vars.mk
 -include FreeRTOS/subdir_vars.mk
 -include FreeRTOS/portable/CCS/ARM_CM4F/subdir_vars.mk
 -include driverlib/subdir_vars.mk
+-include source/subdir_vars.mk
 -include utils/subdir_vars.mk
--include subdir_rules.mk
 -include FreeRTOS/subdir_rules.mk
 -include FreeRTOS/portable/CCS/ARM_CM4F/subdir_rules.mk
 -include driverlib/subdir_rules.mk
+-include source/subdir_rules.mk
 -include utils/subdir_rules.mk
 -include objects.mk
 
@@ -225,7 +225,7 @@ BIN_OUTPUTS__QUOTED += \
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "MicroMasterTM4C123G.out"
+	@$(MAKE) --no-print-directory -Onone "MicroMasterTM4C123G.out" secondary-outputs
 
 # Tool invocations
 MicroMasterTM4C123G.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
@@ -238,21 +238,23 @@ MicroMasterTM4C123G.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 MicroMasterTM4C123G.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: Arm Hex Utility'
-	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armhex" --diag_wrap=off -o "MicroMasterTM4C123G.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/bin/armhex" --diag_wrap=off --intel -o "MicroMasterTM4C123G.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "ADC_task.obj" "CAN_command.obj" "CAN_sniffer.obj" "FTDI_emulator.obj" "GPIs.obj" "GPOs.obj" "I2C_monitor.obj" "I2C_scripter.obj" "I2C_search.obj" "I2C_sniffer.obj" "I2C_task.obj" "PWM_page.obj" "SPI_command.obj" "SPI_monitor.obj" "SPI_sniffer.obj" "UART_command.obj" "UART_streamer.obj" "UART_to_USB.obj" "console_task.obj" "console_uart.obj" "error_logger.obj" "heap_4.obj" "hooks.obj" "initialization.obj" "io_control_page.obj" "main.obj" "memory_functions.obj" "menu_page.obj" "neopixel_command.obj" "neopixel_menu.obj" "neopixel_rgb.obj" "number_converter.obj" "one_wire_command.obj" "one_wire_search.obj" "task_manager.obj" "test_task.obj" "text_controls.obj" "tm4c123gh6pm_startup_ccs.obj" "usb_serial_structs.obj" "utils.obj" "FreeRTOS\croutine.obj" "FreeRTOS\event_groups.obj" "FreeRTOS\list.obj" "FreeRTOS\queue.obj" "FreeRTOS\stream_buffer.obj" "FreeRTOS\tasks.obj" "FreeRTOS\timers.obj" "FreeRTOS\portable\CCS\ARM_CM4F\port.obj" "FreeRTOS\portable\CCS\ARM_CM4F\portasm.obj" "driverlib\adc.obj" 
-	-$(RM) "driverlib\aes.obj" "driverlib\can.obj" "driverlib\comp.obj" "driverlib\cpu.obj" "driverlib\crc.obj" "driverlib\des.obj" "driverlib\eeprom.obj" "driverlib\emac.obj" "driverlib\epi.obj" "driverlib\epi_workaround_ccs.obj" "driverlib\flash.obj" "driverlib\fpu.obj" "driverlib\gpio.obj" "driverlib\hibernate.obj" "driverlib\i2c.obj" "driverlib\interrupt.obj" "driverlib\lcd.obj" "driverlib\mpu.obj" "driverlib\pwm.obj" "driverlib\qei.obj" "driverlib\shamd5.obj" "driverlib\ssi.obj" "driverlib\sw_crc.obj" "driverlib\sysctl.obj" "driverlib\sysexc.obj" "driverlib\systick.obj" "driverlib\timer.obj" "driverlib\uart.obj" "driverlib\udma.obj" "driverlib\usb.obj" "driverlib\watchdog.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
-	-$(RM) "heap_4.d" "hooks.d" "tm4c123gh6pm_startup_ccs.d" "usb_serial_structs.d" "FreeRTOS\croutine.d" "FreeRTOS\event_groups.d" "FreeRTOS\list.d" "FreeRTOS\queue.d" "FreeRTOS\stream_buffer.d" "FreeRTOS\tasks.d" "FreeRTOS\timers.d" "FreeRTOS\portable\CCS\ARM_CM4F\port.d" "driverlib\adc.d" "driverlib\aes.d" "driverlib\can.d" "driverlib\comp.d" "driverlib\cpu.d" "driverlib\crc.d" "driverlib\des.d" "driverlib\eeprom.d" "driverlib\emac.d" "driverlib\epi.d" "driverlib\flash.d" "driverlib\fpu.d" "driverlib\gpio.d" "driverlib\hibernate.d" "driverlib\i2c.d" "driverlib\interrupt.d" "driverlib\lcd.d" "driverlib\mpu.d" "driverlib\pwm.d" "driverlib\qei.d" "driverlib\shamd5.d" "driverlib\ssi.d" "driverlib\sw_crc.d" "driverlib\sysctl.d" "driverlib\sysexc.d" "driverlib\systick.d" "driverlib\timer.d" "driverlib\uart.d" "driverlib\udma.d" "driverlib\usb.d" "driverlib\watchdog.d" "utils\uartstdio.d" "utils\ustdlib.d" 
-	-$(RM) "ADC_task.d" "CAN_command.d" "CAN_sniffer.d" "FTDI_emulator.d" "GPIs.d" "GPOs.d" "I2C_monitor.d" "I2C_scripter.d" "I2C_search.d" "I2C_sniffer.d" "I2C_task.d" "PWM_page.d" "SPI_command.d" "SPI_monitor.d" "SPI_sniffer.d" "UART_command.d" "UART_streamer.d" "UART_to_USB.d" "console_task.d" "console_uart.d" "error_logger.d" "initialization.d" "io_control_page.d" "main.d" "memory_functions.d" "menu_page.d" "neopixel_command.d" "neopixel_menu.d" "neopixel_rgb.d" "number_converter.d" "one_wire_command.d" "one_wire_search.d" "task_manager.d" "test_task.d" "text_controls.d" "utils.d" 
+	-$(RM) "FreeRTOS\croutine.obj" "FreeRTOS\event_groups.obj" "FreeRTOS\list.obj" "FreeRTOS\queue.obj" "FreeRTOS\stream_buffer.obj" "FreeRTOS\tasks.obj" "FreeRTOS\timers.obj" "FreeRTOS\portable\CCS\ARM_CM4F\port.obj" "FreeRTOS\portable\CCS\ARM_CM4F\portasm.obj" "driverlib\adc.obj" "driverlib\aes.obj" "driverlib\can.obj" "driverlib\comp.obj" "driverlib\cpu.obj" "driverlib\crc.obj" "driverlib\des.obj" "driverlib\eeprom.obj" "driverlib\emac.obj" "driverlib\epi.obj" "driverlib\epi_workaround_ccs.obj" "driverlib\flash.obj" "driverlib\fpu.obj" "driverlib\gpio.obj" "driverlib\hibernate.obj" "driverlib\i2c.obj" "driverlib\interrupt.obj" "driverlib\lcd.obj" "driverlib\mpu.obj" "driverlib\pwm.obj" "driverlib\qei.obj" "driverlib\shamd5.obj" "driverlib\ssi.obj" "driverlib\sw_crc.obj" "driverlib\sysctl.obj" "driverlib\sysexc.obj" "driverlib\systick.obj" "driverlib\timer.obj" "driverlib\uart.obj" "driverlib\udma.obj" "driverlib\usb.obj" "driverlib\watchdog.obj" "source\ADC_task.obj" "source\CAN_command.obj" "source\CAN_sniffer.obj" 
+	-$(RM) "source\FTDI_emulator.obj" "source\GPIs.obj" "source\GPOs.obj" "source\I2C_monitor.obj" "source\I2C_scripter.obj" "source\I2C_search.obj" "source\I2C_sniffer.obj" "source\I2C_task.obj" "source\PWM_page.obj" "source\SPI_command.obj" "source\SPI_monitor.obj" "source\SPI_sniffer.obj" "source\UART_command.obj" "source\UART_streamer.obj" "source\UART_to_USB.obj" "source\console_task.obj" "source\console_uart.obj" "source\error_logger.obj" "source\heap_4.obj" "source\hooks.obj" "source\initialization.obj" "source\io_control_page.obj" "source\main.obj" "source\memory_functions.obj" "source\menu_page.obj" "source\neopixel_command.obj" "source\neopixel_menu.obj" "source\neopixel_rgb.obj" "source\number_converter.obj" "source\one_wire_command.obj" "source\one_wire_search.obj" "source\task_manager.obj" "source\test_task.obj" "source\text_controls.obj" "source\tm4c123gh6pm_startup_ccs.obj" "source\usb_serial_structs.obj" "source\utils.obj" "utils\uartstdio.obj" "utils\ustdlib.obj" 
+	-$(RM) "FreeRTOS\croutine.d" "FreeRTOS\event_groups.d" "FreeRTOS\list.d" "FreeRTOS\queue.d" "FreeRTOS\stream_buffer.d" "FreeRTOS\tasks.d" "FreeRTOS\timers.d" "FreeRTOS\portable\CCS\ARM_CM4F\port.d" "driverlib\adc.d" "driverlib\aes.d" "driverlib\can.d" "driverlib\comp.d" "driverlib\cpu.d" "driverlib\crc.d" "driverlib\des.d" "driverlib\eeprom.d" "driverlib\emac.d" "driverlib\epi.d" "driverlib\flash.d" "driverlib\fpu.d" "driverlib\gpio.d" "driverlib\hibernate.d" "driverlib\i2c.d" "driverlib\interrupt.d" "driverlib\lcd.d" "driverlib\mpu.d" "driverlib\pwm.d" "driverlib\qei.d" "driverlib\shamd5.d" "driverlib\ssi.d" "driverlib\sw_crc.d" "driverlib\sysctl.d" "driverlib\sysexc.d" "driverlib\systick.d" "driverlib\timer.d" "driverlib\uart.d" "driverlib\udma.d" "driverlib\usb.d" "driverlib\watchdog.d" "source\heap_4.d" "source\hooks.d" "source\tm4c123gh6pm_startup_ccs.d" "source\usb_serial_structs.d" "utils\uartstdio.d" "utils\ustdlib.d" 
+	-$(RM) "source\ADC_task.d" "source\CAN_command.d" "source\CAN_sniffer.d" "source\FTDI_emulator.d" "source\GPIs.d" "source\GPOs.d" "source\I2C_monitor.d" "source\I2C_scripter.d" "source\I2C_search.d" "source\I2C_sniffer.d" "source\I2C_task.d" "source\PWM_page.d" "source\SPI_command.d" "source\SPI_monitor.d" "source\SPI_sniffer.d" "source\UART_command.d" "source\UART_streamer.d" "source\UART_to_USB.d" "source\console_task.d" "source\console_uart.d" "source\error_logger.d" "source\initialization.d" "source\io_control_page.d" "source\main.d" "source\memory_functions.d" "source\menu_page.d" "source\neopixel_command.d" "source\neopixel_menu.d" "source\neopixel_rgb.d" "source\number_converter.d" "source\one_wire_command.d" "source\one_wire_search.d" "source\task_manager.d" "source\test_task.d" "source\text_controls.d" "source\utils.d" 
 	-$(RM) "driverlib\epi_workaround_ccs.d" 
 	-$(RM) "FreeRTOS\portable\CCS\ARM_CM4F\portasm.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
+
+secondary-outputs: $(BIN_OUTPUTS)
 
 .PHONY: all clean dependents
 .SECONDARY:

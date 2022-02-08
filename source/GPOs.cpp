@@ -44,7 +44,7 @@ void set_power_supplies(uint32_t index) {
 
 } // End set_power_supplies
 
-static void sel_power_supply(uint32_t index) {
+void sel_power_supply(uint32_t index) {
 
     switch(index) {
     case 0 :

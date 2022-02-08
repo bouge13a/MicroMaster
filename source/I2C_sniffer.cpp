@@ -53,7 +53,6 @@ static const uint32_t I2CS_ACK_CHAR = 258;
 static const uint32_t I2CS_NACK_CHAR = 259;
 
 static uint32_t status_d = 0;
-static uint32_t status_f = 0;
 
 static volatile bool end_of_tx = false;
 

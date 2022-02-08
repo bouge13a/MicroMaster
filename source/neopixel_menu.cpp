@@ -12,6 +12,7 @@
 #include "uartstdio.h"
 #include "test_task.hpp"
 #include "text_controls.hpp"
+#include "neopixel_constants.hpp"
 
 #include <cstdlib>
 
@@ -45,13 +46,14 @@ static const char* options_rows[] = {
                                      "Stream",
                                      "Mood",
                                      "Rainbow",
+                                     "Strobe",
 };
 
-static const uint32_t NUM_OF_OPTIONS = 6;
+static const uint32_t NUM_OF_OPTIONS = 7;
 
 static const char* width_rows[] = {
                                  "rgb",
-                                 "rgbx",
+                                 "rgbw",
 };
 
 static const uint32_t NUM_OF_WIDTHS = 2;
@@ -250,10 +252,10 @@ static void modes_row(uint32_t index, neopix_dir_e direction, bool selected) {
 
             UARTprintf("%s", options_rows[loop_index]);
             TextCtl::bgd_color(TextCtl::black_bgd);
-            UARTprintf("     ");
+            UARTprintf("    ");
 
         } else {
-            UARTprintf("%s     ", options_rows[loop_index]);
+            UARTprintf("%s    ", options_rows[loop_index]);
         }
     }
 
@@ -300,19 +302,19 @@ NeopixelMenu::NeopixelMenu(NeopixelCtl* neopix_cmd) : ConsolePage("Neopixel Menu
 
     this->menu_rows.push_back(new NeopixRow(width_row,
                                             NUM_OF_WIDTHS,
-                                            "Width"));
+                                            "Type"));
 
     this->menu_rows.push_back(new NeopixRow(third_led_digit_row,
                                             10,
-                                            "Third Digit"));
+                                            "100's Place"));
 
     this->menu_rows.push_back(new NeopixRow(second_led_digit_row,
                                             10,
-                                            "Second Digit"));
+                                            "10's Place"));
 
     this->menu_rows.push_back(new NeopixRow(first_led_digit_row,
                                             10,
-                                            "first Digit"));
+                                            "1's Place"));
 
     this->menu_rows.push_back(new NeopixRow(brightness_bar,
                                             SIZE_OF_MENU_BAR,
@@ -418,8 +420,7 @@ void NeopixelMenu::task(NeopixelMenu* this_ptr) {
             for(uint32_t index=0; index<num_of_leds; index++) {
 
 
-                this_ptr->neopix_stream_msg->tx_msgs[index] = this_ptr->colors[(index/5) % this_ptr->colors.size()];
-
+                this_ptr->neopix_stream_msg->tx_msgs[index] = rainbow_array[index%30];
 
                 this_ptr->change_brightness(&this_ptr->neopix_stream_msg->tx_msgs[index], brightness);
 
@@ -566,6 +567,28 @@ void NeopixelMenu::task(NeopixelMenu* this_ptr) {
 
             break;
 
+        case STROBE_MODE :
+
+            for(uint32_t index=0; index<num_of_leds; index++) {
+                this_ptr->neopix_msg->tx_msgs[index] = WHITE;
+                this_ptr->change_brightness(&this_ptr->neopix_msg->tx_msgs[index], brightness);
+            }
+
+            this_ptr->solid_mode_counter = (this->solid_mode_counter+1);
+
+            this_ptr->neopix_msg->num_tx_msgs = num_of_leds;
+            this_ptr->neopix_clr_msg->num_tx_msgs = num_of_leds;
+
+            if (this->solid_mode_counter % 2) {
+                this_ptr->neopix_cmd->add_msg(this_ptr->neopix_msg);
+            } else {
+                this_ptr->neopix_cmd->add_msg(this_ptr->neopix_clr_msg);
+            }
+
+            vTaskDelay(1010 - 10*speed);
+
+            break;
+
         default :
             assert(0);
             break;
@@ -667,7 +690,7 @@ void NeopixelMenu::draw_page(void) {
         TextCtl::cursor_pos(MENU_START_ROW + 2*index, 0);
         UARTprintf("%s", this->menu_rows[index]->name);
         TextCtl::cursor_pos(MENU_START_ROW + 2*index, OPTIONS_START_COL);
-        this->menu_rows[index]->callback(this->vert_menu_index, NEOPIX_NO_DIR, index==this->vert_menu_index ? true : false );
+        this->menu_rows[index]->callback(this->menu_rows[index]->menu_index, NEOPIX_NO_DIR, index==this->vert_menu_index ? true : false );
     }
 
 

@@ -29,7 +29,6 @@
 
 #include <cstring>
 
-static const uint32_t NUM_OF_BITS = 32;
 static const uint32_t SIZE_OF_QUEUE = 100;
 
 static const uint32_t NUM_TX_MSGS = 99;

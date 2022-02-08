@@ -13,7 +13,7 @@ FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt
 FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_types.h
 FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_stdint.h
 FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h
-FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOSConfig.h
+FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/source/FreeRTOSConfig.h
 FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdlib.h
 FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/projdefs.h
 FreeRTOS/portable/CCS/ARM_CM4F/port.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/portable.h
@@ -36,7 +36,7 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_types.h:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_types.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/machine/_stdint.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/sys/_stdint.h: 
-C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOSConfig.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/source/FreeRTOSConfig.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdlib.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/projdefs.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/portable.h: 

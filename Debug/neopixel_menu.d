@@ -92,6 +92,7 @@ neopixel_menu.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartst
 neopixel_menu.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 neopixel_menu.obj: ../test_task.hpp
 neopixel_menu.obj: ../text_controls.hpp
+neopixel_menu.obj: ../neopixel_constants.hpp
 
 ../neopixel_menu.cpp: 
 ../neopixel_menu.hpp: 
@@ -185,3 +186,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h:
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
 ../test_task.hpp: 
 ../text_controls.hpp: 
+../neopixel_constants.hpp: 

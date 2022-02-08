@@ -30,6 +30,7 @@ typedef enum {
     STREAM_MODE,
     MOOD_MODE,
     RAINBOW_MODE,
+    STROBE_MODE,
 }neopix_modes_e;
 
 typedef enum {
@@ -96,6 +97,7 @@ extern "C" {
         uint32_t vert_menu_index;
 
         rainbow_states_e rainbow_state;
+        rainbow_states_e rainbow_stream_state;
         uint32_t rainbow_counter;
 
         uint32_t* neopix_values;

@@ -39,22 +39,22 @@ The MicroMaster Mini is still very much under development. The purpose of making
 * Fundraising
 
 # ScreenShots
-![image](https://github.com/bouge13a/MicroMaster/blob/main/images/main_menu_ss.PNG)
+![image](https://github.com/bouge13a/MicroMaster/blob/main/images/main_menu_ss.png)
 
 Here is the first screen that comes up after the terminal detects a keystroke. The power supply is adjustable with the arrow keys and the user can press a corresponding letter to get to a tool suite. 
 
-![image](https://github.com/bouge13a/MicroMaster/blob/main/images/main_suite_ss.PNG)
+![image](https://github.com/bouge13a/MicroMaster/blob/main/images/main_suite_ss.png)
 
 Here is the main suite of tools that are currently offered by the MicroMaster Mini. Press any letter to jump to a page or press TAB to toggle the pages. Press ESC to return to homepage. 
 
-![image](https://github.com/bouge13a/MicroMaster/blob/main/images/config_ss.PNG)
+![image](https://github.com/bouge13a/MicroMaster/blob/main/images/config_ss.png)
 
 This is the configuration menu of the MicroMaster Mini. The user can select the configuration options by using the arrow keys
 
-![image](https://github.com/bouge13a/MicroMaster/blob/main/images/i2c_cmd.PNG)
+![image](https://github.com/bouge13a/MicroMaster/blob/main/images/i2c_cmd.png)
 
 Here is an example of a transaction that was sent in I2C command. The transaction was set up so that it can be monitored on the next page. 
 
-![image](https://github.com/bouge13a/MicroMaster/blob/main/images/i2c_monitor.PNG)
+![image](https://github.com/bouge13a/MicroMaster/blob/main/images/i2c_monitor.png)
 
 Here is the i2c monitor after a monitored transaction was sent. The value is periodically updated in real time. It can be converted to binary, hexidecimal, LSB decimal or MSB decimal with the arrow keys

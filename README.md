@@ -32,6 +32,7 @@ The MicroMaster Mini is still very much under development. The purpose of making
 
 * C++ and FreeRTOS (expert)
 * Bootloaders (OpenBLT)
+* OpenOCD
 * Web Design
 * Testing and verification (open to all skill levels)
 * Marketing

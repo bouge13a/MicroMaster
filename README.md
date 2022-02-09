@@ -9,7 +9,7 @@
 * Allows the user to easily manipulate 4 GPOs and monitor 4 GPIs and 4 ADCs. 
 * Operates as an FTDI chip emulator so that the user can transmit UART signals to a USB virtual COM port. 
 * Has a suite of neopixel control tools which allow the user to easily control up to 999 neopixels!
-* Programmable power supply to 1v6 3v3 and 5v. The I2C bus also level shifts with the power supply. 
+* Programmable power supply to 1v8 3v3 and 5v. The I2C bus also level shifts with the power supply. 
 * The entire project is open sourced. 
 * The MicroMaster Mini is based upon the TM4C123GXL launchpad and will run on a launchpad with some minor modifications. The code is written in C++ with FreeRTOS in the Code Composer Studio IDE.
 

@@ -1,5 +1,7 @@
 ![image](https://github.com/bouge13a/MicroMaster/blob/main/images/aaaaaaaaaa.PNG)
 
+![video](https://www.youtube.com/watch?v=Cxuv18Nnr2U&list=PLB6-0C6Cg_YOvZ1DorRi49HMUIoCCBz9m&index=8&t=313s)
+
 # Not Another Bus Pirate...
 * The MicroMaster Mini, like the Bus-Pirate, Shikra, and Hydrabus before it, is a small circuit board that communicates to a computer via a Virtual COM port.
 * The purpose of the MicroMaster Mini is to allow the user to test commands that may be sent from a master to a slave device using a variety of protocols such as UART, CAN, I2C, SMBUS, SPI, 1-Wire, WS2812 (neopixel) and PWM. The MicroMaster Mini also allows the user to "sniff" CAN, SMBUS, UART, and I2C transactions.

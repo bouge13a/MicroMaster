@@ -124,10 +124,10 @@ uint32_t ConsoleTask::draw_start_page(ConsoleTask* this_ptr) {
 
     TextCtl::clear_terminal();
 
-    TextCtl::cursor_pos(10, 30);
+    TextCtl::cursor_pos(9, 30);
     UARTprintf("MicroMaster Mini Version 0");
-    TextCtl::cursor_pos(12, 30);
-    UARTprintf("Press any key to continue");
+    TextCtl::cursor_pos(11, 26);
+    UARTprintf("Use the arrow keys to select PS voltage");
     TextCtl::cursor_pos(PRE_MENU_ROW, PRE_MENU_COL);
     UARTprintf("a : Main Suite");
     TextCtl::cursor_pos(PRE_MENU_ROW+1, PRE_MENU_COL);

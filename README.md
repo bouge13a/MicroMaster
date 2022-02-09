@@ -26,4 +26,3 @@ The MicroMaster Mini is still very much under development. The purpose of making
 * Marketing
 * Hardware Design
 * Fundraising
-

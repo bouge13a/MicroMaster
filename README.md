@@ -20,6 +20,7 @@ https://www.youtube.com/watch?v=Cxuv18Nnr2U&t=313s
 The MicroMaster Mini is still very much under development. The purpose of making this project open sourced is to get the community involved. There is still a ton of work to do. If you have any of the following skills and would like to contribute, please email me at stephan@micromaster.io. I am very responsive, so don't hesitate to reach out. 
 
 * C++ and FreeRTOS (expert)
+* Bootloaders (OpenBLT)
 * Web Design
 * Testing and verification (open to all skill levels)
 * Marketing

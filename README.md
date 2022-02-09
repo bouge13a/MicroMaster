@@ -51,7 +51,7 @@ Here is the main suite of tools that are currently offered by the MicroMaster Mi
 
 This is the configuration menu of the MicroMaster Mini. The user can select the configuration options by using the arrow keys
 
-![image](https://github.com/bouge13a/MicroMaster/blob/main/images/i2c_cmd_ss.PNG)
+![image](https://github.com/bouge13a/MicroMaster/blob/main/images/i2c_cmd.PNG)
 
 Here is an example of a transaction that was sent in I2C command. The transaction was set up so that it can be monitored on the next page. 
 

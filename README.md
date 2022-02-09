@@ -27,7 +27,7 @@ The firmware will run on a TM4C123GXL launchpad. The following steps are the eas
 
 Note: Some resistors will have to be removed from the launchpad to get full functionality (R9 and R10). The I2C sniffer will not work unless these resistors are removed.
 
-# Developers
+# Get Involved!
 The MicroMaster Mini is still very much under development. The purpose of making this project open sourced is to get the community involved. There is still a ton of work to do. If you have any of the following skills and would like to contribute, please email me at stephan@micromaster.io. I am very responsive, so don't hesitate to reach out. 
 
 * C++ and FreeRTOS (expert)

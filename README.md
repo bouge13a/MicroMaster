@@ -14,7 +14,12 @@
 * The MicroMaster Mini is based upon the TM4C123GXL launchpad and will run on a launchpad with some minor modifications. The code is written in C++ with FreeRTOS in the Code Composer Studio IDE.
 
 Check out the demonstration video as well as other videos on the channel. Please like and subscribe for future videos. 
+
+MicroMaster Mini Interface Demonstration (early version)
 https://www.youtube.com/watch?v=Cxuv18Nnr2U&t=313s
+
+Controlling Neopixels with the MicroMaster Mini
+https://www.youtube.com/watch?v=bUdS3NqcU9w&t=137s
 
 # Test and Build
 The firmware will run on a TM4C123GXL launchpad. The following steps are the easiest way to test and build the MicroMaster Mini on a launchpad for testing. 

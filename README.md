@@ -16,6 +16,17 @@
 Check out the demonstration video as well as other videos on the channel. Please like and subscribe for future videos. 
 https://www.youtube.com/watch?v=Cxuv18Nnr2U&t=313s
 
+# Test and Build
+The firmware will run on a TM4C123GXL launchpad. The following steps are the easiest way to test and build the MicroMaster Mini on a launchpad for testing. 
+
+* Connect both USB ports to the host computer.
+* Flash the .out file in the Debug directory to the TM4C123GXL using LMFlash (found on TI website)
+* Set up a virtual COM port with the TM4C using Putty
+* Start testing the MicroMaster Mini firmware! 
+* Find a bug and report an issue.
+
+Note: Some resistors will have to be removed from the launchpad to get full functionality (R9 and R10). The I2C sniffer will not work unless these resistors are removed.
+
 # Developers
 The MicroMaster Mini is still very much under development. The purpose of making this project open sourced is to get the community involved. There is still a ton of work to do. If you have any of the following skills and would like to contribute, please email me at stephan@micromaster.io. I am very responsive, so don't hesitate to reach out. 
 

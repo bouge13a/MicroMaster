@@ -5,6 +5,8 @@
  *      Author: steph
  */
 
+#pragma once
+
 #ifndef PINS_ADC_HPP_
 #define PINS_ADC_HPP_
 

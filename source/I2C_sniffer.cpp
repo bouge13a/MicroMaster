@@ -154,10 +154,6 @@ I2cSniffer::I2cSniffer(GpiObj* gpo_obj) : ConsolePage("I2C Sniffer",
     IntEnable(INT_I2C0);
     I2CSlaveEnable(I2C0_BASE);
 
-//    I2CSlaveInit(I2C0_BASE, 0x00);
-//
-//    I2CSlaveDisable(I2C0_BASE);
-
 } // End I2cSniffer
 
 void I2cSniffer::taskfunwrapper(void* parm){
@@ -218,6 +214,14 @@ void I2cSniffer::draw_reset(void) {
 
 void I2cSniffer::draw_help(void) {
 
-    UARTprintf("THIS IS A HELP PAGE\r\n");
+    UARTprintf("Description:\r\n");
+    UARTprintf("    This is an I2C and SMBus sniffer, which detects and prints out transactions\r\n");
+    UARTprintf("to the screen, of an operating I2C or SMBus bus.\r\n\r\n");
+    UARTprintf("Operation:\r\n");
+    UARTprintf("    Connect the GND, SDA and SCL sniffer pins to the SMBus.\r\n\r\n");
+    UARTprintf("Troubleshooting:\r\n");
+    UARTprintf("    Make sure that the SCL sniffer, SDA sniffer, and GND are properly connected.\r\n");
+    UARTprintf("WARNING: the MicroMaster Mini cannot sniff its own transactions. An attempt to do\r\n");
+    UARTprintf("this will crash the program");
 
 }

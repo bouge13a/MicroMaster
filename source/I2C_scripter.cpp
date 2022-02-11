@@ -260,4 +260,18 @@ void I2cScripterTask::draw_reset(void) {
 
 void I2cScripterTask::draw_help(void) {
 
+    UARTprintf("Description:\r\n");
+    UARTprintf("    This page allows you only to transmit messages over I2C or SMBus. This page\r\n");
+    UARTprintf("is useful for sending configuration messages to I2C and SMBus devices.\r\n\r\n");
+    UARTprintf("Operation:\r\n");
+    UARTprintf("  Transmit messages in the format [xx xx xx ...] starting with the xx 7 bit address.\r\n");
+    UARTprintf("Troubleshooting:\r\n");
+    UARTprintf("    Make sure that the SCL, SDA, GND and power lines are properly connected.\r\n");
+    UARTprintf("Observe the bus voltage and make sure that the PS voltage you configured at the\r\n");
+    UARTprintf("start up menu was configured properly. Ensure that you have pull-up resistors\r\n");
+    UARTprintf("on the I2C bus, either from the configuration menu or external, and they are the\r\n");
+    UARTprintf("proper value. If all else fails, revert to the I2C search page to make sure \r\n");
+    UARTprintf("the device is detected on the bus.");
+
+
 } // End I2cScripterTask::draw_help

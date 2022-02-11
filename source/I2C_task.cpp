@@ -800,6 +800,24 @@ void I2cTask::reset_monitor_index(void) {
 
 void I2cTask::draw_help(void) {
 
+    UARTprintf("Description:\r\n");
+    UARTprintf("    This is the I2C command page that allows you to send and receive messages\r\n");
+    UARTprintf("over I2C and SMBUS. It also allows you to sequence I2C and SMBUS transactions.\r\n");
+    UARTprintf("The data received by a sequenced transaction is visible on the next page\r\n\r\n");
+    UARTprintf("Operation:\r\n");
+    UARTprintf("    Press 'y' or 'n' to indicate whether the message should be sequenced or not.\r\n");
+    UARTprintf("Enter the 7 bit address in hexadecimal. Enter the number of bytes to transmit. \r\n");
+    UARTprintf("Enter the transmit bytes in hexadecimal. Enter the number of receive bytes. Press\r\n");
+    UARTprintf("spacebar to receive a message. IF the message was sequenced, press tab to view the\r\n");
+    UARTprintf("streaming receive data on the next page.\r\n\r\n");
+    UARTprintf("Troubleshooting:\r\n");
+    UARTprintf("    Make sure that the SCL, SDA, GND and power lines are properly connected.\r\n");
+    UARTprintf("Observe the bus voltage and make sure that the PS voltage you configured at the\r\n");
+    UARTprintf("start up menu was configured properly. Ensure that you have pull-up resistors\r\n");
+    UARTprintf("on the I2C bus, either from the configuration menu or external, and they are the\r\n");
+    UARTprintf("proper value. If all else fails, revert to the I2C search page to make sure \r\n");
+    UARTprintf("the device is detected on the bus.");
+
 }
 
 void I2cTask::draw_reset(void) {

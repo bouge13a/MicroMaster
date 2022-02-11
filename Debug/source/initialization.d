@@ -126,6 +126,7 @@ source/initialization.obj: ../source/FTDI_emulator.hpp
 source/initialization.obj: ../source/neopixel_command.hpp
 source/initialization.obj: ../source/neopixel_rgb.hpp
 source/initialization.obj: ../source/neopixel_menu.hpp
+source/initialization.obj: ../source/pin_list_page.hpp
 
 ../source/initialization.cpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/source/console_uart.hpp: 
@@ -253,3 +254,4 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/can.h:
 ../source/neopixel_command.hpp: 
 ../source/neopixel_rgb.hpp: 
 ../source/neopixel_menu.hpp: 
+../source/pin_list_page.hpp: 

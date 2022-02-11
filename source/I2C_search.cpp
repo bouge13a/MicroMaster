@@ -115,6 +115,18 @@ void I2cSnifferTask::draw_input(int character) {
 
 void I2cSnifferTask::draw_help(void) {
 
+    UARTprintf("Description:\r\n");
+    UARTprintf("    This feature allows you to search all of the 7 bit addresses\r\n");
+    UARTprintf("on a SMBUS or I2C bus.\r\n\r\n");
+    UARTprintf("Operation:\r\n");
+    UARTprintf("    Press space-bar. The red addresses are not detected on the bus and\r\n");
+    UARTprintf("and the green addresses are detected\r\n\r\n");
+    UARTprintf("Troubleshooting:\r\n");
+    UARTprintf("    Make sure that the SCL, SDA, GND and power lines are properly connected.\r\n");
+    UARTprintf("Observe the bus voltage and make sure that the PS voltage you configured at the\r\n");
+    UARTprintf("start up menu was configured properly. Ensure that you have pull-up resistors\r\n");
+    UARTprintf("on the I2C bus and they are the proper value.\r\n");
+
 }
 
 void I2cSnifferTask::draw_reset(void) {

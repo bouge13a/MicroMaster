@@ -146,6 +146,8 @@ void MenuOptions::draw_input(int character) {
 
 void MenuOptions::draw_help(void) {
 
+    UARTprintf("This is the configuration menu, use the up and down arrow keys to select\r\n a mode and the left and right arrow keys to change it.");
+
 } // End MenuOptions::draw_data
 
 void MenuOptions::draw_reset(void) {

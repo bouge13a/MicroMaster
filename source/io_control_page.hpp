@@ -24,15 +24,15 @@ public:
               GpiObj* gpi_obj,
               AdcTask* adc_obj);
 
+    gpos_t* gpo_struct;
+    gpis_t* gpi_struct;
+    adc_pins_t* adc_struct;
+
 private :
 
     GpoObj* gpo_obj;
     GpiObj* gpi_obj;
     AdcTask* adc_task;
-
-    gpos_t* gpo_struct;
-    gpis_t* gpi_struct;
-    adc_pins_t* adc_struct;
 
     uint32_t gpo_index;
 

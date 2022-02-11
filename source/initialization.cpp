@@ -44,6 +44,7 @@
 #include "neopixel_command.hpp"
 #include "neopixel_rgb.hpp"
 #include "neopixel_menu.hpp"
+#include "pin_list_page.hpp"
 
 static ConsoleTask* console_task = NULL;
 static uint32_t power_idx = 0;
@@ -116,6 +117,8 @@ PostScheduler::PostScheduler(void) {
 
     NumConverter* num_converter = new NumConverter();
 
+    PinPage* pin_page = new PinPage();
+
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
                                         power_on_menu,
@@ -173,6 +176,7 @@ PostScheduler::PostScheduler(void) {
     console_task->add_page(can_sniffer);
     console_task->add_page(pwm_page);
     console_task->add_page(num_converter);
+    console_task->add_page(pin_page);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
 

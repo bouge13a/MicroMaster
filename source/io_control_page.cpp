@@ -181,10 +181,19 @@ void IoCtlPage::draw_input(int character) {
 
 void IoCtlPage::draw_help(void) {
 
+    UARTprintf("Description: \r\n");
+    UARTprintf("    This page allows you to manipulate digital outputs, monitor digital inputs,\r\n");
+    UARTprintf("and monitor ADC values. These pins only operate at 3v3 regardless of the power\r\n");
+    UARTprintf("supply. Observe the pin list page to see which pins are which\r\n\r\n");
+    UARTprintf("Operation:\r\n");
+    UARTprintf("    Use the up and down arrow keys to select a digital output and left and right\r\n");
+    UARTprintf("arrow keys to toggle them.");
+
+
 }
 
 void IoCtlPage::draw_reset(void) {
 
-    // Enable the interrupt for ADC0 sequence 0 on the processor (NVIC).
+    // Disable the interrupt for ADC0 sequence 0 on the processor (NVIC).
     IntDisable(INT_ADC0SS0);
 }

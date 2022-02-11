@@ -38,6 +38,7 @@ CPP_SRCS += \
 ../source/number_converter.cpp \
 ../source/one_wire_command.cpp \
 ../source/one_wire_search.cpp \
+../source/pin_list_page.cpp \
 ../source/task_manager.cpp \
 ../source/test_task.cpp \
 ../source/text_controls.cpp \
@@ -93,6 +94,7 @@ OBJS += \
 ./source/number_converter.obj \
 ./source/one_wire_command.obj \
 ./source/one_wire_search.obj \
+./source/pin_list_page.obj \
 ./source/task_manager.obj \
 ./source/test_task.obj \
 ./source/text_controls.obj \
@@ -133,6 +135,7 @@ CPP_DEPS += \
 ./source/number_converter.d \
 ./source/one_wire_command.d \
 ./source/one_wire_search.d \
+./source/pin_list_page.d \
 ./source/task_manager.d \
 ./source/test_task.d \
 ./source/text_controls.d \
@@ -173,6 +176,7 @@ OBJS__QUOTED += \
 "source\number_converter.obj" \
 "source\one_wire_command.obj" \
 "source\one_wire_search.obj" \
+"source\pin_list_page.obj" \
 "source\task_manager.obj" \
 "source\test_task.obj" \
 "source\text_controls.obj" \
@@ -219,6 +223,7 @@ CPP_DEPS__QUOTED += \
 "source\number_converter.d" \
 "source\one_wire_command.d" \
 "source\one_wire_search.d" \
+"source\pin_list_page.d" \
 "source\task_manager.d" \
 "source\test_task.d" \
 "source\text_controls.d" \
@@ -257,6 +262,7 @@ CPP_SRCS__QUOTED += \
 "../source/number_converter.cpp" \
 "../source/one_wire_command.cpp" \
 "../source/one_wire_search.cpp" \
+"../source/pin_list_page.cpp" \
 "../source/task_manager.cpp" \
 "../source/test_task.cpp" \
 "../source/text_controls.cpp" \

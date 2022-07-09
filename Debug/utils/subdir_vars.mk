@@ -6,7 +6,7 @@ SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.c \
+../utils/uartstdio.c \
 C:/ti/TivaWare_C_Series-2.2.0.295/utils/ustdlib.c 
 
 C_DEPS += \
@@ -26,7 +26,7 @@ C_DEPS__QUOTED += \
 "utils\ustdlib.d" 
 
 C_SRCS__QUOTED += \
-"C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.c" \
+"../utils/uartstdio.c" \
 "C:/ti/TivaWare_C_Series-2.2.0.295/utils/ustdlib.c" 
 
 

@@ -1,6 +1,6 @@
 # FIXED
 
-utils/uartstdio.obj: C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.c
+utils/uartstdio.obj: ../utils/uartstdio.c
 utils/uartstdio.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h
 utils/uartstdio.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h
 utils/uartstdio.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h
@@ -23,7 +23,7 @@ utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/
 utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom_map.h
 utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h
 utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/uart.h
-utils/uartstdio.obj: C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.h
+utils/uartstdio.obj: ../utils/uartstdio.h
 utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h
 utils/uartstdio.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h
 utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/source/FreeRTOSConfig.h
@@ -37,7 +37,7 @@ utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/i
 utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/list.h
 utils/uartstdio.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/queue.h
 
-C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.c: 
+../utils/uartstdio.c: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/_ti_config.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/linkage.h: 
@@ -60,7 +60,7 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/rom_map.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/sysctl.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/driverlib/uart.h: 
-C:/ti/TivaWare_C_Series-2.2.0.295/utils/uartstdio.h: 
+../utils/uartstdio.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/FreeRTOS.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stddef.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/source/FreeRTOSConfig.h: 

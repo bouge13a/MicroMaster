@@ -115,5 +115,12 @@ FreeRTOS \
 FreeRTOS/portable/CCS/ARM_CM4F \
 driverlib \
 source \
+usblib/ccs/Debug \
+usblib/device \
+usblib/ewarm/Exe \
+usblib/gcc \
+usblib/host \
+usblib/rvmdk \
+usblib \
 utils \
 

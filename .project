@@ -34,7 +34,7 @@
 	<variableList>
 		<variable>
 			<name>SW_ROOT</name>
-			<value>$%7BTI_PRODUCTS_DIR%7D/TivaWare_C_Series-2.2.0.295</value>
+			<value>$%7BTI_PRODUCTS_DIR%7D/tivaware_2_2_0_295</value>
 		</variable>
 	</variableList>
 </projectDescription>

@@ -86,7 +86,7 @@ source/io_control_page.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.L
 source/io_control_page.obj: ../source/GPOs.hpp
 source/io_control_page.obj: ../source/board_pin_defs.hpp
 source/io_control_page.obj: ../source/GPIs.hpp
-source/io_control_page.obj: ../source/Adc_task.hpp
+source/io_control_page.obj: ../source/ADC_task.hpp
 source/io_control_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h
 source/io_control_page.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h
 source/io_control_page.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
@@ -180,7 +180,7 @@ C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdbool.h:
 ../source/GPOs.hpp: 
 ../source/board_pin_defs.hpp: 
 ../source/GPIs.hpp: 
-../source/Adc_task.hpp: 
+../source/ADC_task.hpp: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/FreeRTOS/include/semphr.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/uartstdio.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 

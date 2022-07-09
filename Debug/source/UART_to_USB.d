@@ -57,7 +57,7 @@ source/UART_to_USB.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/
 source/UART_to_USB.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/device/usbdevice.h
 source/UART_to_USB.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/device/usbdevicepriv.h
 source/UART_to_USB.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/device/usbdcdc.h
-source/UART_to_USB.obj: C:/ti/TivaWare_C_Series-2.2.0.295/utils/ustdlib.h
+source/UART_to_USB.obj: C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/ustdlib.h
 source/UART_to_USB.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h
 source/UART_to_USB.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/time.h
 source/UART_to_USB.obj: C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/abi_prefix.h
@@ -122,7 +122,7 @@ C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/usb-ids.h:
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/device/usbdevice.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/device/usbdevicepriv.h: 
 C:/Users/steph/workspace_v10/MicroMasterTM4C123G/usblib/device/usbdcdc.h: 
-C:/ti/TivaWare_C_Series-2.2.0.295/utils/ustdlib.h: 
+C:/Users/steph/workspace_v10/MicroMasterTM4C123G/utils/ustdlib.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/stdarg.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/time.h: 
 C:/ti/ccs1020/ccs/tools/compiler/ti-cgt-arm_20.2.2.LTS/include/abi_prefix.h: 

@@ -15,7 +15,7 @@
 #include "console_task.hpp"
 #include "GPOs.hpp"
 #include "GPIs.hpp"
-#include "Adc_task.hpp"
+#include "ADC_task.hpp"
 #include "board_pin_defs.hpp"
 
 class IoCtlPage : public ConsolePage {

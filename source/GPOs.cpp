@@ -48,28 +48,22 @@ void sel_power_supply(uint32_t index) {
 
     switch(index) {
     case 0 :
-        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_ANALOG);
-        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_6, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD);
-        GPIOPadConfigSet(GPIO_PORTE_AHB_BASE, GPIO_PIN_5, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_ANALOG);
-        gpo_obj->set(psel_1v8_pin, 0);
-        gpo_obj->set(psel_3v3_pin, 1);
-        gpo_obj->set(psel_5v_pin, 0);
+        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_ANALOG);
+        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_6, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+        GPIOPadConfigSet(GPIO_PORTE_AHB_BASE, GPIO_PIN_5, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_ANALOG);
+        gpo_obj->set(psel_3v3_pin, 0);
         break;
     case 1:
-        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_ANALOG);
-        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_6, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_ANALOG);
-        GPIOPadConfigSet(GPIO_PORTE_AHB_BASE, GPIO_PIN_5, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD);
-        gpo_obj->set(psel_1v8_pin, 0);
-        gpo_obj->set(psel_3v3_pin, 0);
-        gpo_obj->set(psel_5v_pin, 1);
+        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_ANALOG);
+        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_6, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_ANALOG);
+        GPIOPadConfigSet(GPIO_PORTE_AHB_BASE, GPIO_PIN_5, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+        gpo_obj->set(psel_5v_pin, 0);
         break;
     case 2:
-        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_STD);
-        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_6, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_ANALOG);
-        GPIOPadConfigSet(GPIO_PORTE_AHB_BASE, GPIO_PIN_5, GPIO_STRENGTH_8MA, GPIO_PIN_TYPE_ANALOG);
-        gpo_obj->set(psel_1v8_pin, 1);
-        gpo_obj->set(psel_3v3_pin, 0);
-        gpo_obj->set(psel_5v_pin, 0);
+        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_2, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_STD);
+        GPIOPadConfigSet(GPIO_PORTD_BASE, GPIO_PIN_6, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_ANALOG);
+        GPIOPadConfigSet(GPIO_PORTE_AHB_BASE, GPIO_PIN_5, GPIO_STRENGTH_2MA, GPIO_PIN_TYPE_ANALOG);
+        gpo_obj->set(psel_1v8_pin, 0);
         break;
     default :
         assert(0);

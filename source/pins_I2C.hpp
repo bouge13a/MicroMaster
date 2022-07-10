@@ -30,5 +30,17 @@ static i2c_config_t i2c0 = {
     .gpio_base       = GPIO_PORTA_BASE,
 };
 
+static i2c_config_t i2c3 = {
+    .name            = "I2C3",
+    .i2c_peripheral  = SYSCTL_PERIPH_I2C3,
+    .gpio_peripheral = SYSCTL_PERIPH_GPIOD,
+    .i2c_scl_pin     = GPIO_PD0_I2C3SCL,
+    .i2c_data_pin    = GPIO_PD1_I2C3SDA,
+    .base            = I2C3_BASE,
+    .gpio_scl_pin    = GPIO_PIN_0,
+    .gpio_data_pin   = GPIO_PIN_1,
+    .gpio_base       = GPIO_PORTD_BASE,
+};
+
 
 #endif /* PINS_I2C_HPP_ */

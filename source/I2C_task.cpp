@@ -21,11 +21,9 @@
 
 #include "uartstdio.h"
 
-
+static const uint32_t BOTH_LINES_UP = 0x3;
 static const uint32_t NUM_OF_TX_BYTES = 10;
 static const uint32_t NUM_OF_RX_BYTES = 10;
-
-static const uint32_t BOTH_LINES_UP = 0x3;
 
 static volatile bool error_flag = false;
 static volatile i2c_errors_e i2c_error_status = NONE;

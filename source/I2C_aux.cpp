@@ -17,6 +17,10 @@
 static SemaphoreHandle_t nine_clk_semphr = NULL;
 static const uint32_t BOTH_LINES_UP = 0x3;
 
+I2cMsgAux::I2cMsgAux(void) {
+    semphr = nullptr;
+}
+
 I2cAux::I2cAux(i2c_config_t* config) {
 
    this->logger = ErrorLogger::get_instance();
@@ -243,6 +247,10 @@ void I2cAux::task(I2cAux* this_ptr) {
 
             this_ptr->i2c_msg->state = i2c_finished;
 
+            if (i2c_msg->semphr != nullptr) {
+                xSemaphoreGive(i2c_msg->semphr);
+            }
+
             this_ptr->i2c_state = I2C_IDLE;
             break;
 
@@ -291,6 +299,10 @@ void I2cAux::task(I2cAux* this_ptr) {
                     this_ptr->nine_clk_count = 0;
 
                     this_ptr->i2c_state = I2C_IDLE;
+
+                    if (i2c_msg->semphr != nullptr) {
+                        xSemaphoreGive(i2c_msg->semphr);
+                    }
 
                 }
 

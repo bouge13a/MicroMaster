@@ -8,10 +8,15 @@
 #ifndef SOURCE_I2C_AUX_HPP_
 #define SOURCE_I2C_AUX_HPP_
 
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 #include "I2C_task.hpp"
 
 class I2cMsgAux {
 public :
+    I2cMsgAux(void);
     uint8_t address;
     uint8_t* tx_data;
     uint32_t num_tx_bytes;
@@ -19,6 +24,7 @@ public :
     uint32_t num_rx_bytes;
     i2c_msg_state_e state;
     i2c_errors_e errors;
+    SemaphoreHandle_t semphr;
 };
 
 #ifdef __cplusplus

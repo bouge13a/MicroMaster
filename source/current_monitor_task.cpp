@@ -12,8 +12,8 @@
 
 static uint8_t INA219_ADDRESS = 0x40u;                       // 1000000 (A0+A1=GND)
 
-static uint8_t INA_CALIB_DATA[]   = {0x00u, 0x10u, 0x05u};
-static uint8_t INA_CONFIG_DATA[]  = {0xDFu, 0x3Du, 0x00u};
+static uint8_t INA_CALIB_DATA[]   = {0x05u, 0x10u, 0x00u};
+static uint8_t INA_CONFIG_DATA[]  = {0x00u, 0x3Du, 0xDFu};
 static uint8_t INA_CURRENT_DATA[] = {0x04u};
 
 void CurrentMonitorTask::taskfunwrapper(void* parm){
@@ -79,9 +79,9 @@ void CurrentMonitorTask::draw_page(void) {
 }
 void CurrentMonitorTask::draw_data(void) {
 
-    uint16_t current = 0u;
+    int16_t current = 0u;
     current = this->raw_current[0];
-    current |= static_cast<uint16_t>(this->raw_current[1]) << 4;
+    current |= static_cast<int16_t>(this->raw_current[1]) << 8;
     UARTprintf("%4d\r", current);
 
 }

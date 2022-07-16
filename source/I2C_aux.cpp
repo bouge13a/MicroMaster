@@ -48,7 +48,7 @@ I2cAux::I2cAux(i2c_config_t* config) {
 
     I2CMasterTimeoutSet(config->base, 0x7d);
 
-    this->i2c_msg_queue = xQueueCreate(20, sizeof(I2cMsg*));
+    this->i2c_msg_queue = xQueueCreate(20, sizeof(I2cMsgAux*));
 
     nine_clk_semphr = xSemaphoreCreateBinary();
     this->nine_clk_count = 0;
@@ -59,9 +59,12 @@ I2cAux::I2cAux(i2c_config_t* config) {
     this->clk_tout_err = logger->create_error("I2C3", "Clock timeout");
     this->clk_tout_err = logger->create_error("I2C3", "Line state low");
 
+    this->bytes_rxed = 0;
+    this->bytes_txed = 0;
+
 } // End I2cAux::I2cAux
 
-bool I2cAux::add_i2c_msg(I2cMsg* i2c_msg_ptr) {
+bool I2cAux::add_i2c_msg(I2cMsgAux* i2c_msg_ptr) {
     return xQueueSend(this->i2c_msg_queue, &i2c_msg_ptr, 0);
 } // End I2cAux::add_i2c_msg
 
@@ -70,8 +73,6 @@ void I2cAux::taskfunwrapper(void* parm){
 } // End I2cAux::taskfunwrapper
 
 void I2cAux::task(I2cAux* this_ptr) {
-
-    uint32_t message_time = 0;
 
     while(1) {
 
@@ -91,8 +92,8 @@ void I2cAux::task(I2cAux* this_ptr) {
 
              this_ptr->i2c_msg->state = i2c_processing;
             this_ptr->i2c_msg->errors = NONE;
-            this_ptr->i2c_msg->bytes_rxed = 0;
-            this_ptr->i2c_msg->bytes_txed = 0;
+            this_ptr->bytes_rxed = 0;
+            this_ptr->bytes_txed = 0;
 
             if(this_ptr->i2c_msg->num_tx_bytes > 0 ) {
 
@@ -115,7 +116,7 @@ void I2cAux::task(I2cAux* this_ptr) {
 
                 I2CMasterDataPut(this_ptr->config->base, this_ptr->i2c_msg->tx_data[0]);
                 I2CMasterControl(this_ptr->config->base, I2C_MASTER_CMD_SINGLE_SEND);
-                this_ptr->i2c_msg->bytes_txed++;
+                this_ptr->bytes_txed++;
 
                 if (this_ptr->i2c_msg->num_rx_bytes > 0 ) {
                     this_ptr->i2c_state = I2C_RECEIVE_START;
@@ -127,7 +128,7 @@ void I2cAux::task(I2cAux* this_ptr) {
 
                 I2CMasterDataPut(this_ptr->config->base, this_ptr->i2c_msg->tx_data[0]);
                 I2CMasterControl(this_ptr->config->base, I2C_MASTER_CMD_BURST_SEND_START);
-                this_ptr->i2c_msg->bytes_txed++;
+                this_ptr->bytes_txed++;
                 this_ptr->i2c_state = I2C_SEND;
 
             } else if (this_ptr->i2c_msg->num_rx_bytes >= 1) {
@@ -147,11 +148,11 @@ void I2cAux::task(I2cAux* this_ptr) {
                 break;
             }
 
-            if (1 == this_ptr->i2c_msg->num_tx_bytes - this_ptr->i2c_msg->bytes_txed) {
+            if (1 == this_ptr->i2c_msg->num_tx_bytes - this_ptr->bytes_txed) {
 
-                I2CMasterDataPut(this_ptr->config->base, this_ptr->i2c_msg->tx_data[i2c_msg->bytes_txed]);
+                I2CMasterDataPut(this_ptr->config->base, this_ptr->i2c_msg->tx_data[this_ptr->bytes_txed]);
                 I2CMasterControl(this_ptr->config->base, I2C_MASTER_CMD_BURST_SEND_FINISH);
-                this_ptr->i2c_msg->bytes_txed++;
+                this_ptr->bytes_txed++;
 
                 if (0 == this_ptr->i2c_msg->num_rx_bytes) {
 
@@ -163,11 +164,11 @@ void I2cAux::task(I2cAux* this_ptr) {
 
                 }
 
-            } else if (1 < this_ptr->i2c_msg->num_tx_bytes - this_ptr->i2c_msg->bytes_txed) {
+            } else if (1 < this_ptr->i2c_msg->num_tx_bytes - this_ptr->bytes_txed) {
 
-                I2CMasterDataPut(this_ptr->config->base, this_ptr->i2c_msg->tx_data[i2c_msg->bytes_txed]);
+                I2CMasterDataPut(this_ptr->config->base, this_ptr->i2c_msg->tx_data[this_ptr->bytes_txed]);
                 I2CMasterControl(this_ptr->config->base, I2C_MASTER_CMD_BURST_SEND_CONT);
-                this_ptr->i2c_msg->bytes_txed++;
+                this_ptr->bytes_txed++;
                 this_ptr->i2c_state = I2C_SEND;
 
             }
@@ -210,20 +211,20 @@ void I2cAux::task(I2cAux* this_ptr) {
                 break;
             }
 
-            if (1 == this_ptr->i2c_msg->num_rx_bytes - this_ptr->i2c_msg->bytes_rxed) {
+            if (1 == this_ptr->i2c_msg->num_rx_bytes - this_ptr->bytes_rxed) {
 
-                this_ptr->i2c_msg->rx_data[this_ptr->i2c_msg->num_rx_bytes - ++this_ptr->i2c_msg->bytes_rxed ] = I2CMasterDataGet(this_ptr->config->base);
+                this_ptr->i2c_msg->rx_data[this_ptr->i2c_msg->num_rx_bytes - ++this_ptr->bytes_rxed ] = I2CMasterDataGet(this_ptr->config->base);
                 this_ptr->i2c_state = I2C_FINISH;
 
-            } else if (2 == this_ptr->i2c_msg->num_rx_bytes - this_ptr->i2c_msg->bytes_rxed) {
+            } else if (2 == this_ptr->i2c_msg->num_rx_bytes - this_ptr->bytes_rxed) {
 
-                i2c_msg->rx_data[this_ptr->i2c_msg->num_rx_bytes - ++this_ptr->i2c_msg->bytes_rxed] = I2CMasterDataGet(this_ptr->config->base);
+                i2c_msg->rx_data[this_ptr->i2c_msg->num_rx_bytes - ++this_ptr->bytes_rxed] = I2CMasterDataGet(this_ptr->config->base);
                 I2CMasterControl(this_ptr->config->base, I2C_MASTER_CMD_BURST_RECEIVE_FINISH);
                 this_ptr->i2c_state = I2C_RECEIVE;
 
-            } else if (this_ptr->i2c_msg->num_rx_bytes - this_ptr->i2c_msg->bytes_rxed > 2 ) {
+            } else if (this_ptr->i2c_msg->num_rx_bytes - this_ptr->bytes_rxed > 2 ) {
 
-                i2c_msg->rx_data[this_ptr->i2c_msg->num_rx_bytes - ++this_ptr->i2c_msg->bytes_rxed] = I2CMasterDataGet(this_ptr->config->base);
+                i2c_msg->rx_data[this_ptr->i2c_msg->num_rx_bytes - ++this_ptr->bytes_rxed] = I2CMasterDataGet(this_ptr->config->base);
                 I2CMasterControl(this_ptr->config->base, I2C_MASTER_CMD_BURST_RECEIVE_CONT);
                 this_ptr->i2c_state = I2C_RECEIVE;
 
@@ -246,8 +247,6 @@ void I2cAux::task(I2cAux* this_ptr) {
             break;
 
         case I2C_NINE_CLOCK :
-
-            if (this_ptr->i2c_msg->type != search_msg) {
 
                 if(this_ptr->nine_clk_count == 0) {
                     SysCtlPeripheralDisable(this_ptr->config->i2c_peripheral);
@@ -294,9 +293,6 @@ void I2cAux::task(I2cAux* this_ptr) {
                     this_ptr->i2c_state = I2C_IDLE;
 
                 }
-            } else {
-                this_ptr->i2c_state = I2C_IDLE;
-            }
 
             break;
 
@@ -320,9 +316,8 @@ bool I2cAux::log_errors(I2cAux* this_ptr) {
 
 
     if( I2C_MASTER_ERR_DATA_ACK  == (status &  I2C_MASTER_ERR_DATA_ACK )) {
-        if (this_ptr->i2c_msg->type != search_msg) {
-            this_ptr->logger->set_error(data_ack_err);
-        }
+
+        this_ptr->logger->set_error(data_ack_err);
         this_ptr->i2c_msg->errors = DATA_NACK_ERR;
     }
 
@@ -335,10 +330,7 @@ bool I2cAux::log_errors(I2cAux* this_ptr) {
 
     if(I2C_MASTER_ERR_ADDR_ACK == (status & I2C_MASTER_ERR_ADDR_ACK)) {
 
-        if (this_ptr->i2c_msg->type != search_msg) {
-            this_ptr->logger->set_error(addr_ack_err);
-        }
-
+        this_ptr->logger->set_error(addr_ack_err);
         this_ptr->i2c_msg->errors = ADDR_NACK_ERR;
     }
 

@@ -45,6 +45,8 @@
 #include "neopixel_rgb.hpp"
 #include "neopixel_menu.hpp"
 #include "pin_list_page.hpp"
+#include "I2C_aux.hpp"
+#include "current_monitor_task.hpp"
 
 static ConsoleTask* console_task = NULL;
 static uint32_t power_idx = 0;
@@ -119,6 +121,10 @@ PostScheduler::PostScheduler(void) {
 
     PinPage* pin_page = new PinPage();
 
+    I2cAux* i2c_aux = new I2cAux(&i2c3);
+
+    CurrentMonitorTask* current_monitor = new CurrentMonitorTask(i2c_aux);
+
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
                                         power_on_menu,
@@ -177,6 +183,7 @@ PostScheduler::PostScheduler(void) {
     console_task->add_page(pwm_page);
     console_task->add_page(num_converter);
     console_task->add_page(pin_page);
+    console_task->add_page(current_monitor);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
 
@@ -196,6 +203,7 @@ NeopixelSuite::NeopixelSuite(void) {
     NeopixelRgb* neopixel_rgb = new NeopixelRgb(neopixel_command);
     NumConverter* num_converter = new NumConverter();
     TaskManager* task_manager = new TaskManager();
+    new I2cAux(&i2c3);
 
     console_task->add_page(neopixel_command);
     console_task->add_page(neopixel_rgb);

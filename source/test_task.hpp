@@ -26,8 +26,6 @@ extern "C" {
         static void taskfunwrapper(void* parm);
         uint32_t test;
 
-
-
         void draw_page(void);
         void draw_data(void);
         void draw_input(int character);

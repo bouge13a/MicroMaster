@@ -14,5 +14,5 @@
 	<filesToOpen value="main.c"/>
 	<isTargetManual value="false"/>
 	<origin value="/home/can/MicroMaster"/>
-	<connection value="common/targetdb/connections/TIXDS110_Connection.xml"/>
+	<connection value="common/targetdb/connections/Stellaris_ICDI_Connection.xml"/>
 </projectOptions>

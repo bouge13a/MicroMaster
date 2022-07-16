@@ -241,28 +241,36 @@ void ConsoleTask::ftdi_task(ConsoleTask* this_ptr) {
 void ConsoleTask::task(ConsoleTask* this_ptr) {
 
     uint8_t rx_char = 0;
+    bool entered = false;
 
-    xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
+    while (!entered) {
+        xQueueReceive(this_ptr->uart_rx_q, &rx_char, portMAX_DELAY);
 
-    rx_char = this_ptr->draw_start_page(this_ptr);
+        rx_char = this_ptr->draw_start_page(this_ptr);
 
-    switch(rx_char) {
-    case 'a':
-    case 'A':
-        new PostScheduler();
-        break;
-    case 'b':
-    case 'B':
-        new FtdiProgram();
-        this_ptr->ftdi_task(this_ptr);
-        break;
-    case 'c':
-    case 'C':
-        new NeopixelSuite();
-        break;
+        switch(rx_char) {
+        case 'a':
+        case 'A':
+            new PostScheduler();
+            entered = true;
+            break;
+        case 'b':
+        case 'B':
+            new FtdiProgram();
+            this_ptr->ftdi_task(this_ptr);
+            entered = true;
+            break;
+        case 'c':
+        case 'C':
+            new NeopixelSuite();
+            entered = true;
+            break;
 
-    default :
-        break;
+        default :
+            entered = false;
+            this->send_bell();
+            break;
+        }
     }
 
 

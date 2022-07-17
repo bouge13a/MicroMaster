@@ -95,7 +95,7 @@ void I2cAux::task(I2cAux* this_ptr) {
                 break;
             }
 
-             this_ptr->i2c_msg->state = i2c_processing;
+            this_ptr->i2c_msg->state = i2c_processing;
             this_ptr->i2c_msg->errors = NONE;
             this_ptr->bytes_rxed = 0;
             this_ptr->bytes_txed = 0;

@@ -116,13 +116,29 @@ void ConsoleTask::draw_ps_menu(uint32_t index) {
 
 } // End ConsoleTask::draw_ps_menu
 
-
+static const uint32_t MACRO_ROW = 1;
+static const uint32_t MACRO_COL = 30;
 uint32_t ConsoleTask::draw_start_page(ConsoleTask* this_ptr) {
 
     uint8_t rx_char=0;
     uint32_t menu_index = 0;
 
     TextCtl::clear_terminal();
+
+    TextCtl::cursor_pos(MACRO_ROW, MACRO_COL);
+    UARTprintf("  ====-o--     ---\n");
+    TextCtl::cursor_pos(MACRO_ROW+1, MACRO_COL);
+    UARTprintf("           \\  / o |\n");
+    TextCtl::cursor_pos(MACRO_ROW+2, MACRO_COL);
+    UARTprintf("====---o-|\\ \\/ /o |\n");
+    TextCtl::cursor_pos(MACRO_ROW+3, MACRO_COL);
+    UARTprintf("         | \\  / | |\n");
+    TextCtl::cursor_pos(MACRO_ROW+4, MACRO_COL);
+    UARTprintf(" ====--o-|  \\/  | |\n");
+    TextCtl::cursor_pos(MACRO_ROW+5, MACRO_COL);
+    UARTprintf("         |      | |\n");
+    TextCtl::cursor_pos(MACRO_ROW+6, MACRO_COL);
+    UARTprintf("  ====-o-|      |_|\n");
 
     TextCtl::cursor_pos(9, 30);
     UARTprintf("MicroMaster Mini Version 0");

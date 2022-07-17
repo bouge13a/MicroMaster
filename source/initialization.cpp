@@ -198,6 +198,7 @@ PostScheduler::PostScheduler(void) {
 
     display_task->add_display_update(current_monitor_task);
     display_task->add_display_update(menu_page);
+    display_task->add_display_update(error_logger);
 
 }
 
@@ -209,13 +210,11 @@ FtdiProgram::FtdiProgram(void) {
 
 NeopixelSuite::NeopixelSuite(void) {
 
-
     NeopixelCtl* neopixel_command = new NeopixelCtl();
     NeopixelMenu* neopixel_menu = new NeopixelMenu(neopixel_command);
     NeopixelRgb* neopixel_rgb = new NeopixelRgb(neopixel_command);
     NumConverter* num_converter = new NumConverter();
     TaskManager* task_manager = new TaskManager();
-    new I2cAux(&i2c3);
 
     console_task->add_page(neopixel_command);
     console_task->add_page(neopixel_rgb);

@@ -329,26 +329,26 @@ bool I2cAux::log_errors(I2cAux* this_ptr) {
 
     if( I2C_MASTER_ERR_DATA_ACK  == (status &  I2C_MASTER_ERR_DATA_ACK )) {
 
-        this_ptr->logger->set_error(data_ack_err);
+        this_ptr->logger->set_error(this_ptr->data_ack_err);
         this_ptr->i2c_msg->errors = DATA_NACK_ERR;
     }
 
 
     if(I2C_MASTER_ERR_CLK_TOUT == (status & I2C_MASTER_ERR_CLK_TOUT)) {
-        this_ptr->logger->set_error(clk_tout_err);
+        this_ptr->logger->set_error(this_ptr->clk_tout_err);
         this_ptr->i2c_msg->errors = TIMEOUT_ERR;
     }
 
 
     if(I2C_MASTER_ERR_ADDR_ACK == (status & I2C_MASTER_ERR_ADDR_ACK)) {
 
-        this_ptr->logger->set_error(addr_ack_err);
+        this_ptr->logger->set_error(this_ptr->addr_ack_err);
         this_ptr->i2c_msg->errors = ADDR_NACK_ERR;
     }
 
 
     if(I2C_MASTER_ERR_ARB_LOST == (status & I2C_MASTER_ERR_ARB_LOST)) {
-        this_ptr->logger->set_error(arb_lost_err);
+        this_ptr->logger->set_error(this_ptr->arb_lost_err);
         this_ptr->i2c_msg->errors = ARB_LOST_ERR;
     }
 

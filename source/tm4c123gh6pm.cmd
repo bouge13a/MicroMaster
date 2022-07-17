@@ -40,6 +40,11 @@ SECTIONS
     .bss    :   > SRAM
     .sysmem :   > SRAM
     .stack  :   > SRAM
+#ifdef  __TI_COMPILER_VERSION__
+#if     __TI_COMPILER_VERSION__ >= 15009000
+    .TI.ramfunc : {} load=FLASH, run=SRAM, table(BINIT)
+#endif
+#endif
 }
 
 __STACK_TOP = __stack + 512;

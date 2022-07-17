@@ -47,9 +47,11 @@
 #include "pin_list_page.hpp"
 #include "I2C_aux.hpp"
 #include "current_monitor_task.hpp"
+#include "display_task.hpp"
 
 static ConsoleTask* console_task = NULL;
 static uint32_t power_idx = 0;
+static display_tools_t display_tools;
 
 PreScheduler::PreScheduler(void) {
 
@@ -71,7 +73,16 @@ PostScheduler::PostScheduler(void) {
 
     QueueHandle_t can_rx_q = xQueueCreate(2, sizeof(tCANMsgObject*));
 
+    SemaphoreHandle_t i2c_aux_sem = xSemaphoreCreateBinary();
+
     I2cTask* i2c_cmd_task = new I2cTask(&i2c0);
+
+    I2cAux* i2c_aux = new I2cAux(&i2c3);
+
+    display_tools.i2c_sem = i2c_aux_sem;
+    display_tools.i2c = i2c_aux;
+
+    DisplayTask* display_task = new DisplayTask(&display_tools);
 
     I2cMonitorTask* i2c_monitor_task = new I2cMonitorTask(i2c_cmd_task, *i2c_cmd_task->get_vector());
 
@@ -121,9 +132,8 @@ PostScheduler::PostScheduler(void) {
 
     PinPage* pin_page = new PinPage();
 
-    I2cAux* i2c_aux = new I2cAux(&i2c3);
-
-    CurrentMonitorTask* current_monitor = new CurrentMonitorTask(i2c_aux);
+    CurrentMonitorTask* current_monitor_task = new CurrentMonitorTask(i2c_aux,
+                                                                 &display_tools);
 
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
@@ -183,9 +193,11 @@ PostScheduler::PostScheduler(void) {
     console_task->add_page(pwm_page);
     console_task->add_page(num_converter);
     console_task->add_page(pin_page);
-    console_task->add_page(current_monitor);
+    console_task->add_page(current_monitor_task);
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
+
+    display_task->add_display_update(current_monitor_task);
 
 }
 

@@ -10,6 +10,8 @@
 #include "text_controls.hpp"
 #include "I2C_aux.hpp"
 
+static const uint32_t UPDATE_RATE = 100;
+
 static uint8_t INA219_ADDRESS = 0x40u;                       // 1000000 (A0+A1=GND)
 
 static uint8_t INA_CALIB_DATA[]   = {0x05u, 0x10u, 0x00u};
@@ -20,9 +22,10 @@ void CurrentMonitorTask::taskfunwrapper(void* parm){
     (static_cast<CurrentMonitorTask*>(parm))->task((CurrentMonitorTask*)parm);
 } // End CurrentMonitorTask::taskfunwrapper
 
-CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c) : ConsolePage("Current",
-                                                                  100,
-                                                                  false) {
+CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c,
+                                       display_tools_t* display_tools) : ConsolePage("Current",
+                                                                                      100,
+                                                                                      false) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I monitor",                                     /* Text name for the task. */
@@ -32,6 +35,7 @@ CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c) : ConsolePage("Current",
                 NULL);
 
     this->i2c = i2c;
+    this->display_tools = display_tools;
 
     this->calibration_msg = new I2cMsgAux();
     this->config_msg = new I2cMsgAux();
@@ -53,6 +57,7 @@ CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c) : ConsolePage("Current",
     this->current_msg->num_tx_bytes = 1;
     this->current_msg->num_rx_bytes = 2;
     this->current_msg->rx_data = this->raw_current;
+    this->current_msg->semphr = xSemaphoreCreateBinary();
 
 } // End CurrentMonitorTask::CurrentMonitorTask
 
@@ -65,8 +70,10 @@ void CurrentMonitorTask::task(CurrentMonitorTask* this_ptr) {
     while(1){
 
         this_ptr->i2c->add_i2c_msg(this_ptr->current_msg);
+        xSemaphoreTake(this_ptr->current_msg->semphr, portMAX_DELAY);
+        this_ptr->set_update_pending(true);
 
-        vTaskDelay(200);
+        vTaskDelay(UPDATE_RATE);
 
     }
 
@@ -99,4 +106,7 @@ void CurrentMonitorTask::draw_help(void) {
 
 }
 
+void CurrentMonitorTask::update_display(void) {
+
+} // End CurrentMonitorTask::update_display
 

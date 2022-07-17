@@ -326,9 +326,7 @@ bool I2cAux::log_errors(I2cAux* this_ptr) {
 
     // THE ORDER OF THESE IF STATEMENTS MATTER!!!
 
-
     if( I2C_MASTER_ERR_DATA_ACK  == (status &  I2C_MASTER_ERR_DATA_ACK )) {
-
         this_ptr->logger->set_error(this_ptr->data_ack_err);
         this_ptr->i2c_msg->errors = DATA_NACK_ERR;
     }
@@ -341,7 +339,6 @@ bool I2cAux::log_errors(I2cAux* this_ptr) {
 
 
     if(I2C_MASTER_ERR_ADDR_ACK == (status & I2C_MASTER_ERR_ADDR_ACK)) {
-
         this_ptr->logger->set_error(this_ptr->addr_ack_err);
         this_ptr->i2c_msg->errors = ADDR_NACK_ERR;
     }
@@ -351,8 +348,6 @@ bool I2cAux::log_errors(I2cAux* this_ptr) {
         this_ptr->logger->set_error(this_ptr->arb_lost_err);
         this_ptr->i2c_msg->errors = ARB_LOST_ERR;
     }
-
-
 
     if (status) {
         return true;

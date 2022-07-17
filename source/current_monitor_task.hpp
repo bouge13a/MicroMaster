@@ -12,14 +12,16 @@
 #include "console_task.hpp"
 #include "I2C_task.hpp"
 #include "I2C_aux.hpp"
+#include "display_task.hpp"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-    class CurrentMonitorTask : public ConsolePage {
+    class CurrentMonitorTask : public ConsolePage, public DisplayUpdate {
     public:
-        CurrentMonitorTask(I2cAux* i2c);
+        CurrentMonitorTask(I2cAux* i2c,
+                           display_tools_t* display_tools);
     private :
         void task(CurrentMonitorTask* this_ptr);
         static void taskfunwrapper(void* parm);
@@ -28,6 +30,7 @@ extern "C" {
         I2cMsgAux* calibration_msg;
         I2cMsgAux* config_msg;
         I2cMsgAux* current_msg;
+        display_tools_t* display_tools;
 
         uint8_t raw_current[2];
 
@@ -36,6 +39,8 @@ extern "C" {
         void draw_input(int character);
         void draw_help(void);
         void draw_reset(void);
+
+        void update_display(void);
     };
 
 #ifdef __cplusplus

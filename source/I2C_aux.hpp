@@ -67,6 +67,9 @@ extern "C" {
 }
 #endif
 
-
+typedef struct {
+    SemaphoreHandle_t i2c_sem;
+    I2cAux* i2c;
+}display_tools_t;
 
 #endif /* SOURCE_I2C_AUX_HPP_ */

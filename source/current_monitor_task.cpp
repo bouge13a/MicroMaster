@@ -22,10 +22,9 @@ void CurrentMonitorTask::taskfunwrapper(void* parm){
     (static_cast<CurrentMonitorTask*>(parm))->task((CurrentMonitorTask*)parm);
 } // End CurrentMonitorTask::taskfunwrapper
 
-CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c,
-                                       display_tools_t* display_tools) : ConsolePage("Current",
-                                                                                      100,
-                                                                                      false) {
+CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c) : ConsolePage("Current",
+                                                                  100,
+                                                                  false) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I monitor",                                     /* Text name for the task. */
@@ -35,7 +34,6 @@ CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c,
                 NULL);
 
     this->i2c = i2c;
-    this->display_tools = display_tools;
 
     this->calibration_msg = new I2cMsgAux();
     this->config_msg = new I2cMsgAux();
@@ -72,7 +70,6 @@ void CurrentMonitorTask::task(CurrentMonitorTask* this_ptr) {
         this_ptr->i2c->add_i2c_msg(this_ptr->current_msg);
         xSemaphoreTake(this_ptr->current_msg->semphr, portMAX_DELAY);
         this_ptr->set_update_pending(true);
-
         vTaskDelay(UPDATE_RATE);
 
     }

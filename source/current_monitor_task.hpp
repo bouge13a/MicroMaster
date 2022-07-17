@@ -20,8 +20,7 @@ extern "C" {
 
     class CurrentMonitorTask : public ConsolePage, public DisplayUpdate {
     public:
-        CurrentMonitorTask(I2cAux* i2c,
-                           display_tools_t* display_tools);
+        CurrentMonitorTask(I2cAux* i2c);
     private :
         void task(CurrentMonitorTask* this_ptr);
         static void taskfunwrapper(void* parm);
@@ -30,7 +29,6 @@ extern "C" {
         I2cMsgAux* calibration_msg;
         I2cMsgAux* config_msg;
         I2cMsgAux* current_msg;
-        display_tools_t* display_tools;
 
         uint8_t raw_current[2];
 

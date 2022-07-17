@@ -128,3 +128,7 @@ void ErrorLogger::draw_help(void){
 void ErrorLogger::draw_reset(void){
 
 } // End logger_drawinput
+
+void ErrorLogger::update_display(void) {
+
+} // End ErrorLogger::update_display

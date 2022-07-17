@@ -28,9 +28,7 @@ void DisplayTask::taskfunwrapper(void* parm){
     (static_cast<DisplayTask*>(parm))->task((DisplayTask*)parm);
 } // End DisplayTask::taskfunwrapper
 
-DisplayTask::DisplayTask(display_tools_t* i2c_tools) {
-
-    this->i2c_tools = i2c_tools;
+DisplayTask::DisplayTask(void) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Display",            /* Text name for the task. */

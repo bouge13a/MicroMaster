@@ -9,6 +9,7 @@
 #define ERROR_LOGGER_HPP_
 
 #include "console_task.hpp"
+#include "display_task.hpp"
 
 typedef struct {
     const char* name;
@@ -16,7 +17,7 @@ typedef struct {
     uint32_t occurences;
 }error_t;
 
-class ErrorLogger : public ConsolePage {
+class ErrorLogger : public ConsolePage, public DisplayUpdate {
 public :
    static ErrorLogger* get_instance(void);
 
@@ -34,6 +35,8 @@ private:
     void draw_input(int character);
     void draw_help(void);
     void draw_reset(void);
+
+    void update_display(void);
 };
 
 

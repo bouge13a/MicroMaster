@@ -12,7 +12,6 @@
 #include "task.h"
 #include "queue.h"
 #include <vector>
-#include "I2C_aux.hpp"
 
 class DisplayUpdate {
 public:
@@ -30,7 +29,7 @@ extern "C" {
 
     class DisplayTask {
     public:
-        DisplayTask(display_tools_t* i2c_tools);
+        DisplayTask(void);
         void add_display_update(DisplayUpdate* display_update);
     private :
         void task(DisplayTask* this_ptr);
@@ -38,7 +37,6 @@ extern "C" {
         void init_display(void);
 
         std::vector<DisplayUpdate*> display_updates;
-        display_tools_t* i2c_tools;
     };
 
 #ifdef __cplusplus

@@ -13,6 +13,7 @@
 #include "driverlib/inc/hw_types.h"
 #include "inc/hw_ints.h"
 #include "I2C_aux.hpp"
+#include <assert.h>
 
 static SemaphoreHandle_t nine_clk_semphr = NULL;
 static const uint32_t BOTH_LINES_UP = 0x3;

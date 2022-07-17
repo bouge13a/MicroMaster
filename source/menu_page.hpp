@@ -11,6 +11,7 @@
 #include <stdint.h>
 #include <vector>
 #include "console_task.hpp"
+#include "display_task.hpp"
 
 class MenuRow {
 public :
@@ -26,7 +27,7 @@ public :
     uint32_t column_index;
 };
 
-class MenuOptions : public ConsolePage {
+class MenuOptions : public ConsolePage, public DisplayUpdate {
 public:
     MenuOptions(void);
     void add_menu_row(MenuRow* menu_row);
@@ -39,12 +40,13 @@ private :
 
     uint32_t menu_index;
 
-
     void draw_page(void);
     void draw_data(void);
     void draw_input(int character);
     void draw_help(void);
     void draw_reset(void);
+
+    void update_display(void);
 };
 
 

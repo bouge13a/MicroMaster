@@ -12,7 +12,9 @@
 #include "task.h"
 #include "queue.h"
 #include "semphr.h"
-#include "I2C_task.hpp"
+#include "board_pin_defs.hpp"
+#include "I2C_typedefs.hpp"
+#include "error_logger.hpp"
 
 class I2cMsgAux {
 public :

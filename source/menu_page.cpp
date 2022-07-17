@@ -153,3 +153,7 @@ void MenuOptions::draw_help(void) {
 void MenuOptions::draw_reset(void) {
 
 } // End MenuOptions::draw_data
+
+void MenuOptions::update_display(void) {
+
+} // End MenuOptions::update_display

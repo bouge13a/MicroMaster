@@ -19,4 +19,8 @@ uint32_t octalToDecimal(int octalNum);
 
 int decimalToOctal(int decimalNumber);
 
+void ftoa(float n, char *res, int afterpoint);
+
+int intToStr(int x, char str[], int d);
+
 #endif /* UTILS_HPP_ */

@@ -32,7 +32,7 @@ DisplayTask::DisplayTask(void) {
 
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Display",            /* Text name for the task. */
-                100,                  /* Stack size in words, not bytes. */
+                130,                  /* Stack size in words, not bytes. */
                 this,                 /* Parameter passed into the task. */
                 3,                    /* Priority at which the task is created. */
                 NULL);

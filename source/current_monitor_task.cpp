@@ -9,6 +9,9 @@
 #include "current_monitor_task.hpp"
 #include "text_controls.hpp"
 #include "I2C_aux.hpp"
+#include "utils.hpp"
+
+static const float CURRENT_DIV = 10.0;
 
 static const uint32_t UPDATE_RATE = 100;
 
@@ -22,10 +25,12 @@ void CurrentMonitorTask::taskfunwrapper(void* parm){
     (static_cast<CurrentMonitorTask*>(parm))->task((CurrentMonitorTask*)parm);
 } // End CurrentMonitorTask::taskfunwrapper
 
-CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c) : ConsolePage("Current",
+CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c,
+                                       OLED_GFX* oled_gfx) : ConsolePage("Current",
                                                                   100,
                                                                   false) {
 
+    this->oled_gfx = oled_gfx;
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I monitor",                                     /* Text name for the task. */
                 100,                  /* Stack size in words, not bytes. */
@@ -62,8 +67,10 @@ CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c) : ConsolePage("Current",
 
 void CurrentMonitorTask::task(CurrentMonitorTask* this_ptr) {
 
+    vTaskDelay(UPDATE_RATE);
     this_ptr->i2c->add_i2c_msg(this_ptr->calibration_msg);
     this_ptr->i2c->add_i2c_msg(this_ptr->config_msg);
+
 
     while(1){
 
@@ -104,6 +111,11 @@ void CurrentMonitorTask::draw_help(void) {
 }
 
 void CurrentMonitorTask::update_display(void) {
+
+    char current_str[8];
+    float current = (raw_current[0] | (uint16_t)(raw_current[1] << 8))/CURRENT_DIV;
+    ftoa(current, current_str, 4);
+    this->oled_gfx->oled->send_str_xy(current_str, 5, 5);
 
 } // End CurrentMonitorTask::update_display
 

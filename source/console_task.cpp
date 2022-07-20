@@ -130,9 +130,9 @@ uint32_t ConsoleTask::draw_start_page(ConsoleTask* this_ptr) {
     TextCtl::cursor_pos(MACRO_ROW+1, MACRO_COL);
     UARTprintf("           \\  / o |\n");
     TextCtl::cursor_pos(MACRO_ROW+2, MACRO_COL);
-    UARTprintf("====---o-|\\ \\/ /o |\n");
+    UARTprintf("====---o-|\\ \\/ /  |\n");
     TextCtl::cursor_pos(MACRO_ROW+3, MACRO_COL);
-    UARTprintf("         | \\  / | |\n");
+    UARTprintf("         | \\  / o |\n");
     TextCtl::cursor_pos(MACRO_ROW+4, MACRO_COL);
     UARTprintf(" ====--o-|  \\/  | |\n");
     TextCtl::cursor_pos(MACRO_ROW+5, MACRO_COL);

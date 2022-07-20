@@ -13,6 +13,7 @@
 #include "I2C_task.hpp"
 #include "I2C_aux.hpp"
 #include "display_task.hpp"
+#include "OLED_GFX.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -20,7 +21,7 @@ extern "C" {
 
     class CurrentMonitorTask : public ConsolePage, public DisplayUpdate {
     public:
-        CurrentMonitorTask(I2cAux* i2c);
+        CurrentMonitorTask(I2cAux* i2c, OLED_GFX* oled_gfx);
     private :
         void task(CurrentMonitorTask* this_ptr);
         static void taskfunwrapper(void* parm);
@@ -31,6 +32,7 @@ extern "C" {
         I2cMsgAux* current_msg;
 
         uint8_t raw_current[2];
+        OLED_GFX* oled_gfx;
 
         void draw_page(void);
         void draw_data(void);

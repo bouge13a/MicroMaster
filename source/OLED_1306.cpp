@@ -4,6 +4,7 @@
 
 OLED_1306::OLED_1306(display_tools_t* display_tools) {
     this->display_tools = display_tools;
+    this->display_update_sem = xSemaphoreCreateBinary();
 }
 
 void OLED_1306::draw_graph(unsigned int x, unsigned int y) {
@@ -30,9 +31,9 @@ void OLED_1306::send_char_xy(unsigned char data, int X, int Y) {
   i2c_msg.tx_data = tx_data;
   i2c_msg.num_tx_bytes = 9;
   i2c_msg.num_rx_bytes = 0;
-  i2c_msg.semphr = this->display_tools->i2c_sem;
+  i2c_msg.semphr = this->display_update_sem;
   this->display_tools->i2c->add_i2c_msg(&i2c_msg);
-  xSemaphoreTake(this->display_tools->i2c_sem, portMAX_DELAY);
+  xSemaphoreTake(this->display_update_sem, portMAX_DELAY);
 }
 
 void OLED_1306::send_str(unsigned char *string) {
@@ -64,9 +65,9 @@ void OLED_1306::send_char(unsigned char data) {
     i2c_msg.tx_data = tx_data;
     i2c_msg.num_tx_bytes = 2;
     i2c_msg.num_rx_bytes = 0;
-    i2c_msg.semphr = this->display_tools->i2c_sem;
+    i2c_msg.semphr = this->display_update_sem;
     this->display_tools->i2c->add_i2c_msg(&i2c_msg);
-    xSemaphoreTake(this->display_tools->i2c_sem, portMAX_DELAY);
+    xSemaphoreTake(this->display_update_sem, portMAX_DELAY);
 }
 
 void OLED_1306::send_command(unsigned char command) {
@@ -77,9 +78,9 @@ void OLED_1306::send_command(unsigned char command) {
   i2c_msg.tx_data = tx_data;
   i2c_msg.num_tx_bytes = 2;
   i2c_msg.num_rx_bytes = 0;
-  i2c_msg.semphr = this->display_tools->i2c_sem;
+  i2c_msg.semphr = this->display_update_sem;
   this->display_tools->i2c->add_i2c_msg(&i2c_msg);
-  xSemaphoreTake(this->display_tools->i2c_sem, portMAX_DELAY);
+  xSemaphoreTake(this->display_update_sem, portMAX_DELAY);
 
 }
 
@@ -151,9 +152,7 @@ void OLED_1306::init_OLED(void) {
   send_command(0xA6);            // NORMALDISPLAY             
 
   clear_display();
-  send_command(0x2e);            // stop scroll
-  
-  vTaskDelay(100);
+  send_command(0x2e);            // stop scroll m,8
 
   //----------------------------REVERSE comments----------------------------//
   //  send_command(0xa0);		// seg re-map 0->127(default)

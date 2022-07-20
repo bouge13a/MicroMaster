@@ -56,6 +56,7 @@ static uint32_t power_idx = 0;
 static display_tools_t display_tools;
 static DisplayTask* display_task = nullptr;
 static OLED_GFX* oled_gfx;
+static CurrentMonitorTask* current_monitor_task;
 
 PreScheduler::PreScheduler(void) {
 
@@ -67,26 +68,24 @@ PreScheduler::PreScheduler(void) {
     UART_to_USB* uart_to_usb = new UART_to_USB(uart_rx_queue,
                                                uart_tx_queue);
 
-    console_task = new ConsoleTask(uart_rx_queue,
-                                   &power_idx);
-
-    SemaphoreHandle_t i2c_aux_sem = xSemaphoreCreateBinary();
 
     I2cAux* i2c_aux = new I2cAux(&i2c3);
 
-    display_tools.i2c_sem = i2c_aux_sem;
+    display_tools.i2c_sem = xSemaphoreCreateBinary();
     display_tools.i2c = i2c_aux;
 
-    display_task = new DisplayTask();
+    OLED_1306* oled = new OLED_1306(&display_tools);
+    OLED_GFX* oled_gfx = new OLED_GFX(oled);
+
+    display_task = new DisplayTask(oled_gfx);
+
+    console_task = new ConsoleTask(uart_rx_queue,
+                                   &power_idx);
 
 } // End init_no_booster_board
 
 PostScheduler::PostScheduler(void) {
 
-    OLED_1306* oled = new OLED_1306(&display_tools);
-    OLED_GFX* oled_gfx = new OLED_GFX(oled);
-    oled_gfx->init();
-    oled_gfx->oled->clear_display();
     QueueHandle_t can_rx_q = xQueueCreate(2, sizeof(tCANMsgObject*));
 
     I2cTask* i2c_cmd_task = new I2cTask(&i2c0);
@@ -139,7 +138,8 @@ PostScheduler::PostScheduler(void) {
 
     PinPage* pin_page = new PinPage();
 
-    CurrentMonitorTask* current_monitor_task = new CurrentMonitorTask(display_tools.i2c, oled_gfx);
+    current_monitor_task = new CurrentMonitorTask(display_tools.i2c, oled_gfx);
+;
 
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,

@@ -24,8 +24,6 @@ I2cMsgAux::I2cMsgAux(void) {
 
 I2cAux::I2cAux(i2c_config_t* config) {
 
-   this->logger = ErrorLogger::get_instance();
-
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "I2C Aux",                            /* Text name for the task. */
                 80,                  /* Stack size in words, not bytes. */
@@ -58,19 +56,15 @@ I2cAux::I2cAux(i2c_config_t* config) {
     nine_clk_semphr = xSemaphoreCreateBinary();
     this->nine_clk_count = 0;
 
-    this->addr_ack_err = logger->create_error("I2C3", "No ack from address");
-    this->data_ack_err = logger->create_error("I2C3", "No ack from data");
-    this->arb_lost_err = logger->create_error("I2C3", "Arbitration lost");
-    this->clk_tout_err = logger->create_error("I2C3", "Clock timeout");
-    this->clk_tout_err = logger->create_error("I2C3", "Line state low");
-
     this->bytes_rxed = 0;
     this->bytes_txed = 0;
 
 } // End I2cAux::I2cAux
 
 bool I2cAux::add_i2c_msg(I2cMsgAux* i2c_msg_ptr) {
-    return xQueueSend(this->i2c_msg_queue, &i2c_msg_ptr, 0);
+    assert(i2c_msg_queue);
+    assert(i2c_msg_ptr);
+    return xQueueSend(i2c_msg_queue, &i2c_msg_ptr, 0);
 } // End I2cAux::add_i2c_msg
 
 void I2cAux::taskfunwrapper(void* parm){
@@ -91,7 +85,6 @@ void I2cAux::task(I2cAux* this_ptr) {
             if (BOTH_LINES_UP != I2CMasterLineStateGet(this_ptr->config->base)) {
                 this_ptr->i2c_state = I2C_FINISH;
                 this_ptr->i2c_msg->errors = PULL_UP_ERR;
-                this_ptr->logger->set_error(this_ptr->pull_up_err);
                 break;
             }
 
@@ -324,31 +317,6 @@ void I2cAux::task(I2cAux* this_ptr) {
 bool I2cAux::log_errors(I2cAux* this_ptr) {
 
     uint32_t status = I2CMasterErr(I2C3_BASE);
-
-    // THE ORDER OF THESE IF STATEMENTS MATTER!!!
-
-    if( I2C_MASTER_ERR_DATA_ACK  == (status &  I2C_MASTER_ERR_DATA_ACK )) {
-        this_ptr->logger->set_error(this_ptr->data_ack_err);
-        this_ptr->i2c_msg->errors = DATA_NACK_ERR;
-    }
-
-
-    if(I2C_MASTER_ERR_CLK_TOUT == (status & I2C_MASTER_ERR_CLK_TOUT)) {
-        this_ptr->logger->set_error(this_ptr->clk_tout_err);
-        this_ptr->i2c_msg->errors = TIMEOUT_ERR;
-    }
-
-
-    if(I2C_MASTER_ERR_ADDR_ACK == (status & I2C_MASTER_ERR_ADDR_ACK)) {
-        this_ptr->logger->set_error(this_ptr->addr_ack_err);
-        this_ptr->i2c_msg->errors = ADDR_NACK_ERR;
-    }
-
-
-    if(I2C_MASTER_ERR_ARB_LOST == (status & I2C_MASTER_ERR_ARB_LOST)) {
-        this_ptr->logger->set_error(this_ptr->arb_lost_err);
-        this_ptr->i2c_msg->errors = ARB_LOST_ERR;
-    }
 
     if (status) {
         return true;

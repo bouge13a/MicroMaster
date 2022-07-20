@@ -4,6 +4,8 @@
 #define OLED_address  0x3c
 
 #include "I2C_aux.hpp"
+#include "FreeRTOS.h"
+#include "semphr.h"
 
 class OLED_1306 {
   
@@ -34,6 +36,7 @@ class OLED_1306 {
   private:
   
     display_tools_t* display_tools;
+    SemaphoreHandle_t display_update_sem;
 
  
 };

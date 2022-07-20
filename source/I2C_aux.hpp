@@ -14,7 +14,6 @@
 #include "semphr.h"
 #include "board_pin_defs.hpp"
 #include "I2C_typedefs.hpp"
-#include "error_logger.hpp"
 
 class I2cMsgAux {
 public :
@@ -53,16 +52,9 @@ extern "C" {
         QueueHandle_t i2c_msg_queue;
         i2c_state_e i2c_state;
 
-        ErrorLogger* logger;
-
         uint32_t bytes_rxed;
         uint32_t bytes_txed;
 
-        error_t* addr_ack_err;
-        error_t* data_ack_err;
-        error_t* arb_lost_err;
-        error_t* clk_tout_err;
-        error_t* pull_up_err;
     };
 
 #ifdef __cplusplus

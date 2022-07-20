@@ -28,14 +28,16 @@ void DisplayTask::taskfunwrapper(void* parm){
     (static_cast<DisplayTask*>(parm))->task((DisplayTask*)parm);
 } // End DisplayTask::taskfunwrapper
 
-DisplayTask::DisplayTask(void) {
+DisplayTask::DisplayTask(OLED_GFX* oled_gfx) {
 
+    this->oled_gfx = oled_gfx;
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Display",            /* Text name for the task. */
-                130,                  /* Stack size in words, not bytes. */
+                200,                  /* Stack size in words, not bytes. */
                 this,                 /* Parameter passed into the task. */
                 3,                    /* Priority at which the task is created. */
                 NULL);
+
 
 } // End DisplayTask::DisplayTask
 
@@ -45,20 +47,20 @@ void DisplayTask::add_display_update(DisplayUpdate* display_update) {
 
 } // End DisplayTask::add_display_update
 
-void DisplayTask::init_display(void) {
-
-} // DisplayTask::init_display
-
 void DisplayTask::task(DisplayTask* this_ptr) {
 
-    this->init_display();
+    this_ptr->oled_gfx->init();
+
+    this_ptr->oled_gfx->oled->send_str_xy("MicroMaster", 4, 4);
+
+    vTaskDelay(MAX_DISPLAY_RATE_MS);
 
     while(1){
 
-        for (uint32_t idx=0; idx<display_updates.size(); idx++) {
-            if (display_updates[idx]->is_update_pending()) {
-                display_updates[idx]->update_display();
-                display_updates[idx]->set_update_pending(false);
+        for (uint32_t idx=0; idx<this_ptr->display_updates.size(); idx++) {
+            if (this_ptr->display_updates[idx]->is_update_pending()) {
+                this_ptr->display_updates[idx]->update_display();
+                this_ptr->display_updates[idx]->set_update_pending(false);
             }
         }
 

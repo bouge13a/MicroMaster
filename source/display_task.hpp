@@ -11,6 +11,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "OLED_GFX.h"
 #include <vector>
 
 class DisplayUpdate {
@@ -29,12 +30,12 @@ extern "C" {
 
     class DisplayTask {
     public:
-        DisplayTask(void);
+        DisplayTask(OLED_GFX* oled_gfx);
         void add_display_update(DisplayUpdate* display_update);
     private :
         void task(DisplayTask* this_ptr);
         static void taskfunwrapper(void* parm);
-        void init_display(void);
+        OLED_GFX* oled_gfx;
 
         std::vector<DisplayUpdate*> display_updates;
     };

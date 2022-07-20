@@ -22,6 +22,7 @@ extern "C" {
     class CurrentMonitorTask : public ConsolePage, public DisplayUpdate {
     public:
         CurrentMonitorTask(I2cAux* i2c, OLED_GFX* oled_gfx);
+
     private :
         void task(CurrentMonitorTask* this_ptr);
         static void taskfunwrapper(void* parm);
@@ -31,16 +32,17 @@ extern "C" {
         I2cMsgAux* config_msg;
         I2cMsgAux* current_msg;
 
-        uint8_t raw_current[2];
-        OLED_GFX* oled_gfx;
+        volatile uint8_t raw_current[2];
+        OLED_GFX* oled_gfx_obj;
 
+        void update_display(void);
         void draw_page(void);
         void draw_data(void);
         void draw_input(int character);
         void draw_help(void);
         void draw_reset(void);
 
-        void update_display(void);
+
     };
 
 #ifdef __cplusplus

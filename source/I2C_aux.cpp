@@ -18,6 +18,7 @@
 static SemaphoreHandle_t nine_clk_semphr = NULL;
 static const uint32_t BOTH_LINES_UP = 0x3;
 
+
 I2cMsgAux::I2cMsgAux(void) {
     semphr = nullptr;
 }
@@ -62,9 +63,9 @@ I2cAux::I2cAux(i2c_config_t* config) {
 } // End I2cAux::I2cAux
 
 bool I2cAux::add_i2c_msg(I2cMsgAux* i2c_msg_ptr) {
-    assert(i2c_msg_queue);
+    assert(this->i2c_msg_queue);
     assert(i2c_msg_ptr);
-    return xQueueSend(i2c_msg_queue, &i2c_msg_ptr, 0);
+    return xQueueSend(this->i2c_msg_queue, &i2c_msg_ptr, 0);
 } // End I2cAux::add_i2c_msg
 
 void I2cAux::taskfunwrapper(void* parm){
@@ -241,8 +242,8 @@ void I2cAux::task(I2cAux* this_ptr) {
 
             this_ptr->i2c_msg->state = i2c_finished;
 
-            if (i2c_msg->semphr != nullptr) {
-                xSemaphoreGive(i2c_msg->semphr);
+            if (this_ptr->i2c_msg->semphr != nullptr) {
+                xSemaphoreGive(this_ptr->i2c_msg->semphr);
             }
 
             this_ptr->i2c_state = I2C_IDLE;
@@ -294,8 +295,8 @@ void I2cAux::task(I2cAux* this_ptr) {
 
                     this_ptr->i2c_state = I2C_IDLE;
 
-                    if (i2c_msg->semphr != nullptr) {
-                        xSemaphoreGive(i2c_msg->semphr);
+                    if (this_ptr->i2c_msg->semphr != nullptr) {
+                        xSemaphoreGive(this_ptr->i2c_msg->semphr);
                     }
 
                 }

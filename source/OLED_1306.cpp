@@ -21,19 +21,10 @@ void OLED_1306::draw_pixel(unsigned int x, unsigned int y) {
 
 void OLED_1306::send_char_xy(unsigned char data, int X, int Y) {  
   set_xy(X, Y);
-  I2cMsgAux i2c_msg;
-  uint8_t tx_data[9];
-  tx_data[0] = 0x40u;
-  for(int i=1;i<9;i++) {
+
+  for(int i=0;i<8;i++) {
       send_char(myFont[data-0x20][i]);
   }    
-  i2c_msg.address = OLED_address;
-  i2c_msg.tx_data = tx_data;
-  i2c_msg.num_tx_bytes = 9;
-  i2c_msg.num_rx_bytes = 0;
-  i2c_msg.semphr = this->display_update_sem;
-  this->display_tools->i2c->add_i2c_msg(&i2c_msg);
-  xSemaphoreTake(this->display_update_sem, portMAX_DELAY);
 }
 
 void OLED_1306::send_str(unsigned char *string) {

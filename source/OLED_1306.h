@@ -37,7 +37,5 @@ class OLED_1306 {
   
     display_tools_t* display_tools;
     SemaphoreHandle_t display_update_sem;
-
- 
 };
 #endif

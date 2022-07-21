@@ -57,11 +57,14 @@ static display_tools_t display_tools;
 static DisplayTask* display_task = nullptr;
 static OLED_GFX* oled_gfx;
 static CurrentMonitorTask* current_monitor_task;
+static SemaphoreHandle_t display_sem;
 
 PreScheduler::PreScheduler(void) {
 
     QueueHandle_t uart_rx_queue = xQueueCreate(100, sizeof(uint8_t));
     QueueHandle_t uart_tx_queue = xQueueCreate(100, sizeof(uint8_t));
+
+    display_sem = xSemaphoreCreateBinary();
 
     set_uart_tx_q(uart_tx_queue);
 
@@ -75,9 +78,10 @@ PreScheduler::PreScheduler(void) {
     display_tools.i2c = i2c_aux;
 
     OLED_1306* oled = new OLED_1306(&display_tools);
-    OLED_GFX* oled_gfx = new OLED_GFX(oled);
+    oled_gfx = new OLED_GFX(oled);
 
-    display_task = new DisplayTask(oled_gfx);
+    display_task = new DisplayTask(oled_gfx,
+                                   display_sem);
 
     console_task = new ConsoleTask(uart_rx_queue,
                                    &power_idx);
@@ -139,7 +143,10 @@ PostScheduler::PostScheduler(void) {
     PinPage* pin_page = new PinPage();
 
     current_monitor_task = new CurrentMonitorTask(display_tools.i2c, oled_gfx);
-;
+
+    display_task->add_display_update(current_monitor_task);
+    display_task->add_display_update(menu_page);
+    display_task->add_display_update(error_logger);
 
     menu_page->add_menu_row(new MenuRow(power_on_num,
                                         set_power_supplies,
@@ -203,10 +210,8 @@ PostScheduler::PostScheduler(void) {
     console_task->add_page(error_logger);
     console_task->add_page(task_manager);
 
-    display_task->add_display_update(current_monitor_task);
-    display_task->add_display_update(menu_page);
-    display_task->add_display_update(error_logger);
 
+    xSemaphoreGive(display_sem);
 }
 
 FtdiProgram::FtdiProgram(void) {

@@ -48,12 +48,14 @@ CurrentMonitorTask::CurrentMonitorTask(I2cAux* i2c,
     this->calibration_msg->address = INA219_ADDRESS;
     this->calibration_msg->num_tx_bytes = 3;
     this->calibration_msg->num_rx_bytes = 0;
+    this->calibration_msg->semphr = nullptr;
 
 
     this->config_msg->tx_data = INA_CONFIG_DATA;
     this->config_msg->address = INA219_ADDRESS;
     this->config_msg->num_tx_bytes = 3;
     this->config_msg->num_rx_bytes = 0;
+    this->config_msg->semphr = nullptr;
 
     this->current_msg->tx_data = INA_CURRENT_DATA;
     this->current_msg->address = INA219_ADDRESS;
@@ -112,7 +114,7 @@ void CurrentMonitorTask::update_display(void) {
 
     char current_str[8];
     float current = (raw_current[0] | (uint16_t)(raw_current[1] << 8))/CURRENT_DIV;
-    ftoa(current, current_str, 4);
+    ftoa(current, current_str, 1);
     oled_gfx_obj->oled->send_str_xy(current_str, 5, 5);
 
 } // End CurrentMonitorTask::update_display

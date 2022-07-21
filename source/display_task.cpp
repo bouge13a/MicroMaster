@@ -28,8 +28,10 @@ void DisplayTask::taskfunwrapper(void* parm){
     (static_cast<DisplayTask*>(parm))->task((DisplayTask*)parm);
 } // End DisplayTask::taskfunwrapper
 
-DisplayTask::DisplayTask(OLED_GFX* oled_gfx) {
+DisplayTask::DisplayTask(OLED_GFX* oled_gfx,
+                         SemaphoreHandle_t display_sem) {
 
+    this->display_sem = display_sem;
     this->oled_gfx = oled_gfx;
     xTaskCreate(this->taskfunwrapper, /* Function that implements the task. */
                 "Display",            /* Text name for the task. */
@@ -53,7 +55,9 @@ void DisplayTask::task(DisplayTask* this_ptr) {
 
     this_ptr->oled_gfx->oled->send_str_xy("MicroMaster", 4, 4);
 
-    vTaskDelay(MAX_DISPLAY_RATE_MS);
+    xSemaphoreTake(this_ptr->display_sem, portMAX_DELAY);
+
+    this_ptr->oled_gfx->oled->reset_display();
 
     while(1){
 

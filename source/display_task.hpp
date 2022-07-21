@@ -21,7 +21,7 @@ public:
     bool is_update_pending(void);
     void set_update_pending(bool update_pend);
 private:
-    bool update_pending;
+    volatile bool update_pending;
 };
 
 #ifdef __cplusplus
@@ -30,13 +30,14 @@ extern "C" {
 
     class DisplayTask {
     public:
-        DisplayTask(OLED_GFX* oled_gfx);
+        DisplayTask(OLED_GFX* oled_gfx,
+                    SemaphoreHandle_t display_sem);
         void add_display_update(DisplayUpdate* display_update);
     private :
         void task(DisplayTask* this_ptr);
         static void taskfunwrapper(void* parm);
         OLED_GFX* oled_gfx;
-
+        SemaphoreHandle_t display_sem;
         std::vector<DisplayUpdate*> display_updates;
     };
 

@@ -115,7 +115,7 @@ void CurrentMonitorTask::update_display(void) {
     char current_str[8];
     float current = (raw_current[0] | (uint16_t)(raw_current[1] << 8))/CURRENT_DIV;
     ftoa(current, current_str, 1);
-    oled_gfx_obj->oled->send_str_xy(current_str, 5, 5);
+    oled_gfx_obj->oled->send_str_xy(current_str, 2, 12);
 
 } // End CurrentMonitorTask::update_display
 

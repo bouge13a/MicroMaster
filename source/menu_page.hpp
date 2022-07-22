@@ -27,7 +27,7 @@ public :
     uint32_t column_index;
 };
 
-class MenuOptions : public ConsolePage, public DisplayUpdate {
+class MenuOptions : public ConsolePage {
 public:
     MenuOptions(void);
     void add_menu_row(MenuRow* menu_row);
@@ -45,8 +45,6 @@ private :
     void draw_input(int character);
     void draw_help(void);
     void draw_reset(void);
-
-    void update_display(void);
 };
 
 

@@ -20,7 +20,7 @@ static const uint32_t BOTH_LINES_UP = 0x3;
 
 
 I2cMsgAux::I2cMsgAux(void) {
-    semphr = nullptr;
+    this->semphr = nullptr;
 }
 
 I2cAux::I2cAux(i2c_config_t* config) {

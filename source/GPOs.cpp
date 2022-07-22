@@ -33,9 +33,11 @@ void set_power_supplies(uint32_t index) {
     switch(index) {
     case 0 :
         gpo_obj->set(power_on_pin, 0);
+        gpo_obj->set_supply_display(PSU_OFF);
         break;
     case 1 :
         gpo_obj->set(power_on_pin, 1);
+        gpo_obj->set_supply_display(PSU_ON);
         break;
     default :
         assert(0);
@@ -77,9 +79,11 @@ void set_pullup_en(uint32_t index) {
     switch(index) {
     case 0 :
         gpo_obj->set(pullup_en_pin, 1);
+        gpo_obj->set_pull_display(PSU_ON);
         break;
     case 1 :
         gpo_obj->set(pullup_en_pin, 0);
+        gpo_obj->set_pull_display(PSU_OFF);
         break;
     default :
         assert(0);
@@ -88,10 +92,20 @@ void set_pullup_en(uint32_t index) {
 
 } // End set_pullup_en
 
-GpoObj::GpoObj(uint32_t power_idx) {
+void GpoObj::set_supply_display(ps_state_e state) {
+    this->ps_state = state;
+    this->set_update_pending(true);
+}
+
+void GpoObj::set_pull_display(ps_state_e state) {
+    this->pu_state = state;
+    this->set_update_pending(true);
+}
+
+GpoObj::GpoObj(uint32_t power_idx, OLED_GFX* oled_gfx) {
 
     this->gpo_info = &board_gpo_info;
-
+    this->oled_gfx = oled_gfx;
     gpo_obj = this;
 
     power_on_pin = this->get_config("PWR ON");
@@ -227,3 +241,28 @@ uint32_t GpoObj::get(gpio_pin_t* config) {
 gpos_t* GpoObj::get_struct(void) {
     return this->gpo_info;
 } // End GpoObj::get_struct
+
+void GpoObj::update_display(void){
+
+    switch(this->ps_state){
+    case PSU_ON :
+        this->oled_gfx->oled->send_str_xy("On ", 0, 12);
+        break;
+    case PSU_OFF :
+        this->oled_gfx->oled->send_str_xy("Off", 0, 12);
+        break;
+    default :
+        assert(0);
+    }
+
+    switch(this->pu_state){
+    case PSU_ON :
+        this->oled_gfx->oled->send_str_xy("On ", 3, 12);
+        break;
+    case PSU_OFF :
+        this->oled_gfx->oled->send_str_xy("Off", 3, 12);
+        break;
+    default :
+        assert(0);
+    }
+}

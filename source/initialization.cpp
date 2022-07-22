@@ -81,7 +81,8 @@ PreScheduler::PreScheduler(void) {
     oled_gfx = new OLED_GFX(oled);
 
     display_task = new DisplayTask(oled_gfx,
-                                   display_sem);
+                                   display_sem,
+                                   &power_idx);
 
     console_task = new ConsoleTask(uart_rx_queue,
                                    &power_idx);
@@ -89,6 +90,8 @@ PreScheduler::PreScheduler(void) {
 } // End init_no_booster_board
 
 PostScheduler::PostScheduler(void) {
+
+    display_task->set_suite(MAIN_SUITE);
 
     QueueHandle_t can_rx_q = xQueueCreate(2, sizeof(tCANMsgObject*));
 
@@ -104,7 +107,7 @@ PostScheduler::PostScheduler(void) {
 
     ErrorLogger* error_logger = ErrorLogger::get_instance();
 
-    GpoObj* gpo_obj = new GpoObj(power_idx);
+    GpoObj* gpo_obj = new GpoObj(power_idx, oled_gfx);
 
     GpiObj* gpi_obj = new GpiObj();
 
@@ -145,7 +148,7 @@ PostScheduler::PostScheduler(void) {
     current_monitor_task = new CurrentMonitorTask(display_tools.i2c, oled_gfx);
 
     display_task->add_display_update(current_monitor_task);
-    display_task->add_display_update(menu_page);
+    display_task->add_display_update(gpo_obj);
     display_task->add_display_update(error_logger);
 
     menu_page->add_menu_row(new MenuRow(power_on_num,
